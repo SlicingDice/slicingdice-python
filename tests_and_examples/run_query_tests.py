@@ -17,6 +17,7 @@ run the script with:
 """
 
 import json
+import os
 import sys
 import time
 
@@ -265,12 +266,17 @@ def main():
         'aggregation',
     ]
 
-    # Testing class with demo API key
+    # Testing class with demo API key or one of your API key
+    # by enviroment variable
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
+
+    API_KEY = os.environ.get(
+        "SD_API_KEY",
+        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMW0'
+         'iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMCwiY2xpZW5'
+         '0X2lkIjoxMH0.xRBHeDxTzYAgFyuU94SWFbjITeoxgyRCQGdIee8qrLA'))
     sd_tester = SlicingDiceTester(
-        api_key=('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMW0'
-                 'iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMCwiY2xpZW5'
-                 '0X2lkIjoxMH0.xRBHeDxTzYAgFyuU94SWFbjITeoxgyRCQGdIee8qrLA'),
+        api_key=API_KEY,
         verbose=False)
 
     try:
