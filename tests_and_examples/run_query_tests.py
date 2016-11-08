@@ -39,7 +39,7 @@ class SlicingDiceTester(object):
         # Translation table for fields with timestamp
         self.field_translation = {}
 
-        self.sleep_time = 10  # seconds
+        self.sleep_time = 30  # seconds
         self.path = 'examples/'  # Directory containing examples to test
         self.extension = '.json'  # Examples file format
 
