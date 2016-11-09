@@ -33,8 +33,9 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class SlicingDiceTester(object):
     """Test orchestration class."""
-    def __init__(self, api_key, verbose=False):
+    def __init__(self, api_key, verbose=False, endpoint_test=True):
         self.client = SlicingDice(api_key)
+        self.endpoint_test = endpoint_test
 
         # Translation table for fields with timestamp
         self.field_translation = {}
@@ -179,7 +180,7 @@ class SlicingDiceTester(object):
         if self.verbose:
             print '    - {}'.format(index_data)
 
-        self.client.index(index_data, test=True)
+        self.client.index(index_data, test=self.endpoint_test)
 
         # Wait a few seconds so the data can be indexed by SlicingDice
         time.sleep(self.sleep_time)
@@ -200,13 +201,17 @@ class SlicingDiceTester(object):
             print '    - {}'.format(query_data)
 
         if query_type == 'count_entity':
-            result = self.client.count_entity(query_data, test=True)
+            result = self.client.count_entity(
+                query_data, test=self.endpoint_test)
         elif query_type == 'count_event':
-            result = self.client.count_event(query_data, test=True)
+            result = self.client.count_event(
+                query_data, test=self.endpoint_test)
         elif query_type == 'top_values':
-            result = self.client.top_values(query_data, test=True)
+            result = self.client.top_values(
+                query_data, test=self.endpoint_test)
         elif query_type == 'aggregation':
-            result = self.client.aggregation(query_data, test=True)
+            result = self.client.aggregation(
+                query_data, test=self.endpoint_test)
 
         return result
 
@@ -275,9 +280,14 @@ def main():
         ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMW0'
          'iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMCwiY2xpZW5'
          '0X2lkIjoxMH0.xRBHeDxTzYAgFyuU94SWFbjITeoxgyRCQGdIee8qrLA'))
+
+    # MODE_TEST give us if you want to use endpoint Test or Prod
+    MODE_TEST = os.environ.get("MODE_TEST")
+    endpoint_test = False if MODE_TEST.lower() == 'prod' else True
     sd_tester = SlicingDiceTester(
         api_key=API_KEY,
-        verbose=False)
+        verbose=False,
+        endpoint_test=endpoint_test)
 
     try:
         for query_type in query_types:
