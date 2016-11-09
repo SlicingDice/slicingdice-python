@@ -282,7 +282,7 @@ def main():
          '0X2lkIjoxMH0.xRBHeDxTzYAgFyuU94SWFbjITeoxgyRCQGdIee8qrLA'))
 
     # MODE_TEST give us if you want to use endpoint Test or Prod
-    MODE_TEST = os.environ.get("MODE_TEST")
+    MODE_TEST = os.environ.get("MODE_TEST", "test")
     endpoint_test = False if MODE_TEST.lower() == 'prod' else True
     sd_tester = SlicingDiceTester(
         api_key=API_KEY,
