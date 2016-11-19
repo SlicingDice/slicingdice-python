@@ -40,7 +40,7 @@ class SlicingDiceTester(object):
         # Translation table for fields with timestamp
         self.field_translation = {}
 
-        self.sleep_time = 30  # seconds
+        self.sleep_time = 3  # seconds
         self.path = 'examples/'  # Directory containing examples to test
         self.extension = '.json'  # Examples file format
 
@@ -115,7 +115,7 @@ class SlicingDiceTester(object):
 
         for field in test['fields']:
             self._append_timestamp_to_field_name(field)
-            self.client.create_field(field, test=True)
+            self.client.create_field(field, test=self.endpoint_test)
 
             if self.verbose:
                 print '    - {}'.format(field['api-name'])
