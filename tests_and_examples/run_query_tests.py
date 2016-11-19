@@ -115,7 +115,7 @@ class SlicingDiceTester(object):
 
         for field in test['fields']:
             self._append_timestamp_to_field_name(field)
-            self.client.create_field(field, test=True)
+            self.client.create_field(field, test=self.endpoint_test)
 
             if self.verbose:
                 print '    - {}'.format(field['api-name'])
