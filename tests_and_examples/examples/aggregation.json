@@ -1664,7 +1664,7 @@
             "result": {
                 "boolean-test-field": [
                     {
-                        "value": "false",
+                        "value": "true",
                         "quantity": 50
                     }
                 ]

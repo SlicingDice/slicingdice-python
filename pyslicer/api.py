@@ -45,7 +45,8 @@ class SlicingDiceAPI(object):
     def headers(self):
         return self.__headers
 
-    def _organize_keys(self, master_key, custom_key, read_key, write_key):
+    @staticmethod
+    def _organize_keys(master_key, custom_key, read_key, write_key):
         return {
             "master_key": master_key,
             "custom_key": custom_key,
@@ -130,7 +131,8 @@ class SlicingDiceAPI(object):
                 self._set_properties_values(sd_response)
                 return sd_response.result
 
-    def _check_request(self, request):
+    @staticmethod
+    def _check_request(request):
         """Check if the request was successful
 
         Keyword arguments:

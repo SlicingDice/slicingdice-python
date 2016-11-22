@@ -565,7 +565,7 @@ class QueryAggregationInvalidFilterQueryException(SlicingDiceException):
 
 class QueryCountInvalidParameterErrorException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QueryLevelLimitException, self).__init__(
+        super(QueryCountInvalidParameterErrorException, self).__init__(
             self, *args, **kwargs)
 
 

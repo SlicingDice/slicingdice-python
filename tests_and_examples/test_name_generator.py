@@ -210,10 +210,8 @@ def main():
             open('examples/{}.json'.format(query_type)),
             object_pairs_hook=collections.OrderedDict)
 
-        for i in range(len(tests)):
-            tests[i]['name'] = generate_name(query_type, tests[i])
-
         for test in tests:
+            test['name'] = generate_name(query_type, test)
             print test['name']
 
         json.dump(tests,

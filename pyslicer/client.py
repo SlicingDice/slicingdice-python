@@ -125,7 +125,8 @@ class SlicingDice(SlicingDiceAPI):
                 req_type="post",
                 key_level=0)
 
-    def _wrapper_test(self, test):
+    @staticmethod
+    def _wrapper_test(test):
         base_url = SlicingDice.BASE_URL
         if test:
             base_url += "/test"

@@ -139,7 +139,8 @@ class SlicingDiceTester(object):
 
         self.field_translation[old_name] = new_name
 
-    def _get_timestamp(self):
+    @staticmethod
+    def _get_timestamp():
         """Get integer timestamp in string format.
 
         Return:
