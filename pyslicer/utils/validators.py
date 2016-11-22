@@ -178,7 +178,7 @@ class IndexValidator(SDBaseValidator):
         if not all(self.data) or not all(self.data.values()):
             raise exceptions.InvalidIndexException(
                 "This index has invalid keys or values.")
-        for id, value in self.data.iteritems():
+        for value in self.data.values():
             # Value is a dictionary when it is an entity being indexed:
             # "my-entity": {"year": 2016}
             # It can also be a parameter, such as "auto-create-fields":
