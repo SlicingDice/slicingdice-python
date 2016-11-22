@@ -131,7 +131,8 @@ class SlicingDiceAPI(object):
                 self._set_properties_values(sd_response)
                 return sd_response.result
 
-    def _check_request(self, request):
+    @staticmethod
+    def _check_request(request):
         """Check if the request was successful
 
         Keyword arguments:
