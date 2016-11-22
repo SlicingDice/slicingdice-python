@@ -45,7 +45,8 @@ class SlicingDiceAPI(object):
     def headers(self):
         return self.__headers
 
-    def _organize_keys(self, master_key, custom_key, read_key, write_key):
+    @staticmethod
+    def _organize_keys(master_key, custom_key, read_key, write_key):
         return {
             "master_key": master_key,
             "custom_key": custom_key,
