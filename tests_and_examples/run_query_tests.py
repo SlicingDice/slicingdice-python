@@ -250,6 +250,11 @@ class SlicingDiceTester(object):
                 continue
 
             if value != result[key]:
+                time.sleep(self.sleep_time * 3)
+                result2 = self.execute_query(query_type, test)
+                if value == result2[key]:
+                    print "  Passed at second try"
+                    continue
                 self.num_fails += 1
                 self.failed_tests.append(test['name'])
 
