@@ -206,6 +206,10 @@ class SlicingDiceTester(object):
             result = self.client.top_values(query_data, test=True)
         elif query_type == 'aggregation':
             result = self.client.aggregation(query_data, test=True)
+        elif query_type == 'score':
+            result = self.client.score(query_data, test=True)
+        elif query_type == 'result':
+            result = self.client.result(query_data, test=True)
 
         return result
 
