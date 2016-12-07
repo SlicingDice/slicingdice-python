@@ -267,6 +267,8 @@ def main():
         'count_event',
         'top_values',
         'aggregation',
+        'score',
+        'result'
     ]
 
     # Testing class with demo API key
