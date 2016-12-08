@@ -29,7 +29,13 @@ def generate_name(query_type, test):
 
 def generate_start(query_type):
     query_name = query_type.upper()
-    return 'Test for a \"{}\" query'.format(query_name.replace('_', ' '))
+    a_or_an = 'a'
+
+    if query_name == 'AGGREGATION':
+        a_or_an += 'n'
+
+    return 'Test for {} \"{}\" query'.format(
+        a_or_an, query_name.replace('_', ' '))
 
 
 def generate_fields(fields):
@@ -123,9 +129,16 @@ def generate_parameters(query):
 def generate_end(test):
     text = ''
 
+    metric = generate_metric(test)
+    if metric:
+        text += 'with ' + metric
+
     timezone = generate_timezone(test)
     if timezone:
-        text = 'with ' + timezone
+        if text:
+            text += ' and ' + timezone
+        else:
+            text += 'with ' + timezone
 
     relative_time = generate_relative_time(test)
     if relative_time:
@@ -133,6 +146,34 @@ def generate_end(test):
             text += ' and ' + relative_time
         else:
             text += 'with ' + relative_time
+
+    return text
+
+
+def generate_metric(test):
+    text = ''
+    query_string = json.dumps(test['query'])
+
+    if '"min"' in query_string:
+        text += '"MIN"'
+    elif '"max"' in query_string:
+        text += '"MAX"'
+    elif '"avg"' in query_string:
+        text += '"AVG"'
+    elif '"sum"' in query_string:
+        text += '"SUM"'
+    elif '"count-entities"' in query_string:
+        text += '"COUNT-ENTITIES"'
+    elif '"count-events"' in query_string:
+        text += '"COUNT-EVENTS"'
+
+    if text:
+        text += ' metric'
+
+    if 'interval' in query_string:
+        if text:
+            text += ' and '
+        text += 'histogram'
 
     return text
 
@@ -149,7 +190,8 @@ def generate_timezone(test):
     elif '-03:00' in index_string:
         text += '-3h timezone when indexing'
 
-    if text and ':00Z' in query_string or '+03:00' in query_string or '-03:00' in query_string:
+    if (text and ':00Z' in query_string or '+03:00' in query_string or
+            '-03:00' in query_string):
         text += ' and querying'
     else:
         if ':00Z' in query_string:
@@ -198,11 +240,12 @@ def generate_relative_time(test):
 
 def main():
     query_types = [
-        # 'tests',
         'count_entity',
         'count_event',
         'aggregation',
-        # 'top_values',
+        'top_values',
+        'result',
+        'score',
     ]
 
     for query_type in query_types:
