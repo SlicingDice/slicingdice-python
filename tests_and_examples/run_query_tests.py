@@ -213,6 +213,12 @@ class SlicingDiceTester(object):
         elif query_type == 'aggregation':
             result = self.client.aggregation(
                 query_data, test=self.endpoint_test)
+        elif query_type == 'score':
+            result = self.client.score(
+                query_data, test=self.endpoint_test)
+        elif query_type == 'result':
+            result = self.client.result(
+                query_data, test=self.endpoint_test)
 
         return result
 
@@ -276,6 +282,8 @@ def main():
         'count_event',
         'top_values',
         'aggregation',
+        'score',
+        'result'
     ]
 
     # Testing class with demo API key or one of your API key
