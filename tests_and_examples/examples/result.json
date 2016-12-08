@@ -1,6 +1,6 @@
 [
     {
-        "name": "test_non_time_series_independent_notequals_1_field_date", 
+        "name": "Test for a \"RESULT\" query using field \"DATE\" and parameter \"NOT-EQUALS\".", 
         "fields": [
             {
                 "type": "date", 
@@ -483,7 +483,7 @@
         }
     }, 
     {
-        "name": "test_time_series_string_independent_freq_3_and_4_fields[7]", 
+        "name": "Test for a \"RESULT\" query using fields \"BOOLEAN\", \"INTEGER\", \"ENUMERATED\" and \"STRING-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"RANGE\", \"BETWEEN\" and \"MINFREQ\".", 
         "fields": [
             {
                 "type": "boolean", 
@@ -2721,9 +2721,9 @@
             "page": 1, 
             "took": "ignore"
         }
-    },
+    }, 
     {
-        "name": "test_time_series_integer_independent_freq_3_and_4_fields", 
+        "name": "Test for a \"RESULT\" query using fields \"BOOLEAN\", \"INTEGER\", \"ENUMERATED\" and \"INTEGER-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"RANGE\", \"BETWEEN\" and \"MINFREQ\".", 
         "fields": [
             {
                 "type": "boolean", 
@@ -4961,9 +4961,9 @@
             "page": 1, 
             "took": "ignore"
         }
-    },
+    }, 
     {
-        "name": "test_time_series_decimal_independent_freq_3_and_4_fields", 
+        "name": "Test for a \"RESULT\" query using fields \"BOOLEAN\", \"INTEGER\", \"ENUMERATED\" and \"DECIMAL-TIME-SERIES\", operator \"AND\" and parameters \"EQUALS\", \"RANGE\", \"BETWEEN\" and \"MINFREQ\".", 
         "fields": [
             {
                 "type": "boolean", 
@@ -4994,7 +4994,7 @@
             {
                 "type": "decimal-time-series", 
                 "api-name": "time-series-decimal-test-field", 
-                "name": "time_series_decimal_test_field",
+                "name": "time_series_decimal_test_field", 
                 "decimal-places": 3
             }
         ], 
