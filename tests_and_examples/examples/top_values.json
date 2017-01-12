@@ -4522,12 +4522,8 @@
                 "enumerated-top-values": {
                     "enumerated-test-field": [
                         {
-                            "value": "1000001",
-                            "quantity": 25
-                        },
-                        {
-                            "value": "1000002",
-                            "quantity": 25
+                            "value": "1000000",
+                            "quantity": 100
                         }
                     ]
                 }
@@ -6778,7 +6774,7 @@
         "query": {
             "enumerated-top-values": {
                 "contains": [
-                    "1000001",
+                    "1000000",
                     "1000002"
                 ],
                 "enumerated-test-field": 5
@@ -6790,12 +6786,8 @@
                 "enumerated-top-values": {
                     "enumerated-test-field": [
                         {
-                            "value": "1000001",
-                            "quantity": 50
-                        },
-                        {
-                            "value": "1000002",
-                            "quantity": 50
+                            "value": "1000000",
+                            "quantity": 100
                         }
                     ]
                 }
@@ -9062,12 +9054,8 @@
                 "enumerated-top-values": {
                     "enumerated-test-field": [
                         {
-                            "value": "1000001",
-                            "quantity": 50
-                        },
-                        {
-                            "value": "1000002",
-                            "quantity": 50
+                            "value": "1000000",
+                            "quantity": 100
                         }
                     ]
                 }
@@ -11318,8 +11306,7 @@
         "query": {
             "enumerated-top-values": {
                 "starts-with": [
-                    "1234561",
-                    "1234562"
+                    "20000"
                 ],
                 "enumerated-test-field": 5
             }
@@ -11330,12 +11317,8 @@
                 "enumerated-top-values": {
                     "enumerated-test-field": [
                         {
-                            "value": "12345611",
-                            "quantity": 50
-                        },
-                        {
-                            "value": "12345622",
-                            "quantity": 50
+                            "value": "2000000",
+                            "quantity": 100
                         }
                     ]
                 }
@@ -13586,8 +13569,7 @@
         "query": {
             "enumerated-top-values": {
                 "ends-with": [
-                    "123456",
-                    "123456"
+                    "0000"
                 ],
                 "enumerated-test-field": 5
             }
@@ -13598,11 +13580,11 @@
                 "enumerated-top-values": {
                     "enumerated-test-field": [
                         {
-                            "value": "1123456",
+                            "value": "1000000",
                             "quantity": 50
                         },
                         {
-                            "value": "2123456",
+                            "value": "2000000",
                             "quantity": 50
                         }
                     ]
