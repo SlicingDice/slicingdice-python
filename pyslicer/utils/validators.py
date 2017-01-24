@@ -138,7 +138,7 @@ class QueryDataExtractionValidator(SDBaseValidator):
     def _valid_keys(self):
         if "fields" in self.data:
             value = self.data["fields"]
-            if type(value) != list:
+            if not isinstance(value, list):
                 raise exceptions.InvalidQueryException(
                     "The key 'fields' in query has a invalid value.")
             else:
@@ -148,7 +148,7 @@ class QueryDataExtractionValidator(SDBaseValidator):
                         "have up to 10 fields.")
         if "limit" in self.data:
             limit = self.data['limit']
-            if type(limit) != int:
+            if not isinstance(limit, int):
                 raise exceptions.InvalidQueryException(
                     "The key 'limit' in query has a invalid value.")
             if limit > 100:
@@ -178,7 +178,7 @@ class IndexValidator(SDBaseValidator):
         if not all(self.data) or not all(self.data.values()):
             raise exceptions.InvalidIndexException(
                 "This index has invalid keys or values.")
-        for id, value in self.data.iteritems():
+        for value in self.data.values():
             # Value is a dictionary when it is an entity being indexed:
             # "my-entity": {"year": 2016}
             # It can also be a parameter, such as "auto-create-fields":

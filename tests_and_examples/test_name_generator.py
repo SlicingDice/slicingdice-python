@@ -1,8 +1,19 @@
+"""Automatically generate tests names.
+
+This script updates all tests stored JSON files in the examples/ directory by
+replacing the current test name by a new one, generated based on the structure
+of the tests. It takes into account field types, operators being used,
+parameters etc.
+"""
+
 import collections
 import json
 
 
 def generate_name(query_type, test):
+    """Generate the test name based on the test type (count entity, aggregation
+    etc) and its data.
+    """
     name = generate_start(query_type)
     name += ' '
 
@@ -28,11 +39,19 @@ def generate_name(query_type, test):
 
 
 def generate_start(query_type):
+    """Generate the first part of the test name."""
     query_name = query_type.upper()
-    return 'Test for a \"{}\" query'.format(query_name.replace('_', ' '))
+    a_or_an = 'a'
+
+    if query_name == 'AGGREGATION':
+        a_or_an += 'n'
+
+    return 'Test for {} \"{}\" query'.format(
+        a_or_an, query_name.replace('_', ' '))
 
 
 def generate_fields(fields):
+    """Generate the fields being used in the test."""
     if len(fields) == 0:
         return 'using automatically created fields'
 
@@ -58,6 +77,7 @@ def generate_fields(fields):
 
 
 def generate_operators(query):
+    """Generate the operators being used in the test."""
     query_string = json.dumps(query)
     valid_operators = ['and', 'or', 'not', 'freqgroup']
     existing_operators = [operator for operator in valid_operators
@@ -88,6 +108,7 @@ def generate_operators(query):
 
 
 def generate_parameters(query):
+    """Generate the parameters being used in the test."""
     query_string = json.dumps(query)
     valid_parameters = [
         'equals', 'not-equals', 'range', 'gt', 'gte', 'lt', 'lte', 'between',
@@ -121,11 +142,19 @@ def generate_parameters(query):
 
 
 def generate_end(test):
+    """Generate the last part of the test name."""
     text = ''
+
+    metric = generate_metric(test)
+    if metric:
+        text += 'with ' + metric
 
     timezone = generate_timezone(test)
     if timezone:
-        text = 'with ' + timezone
+        if text:
+            text += ' and ' + timezone
+        else:
+            text += 'with ' + timezone
 
     relative_time = generate_relative_time(test)
     if relative_time:
@@ -137,7 +166,37 @@ def generate_end(test):
     return text
 
 
+def generate_metric(test):
+    """Generate the metrics and histogram being used in the test."""
+    text = ''
+    query_string = json.dumps(test['query'])
+
+    if '"min"' in query_string:
+        text += '"MIN"'
+    elif '"max"' in query_string:
+        text += '"MAX"'
+    elif '"avg"' in query_string:
+        text += '"AVG"'
+    elif '"sum"' in query_string:
+        text += '"SUM"'
+    elif '"count-entities"' in query_string:
+        text += '"COUNT-ENTITIES"'
+    elif '"count-events"' in query_string:
+        text += '"COUNT-EVENTS"'
+
+    if text:
+        text += ' metric'
+
+    if 'interval' in query_string:
+        if text:
+            text += ' and '
+        text += 'histogram'
+
+    return text
+
+
 def generate_timezone(test):
+    """Generate the timezone being used in the test."""
     text = ''
     index_string = json.dumps(test['index'])
     query_string = json.dumps(test['query'])
@@ -149,7 +208,8 @@ def generate_timezone(test):
     elif '-03:00' in index_string:
         text += '-3h timezone when indexing'
 
-    if text and ':00Z' in query_string or '+03:00' in query_string or '-03:00' in query_string:
+    if (text and ':00Z' in query_string or '+03:00' in query_string or
+            '-03:00' in query_string):
         text += ' and querying'
     else:
         if ':00Z' in query_string:
@@ -163,6 +223,7 @@ def generate_timezone(test):
 
 
 def generate_relative_time(test):
+    """Generate the relative being used in the test."""
     text = []
     query_string = json.dumps(test['query'])
 
@@ -197,12 +258,14 @@ def generate_relative_time(test):
 
 
 def main():
+    """Generate tests names for all JSON files in the examples/ directory."""
     query_types = [
-        # 'tests',
         'count_entity',
         'count_event',
         'aggregation',
-        # 'top_values',
+        'top_values',
+        'result',
+        'score',
     ]
 
     for query_type in query_types:
@@ -210,10 +273,8 @@ def main():
             open('examples/{}.json'.format(query_type)),
             object_pairs_hook=collections.OrderedDict)
 
-        for i in range(len(tests)):
-            tests[i]['name'] = generate_name(query_type, tests[i])
-
         for test in tests:
+            test['name'] = generate_name(query_type, test)
             print test['name']
 
         json.dump(tests,

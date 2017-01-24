@@ -40,7 +40,7 @@ class SlicingDiceTester(object):
         # Translation table for fields with timestamp
         self.field_translation = {}
 
-        self.sleep_time = 3  # seconds
+        self.sleep_time = int(os.environ.get("CLIENT_SLEEP_TIME", 5))  # seconds
         self.path = 'examples/'  # Directory containing examples to test
         self.extension = '.json'  # Examples file format
 
@@ -139,7 +139,8 @@ class SlicingDiceTester(object):
 
         self.field_translation[old_name] = new_name
 
-    def _get_timestamp(self):
+    @staticmethod
+    def _get_timestamp():
         """Get integer timestamp in string format.
 
         Return:
@@ -212,6 +213,12 @@ class SlicingDiceTester(object):
         elif query_type == 'aggregation':
             result = self.client.aggregation(
                 query_data, test=self.endpoint_test)
+        elif query_type == 'score':
+            result = self.client.score(
+                query_data, test=self.endpoint_test)
+        elif query_type == 'result':
+            result = self.client.result(
+                query_data, test=self.endpoint_test)
 
         return result
 
@@ -249,6 +256,12 @@ class SlicingDiceTester(object):
                 continue
 
             if value != result[key]:
+                time.sleep(self.sleep_time * 3)
+                test['query'].update({"bypass-cache": True})
+                result2 = self.execute_query(query_type, test)
+                if value == result2[key]:
+                    print "  Passed at second try"
+                    continue
                 self.num_fails += 1
                 self.failed_tests.append(test['name'])
 
@@ -269,6 +282,8 @@ def main():
         'count_event',
         'top_values',
         'aggregation',
+        'score',
+        'result'
     ]
 
     # Testing class with demo API key or one of your API key
