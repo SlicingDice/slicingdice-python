@@ -268,7 +268,7 @@ class SlicingDiceTester(object):
                 print '  Expected: "{}": {}'.format(key, value)
                 print '  Result:   "{}": {}'.format(key, result[key])
                 print '  Status: Failed'
-                raise Exception("Stop another test.")
+                return
 
         self.num_successes += 1
 
