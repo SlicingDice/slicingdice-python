@@ -26,7 +26,7 @@ class Requester(object):
             raise exceptions.SlicingDiceHTTPError(e)
 
     def put(self, url, data, headers):
-        """Returns a post request result object"""
+        """Returns a put request result object"""
         try:
             return requests.put(
                 url,

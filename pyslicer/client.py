@@ -32,21 +32,21 @@ class SlicingDice(SlicingDiceAPI):
 
         To create an object of the SliceDicer:
 
-            >>> from pyslicer.api import SlicingDice
-            >>> sd = SlicingDice('my-token')
+            from pyslicer.api import SlicingDice
+            sd = SlicingDice('my-token')
 
         To create a field:
 
-            >>> field_json = {
+                field_json = {
                     'name': 'Pyslicer String Field',
                     'description': 'Pyslicer example description',
                     'type': 'string',
                     'cardinality': 'low'}
-            >>> print sd.create_field(field_json)
+                print sd.create_field(field_json)
 
         To make a query:
 
-            >>> query_json = {
+                query_json = {
                     'type': 'count',
                     'select': [
                         {
@@ -64,11 +64,11 @@ class SlicingDice(SlicingDiceAPI):
                         },
                     ]
                 }
-            >>> print sd.query(query_json)
+                print sd.query(query_json)
 
         To make a index:
 
-            >>> indexing_json = {
+                indexing_json = {
                     'foo@bar.com': {
                         'pyslicer-string-field': 'test_value_1',
                         'pyslicer-integer-field': 42,
@@ -78,7 +78,7 @@ class SlicingDice(SlicingDiceAPI):
                         'pyslicer-integer-field': 42,
                     },
                 }
-            >>> print sd.index(indexing_json)
+                print sd.index(indexing_json)
     """
     def __init__(
         self, write_key=None, read_key=None, master_key=None,
@@ -87,10 +87,10 @@ class SlicingDice(SlicingDiceAPI):
 
         Keyword arguments:
         key(string or SlicerKey obj) -- Key to access API
-        timeout(int) -- Define timeout to request,
-            defaults 30 secs(default 30).
         use_ssl(bool) -- Define if the request uses verification SSL for
             HTTPS requests. Defaults False.(Optional)
+        timeout(int) -- Define timeout to request,
+            defaults 30 secs(default 30).
         """
         super(SlicingDice, self).__init__(
             write_key, read_key, master_key, custom_key, use_ssl, timeout)
@@ -141,20 +141,17 @@ class SlicingDice(SlicingDiceAPI):
         update(bool) -- Indicates with operation is update a
             saved query or not.(default false)
         """
+        req_type = "post"
         if update:
-            return self._make_request(
-                url=url,
-                json_data=ujson.dumps(query),
-                req_type="put",
-                key_level=2)
+            req_type = "put"
         return self._make_request(
             url=url,
             json_data=ujson.dumps(query),
-            req_type="post",
+            req_type=req_type,
             key_level=2)
 
     def get_projects(self):
-        """Get a list of projects"""
+        """Get a list of projects (all)"""
         url = SlicingDice.BASE_URL + URLResources.PROJECT
         return self._make_request(
             url=url,
@@ -168,6 +165,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         data -- A dictionary in the Slicing Dice field
             format.
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         sd_data = validators.FieldValidator(data)
@@ -180,7 +178,11 @@ class SlicingDice(SlicingDiceAPI):
                 key_level=1)
 
     def get_fields(self, test=False):
-        """Get a list of fields"""
+        """Get a list of fields
+
+        Keyword arguments:
+        test(bool) -- if true will use tests end-point (default False)
+        """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.FIELD
         return self._make_request(
@@ -189,11 +191,14 @@ class SlicingDice(SlicingDiceAPI):
             key_level=2)
 
     def index(self, data, auto_create_fields=False, test=False):
-        """Make a index in Slicing Dice
+        """Make a index in Slicing Dice API
 
         Keyword arguments:
         data -- A dictionary in the Slicing Dice index
             format.
+        auto_create_fields(bool) -- if true SlicingDice API will automatically
+            create nonexistent fields (default False)
+        test(bool) -- if true will use tests end-point (default False)
         """
         if auto_create_fields:
             data["auto-create-fields"] = True
@@ -212,13 +217,17 @@ class SlicingDice(SlicingDiceAPI):
 
         Keyword arguments:
         query -- A dictionary in the Slicing Dice query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_COUNT_ENTITY
         return self._count_query_wrapper(url, query)
 
     def count_entity_total(self, test=False):
-        """Make a count entity total query"""
+        """Make a count entity total query
+
+        test(bool) -- if true will use tests end-point (default False)
+        """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_COUNT_ENTITY_TOTAL
         return self._make_request(
@@ -231,6 +240,7 @@ class SlicingDice(SlicingDiceAPI):
 
         Keyword arguments:
         data -- A dictionary query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_COUNT_EVENT
@@ -240,7 +250,8 @@ class SlicingDice(SlicingDiceAPI):
         """Make a aggregation query
 
         Keyword arguments:
-        data -- A dictionary query
+        query -- An aggregation query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_AGGREGATION
@@ -262,6 +273,7 @@ class SlicingDice(SlicingDiceAPI):
 
         Keyword arguments:
         query -- A dictionary query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_TOP_VALUES
@@ -278,6 +290,7 @@ class SlicingDice(SlicingDiceAPI):
 
         Keyword arguments:
         ids -- A list with entity to check if exists
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_EXISTS_ENTITY
@@ -297,7 +310,8 @@ class SlicingDice(SlicingDiceAPI):
         """Get a saved query
 
         Keyword arguments:
-        query_name(string) -- A string with query name
+        query_name(string) -- The name of the saved query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_SAVED + query_name
@@ -310,7 +324,8 @@ class SlicingDice(SlicingDiceAPI):
         """Get all saved queries
 
         Keyword arguments:
-        query_name(string) -- A string with query name
+        query_name(string) -- The name of the saved query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_SAVED
@@ -323,7 +338,8 @@ class SlicingDice(SlicingDiceAPI):
         """Delete a saved query
 
         Keyword arguments:
-        query_name(string) -- A string with query name
+        query_name(string) -- The name of the saved query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_SAVED + query_name
@@ -338,6 +354,7 @@ class SlicingDice(SlicingDiceAPI):
 
         Keyword arguments:
         query -- A dictionary query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_SAVED
@@ -347,8 +364,9 @@ class SlicingDice(SlicingDiceAPI):
         """Get a list of queries saved
 
         Keyword arguments:
-        name -- A dictionary query
+        name -- The name of the saved query to update
         query -- A dictionary query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_SAVED + name
@@ -359,16 +377,18 @@ class SlicingDice(SlicingDiceAPI):
 
         Keyword arguments:
         query -- A dictionary query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_DATA_EXTRACTION_RESULT
         return self._data_extraction_wrapper(url, query)
 
     def score(self, query, test=False):
-        """Get a data extraction result
+        """Get a data extraction score
 
         Keyword arguments:
         query -- A dictionary query
+        test(bool) -- if true will use tests end-point (default False)
         """
         base_url = self._wrapper_test(test)
         url = base_url + URLResources.QUERY_DATA_EXTRACTION_SCORE
