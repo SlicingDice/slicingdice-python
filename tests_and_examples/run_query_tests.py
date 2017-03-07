@@ -34,15 +34,19 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 class SlicingDiceTester(object):
     """Test orchestration class."""
     def __init__(self, api_key, verbose=False, endpoint_test=True):
+        # The Slicing Dice API client
         self.client = SlicingDice(api_key)
         self.endpoint_test = endpoint_test
 
         # Translation table for fields with timestamp
         self.field_translation = {}
 
-        self.sleep_time = int(os.environ.get("CLIENT_SLEEP_TIME", 5))  # seconds
-        self.path = 'examples/'  # Directory containing examples to test
-        self.extension = '.json'  # Examples file format
+        # Sleep time in seconds
+        self.sleep_time = int(os.environ.get("CLIENT_SLEEP_TIME", 5))
+        # Directory containing examples to test
+        self.path = 'examples/'
+        # Examples file format
+        self.extension = '.json'
 
         self.num_successes = 0
         self.num_fails = 0
@@ -86,7 +90,8 @@ class SlicingDiceTester(object):
             print
 
     def _empty_field_translation(self):
-        """Empty field translation table so tests don't intefere each other."""
+        """Erase field translation table so tests don't interfere each
+        other."""
         self.field_translation = {}
 
     def load_test_data(self, query_type):
@@ -170,7 +175,6 @@ class SlicingDiceTester(object):
         Parameters:
         test -- Dictionary containing test name, fields metadata, data to be
             indexed, query, and expected results.
-        auto_create -- Auto create a field if not exists.
         """
         is_singular = len(test['index']) == 1
         entity_or_entities = 'entity' if is_singular else 'entities'
@@ -289,18 +293,17 @@ def main():
     # Testing class with demo API key or one of your API key
     # by enviroment variable
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
-
-    API_KEY = os.environ.get(
+    api_key = os.environ.get(
         "SD_API_KEY",
-        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMW0'
-         'iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMCwiY2xpZW5'
-         '0X2lkIjoxMH0.xRBHeDxTzYAgFyuU94SWFbjITeoxgyRCQGdIee8qrLA'))
+        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vO'
+         'DFtIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MjQyLCJ'
+         'jbGllbnRfaWQiOjEwfQ.F-4SC7SREZAu7zo0vdM366kDigYYUBmzCc_EY_THRkg'))
 
     # MODE_TEST give us if you want to use endpoint Test or Prod
-    MODE_TEST = os.environ.get("MODE_TEST", "test")
-    endpoint_test = False if MODE_TEST.lower() == 'prod' else True
+    mode_test = os.environ.get("MODE_TEST", "test")
+    endpoint_test = False if mode_test.lower() == 'prod' else True
     sd_tester = SlicingDiceTester(
-        api_key=API_KEY,
+        api_key=api_key,
         verbose=False,
         endpoint_test=endpoint_test)
 

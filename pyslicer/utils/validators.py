@@ -48,7 +48,7 @@ class SavedQueryValidator(SDBaseValidator):
     def validator(self):
         """
         Returns:
-            true if query is valid
+            true if saved query is valid
         """
         if self._has_valid_type():
             return True
@@ -64,6 +64,10 @@ class QueryCountValidator(SDBaseValidator):
         super(QueryCountValidator, self).__init__(queries)
 
     def validator(self):
+        """
+        Returns:
+            true if count query is valid
+        """
         if len(self.data) > 10:
             raise exceptions.MaxLimitException(
                 "The query count entity has a limit of 10 queries by request.")
@@ -83,6 +87,7 @@ class QueryValidator(SDBaseValidator):
 
         Returns:
             true if exceeds the limit
+            false otherwise
         """
         if len(self.data) > 5:
             return True
@@ -136,6 +141,11 @@ class QueryDataExtractionValidator(SDBaseValidator):
         super(QueryDataExtractionValidator, self).__init__(queries)
 
     def _valid_keys(self):
+        """Validate a data extraction query
+
+        Returns:
+            true if query is valid
+        """
         if "fields" in self.data:
             value = self.data["fields"]
             if not isinstance(value, list):
@@ -246,8 +256,8 @@ class FieldValidator(SDBaseValidator):
             raise exceptions.InvalidFieldTypeException(
                 "This field have a invalid type.")
 
-    def _validate_field_decimal_places(self):
-        """Validate field decimal places"""
+    def _validate_field_decimal_type(self):
+        """Validate field decimal type"""
         decimal_types = ["decimal", "decimal-time-series"]
         if self.data['type'] not in decimal_types:
             raise exceptions.InvalidFieldException(
@@ -284,7 +294,5 @@ class FieldValidator(SDBaseValidator):
         if 'description' in self.data:
             self._validate_description()
         if 'decimal-place' in self.data:
-            self._validate_field_decimal_places()
-        # if 'storage' in self.data:
-        #    self._validate_field_storage()
+            self._validate_field_decimal_type()
         return True
