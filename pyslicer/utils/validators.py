@@ -144,7 +144,7 @@ class QueryDataExtractionValidator(SDBaseValidator):
         """Validate a data extraction query
 
         Returns:
-            true if query is ok
+            true if query is valid
         """
         if "fields" in self.data:
             value = self.data["fields"]
