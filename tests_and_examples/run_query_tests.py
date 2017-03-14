@@ -41,7 +41,7 @@ class SlicingDiceTester(object):
         self.field_translation = {}
 
         # Sleep time in seconds
-        self.sleep_time = int(os.environ.get("CLIENT_SLEEP_TIME", 3))
+        self.sleep_time = int(os.environ.get("CLIENT_SLEEP_TIME", 10))
         # Directory containing examples to test
         self.path = 'examples/'
         # Examples file format
