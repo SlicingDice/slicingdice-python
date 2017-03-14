@@ -20,7 +20,7 @@ class SlicingDiceAPI(object):
 
     def __init__(
         self, master_key=None, write_key=None, read_key=None,
-            custom_key=None, use_ssl=False, timeout=60):
+            custom_key=None, use_ssl=True, timeout=60):
         """Instantiate a new SlicerDicer object.
 
         Keyword arguments:
