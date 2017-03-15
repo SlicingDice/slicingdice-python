@@ -17,7 +17,6 @@ class SDBaseValidator(object):
     __metaclass__ = abc.ABCMeta
 
     def check_dictionary_value(self, dictionary_value):
-        print dictionary_value
         if isinstance(dictionary_value, dict):
             self.check_dictionary(dictionary_value)
         elif isinstance(dictionary_value, list):
@@ -28,12 +27,20 @@ class SDBaseValidator(object):
                     "This query has invalid keys or values.")
 
     def check_dictionary(self, dictionary):
+        if not dictionary:
+            raise exceptions.InvalidQueryException(
+                "This query has invalid keys or values.")
+
         for key in dictionary:
             dictionary_value = dictionary[key]
             self.check_dictionary_value(dictionary_value)
 
-    def check_list(self, dictionary):
-        for dictionary_value in dictionary:
+    def check_list(self, dictionary_list):
+        if not dictionary_list:
+            raise exceptions.InvalidQueryException(
+                "This query has invalid keys or values.")
+
+        for dictionary_value in dictionary_list:
             self.check_dictionary_value(dictionary_value)
 
     def __init__(self, dictionary):
