@@ -33,9 +33,10 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class SlicingDiceTester(object):
     """Test orchestration class."""
-    def __init__(self, api_key, verbose=False, endpoint_test=True):
+    def __init__(self, api_key, verbose=False, uses_test_endpoint=True):
         # The Slicing Dice API client
-        self.client = SlicingDice(master_key=api_key, test=endpoint_test)
+        self.client = SlicingDice(master_key=api_key,
+                                  uses_test_endpoint=uses_test_endpoint)
 
         # Translation table for fields with timestamp
         self.field_translation = {}
@@ -300,11 +301,11 @@ def main():
 
     # MODE_TEST give us if you want to use endpoint Test or Prod
     mode_test = os.environ.get("MODE_TEST", "test")
-    endpoint_test = False if mode_test.lower() == 'prod' else True
+    uses_test_endpoint = False if mode_test.lower() == 'prod' else True
     sd_tester = SlicingDiceTester(
         api_key=api_key,
         verbose=False,
-        endpoint_test=endpoint_test)
+        uses_test_endpoint=uses_test_endpoint)
 
     try:
         for query_type in query_types:

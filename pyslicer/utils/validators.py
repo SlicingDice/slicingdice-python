@@ -7,17 +7,42 @@ import pyslicer.exceptions as exceptions
 
 from pyslicer.utils.data_utils import is_str_empty
 
+MAX_QUERY_SIZE = 10
+
+MAX_INDEXATION_SIZE = 1000
+
 
 class SDBaseValidator(object):
     """Base field, query and index validator."""
     __metaclass__ = abc.ABCMeta
 
+    def check_dictionary_value(self, dictionary_value):
+        print dictionary_value
+        if isinstance(dictionary_value, dict):
+            self.check_dictionary(dictionary_value)
+        elif isinstance(dictionary_value, list):
+            self.check_list(dictionary_value)
+        else:
+            if dictionary_value is None or dictionary_value == "":
+                raise exceptions.InvalidQueryException(
+                    "This query has invalid keys or values.")
+
+    def check_dictionary(self, dictionary):
+        for key in dictionary:
+            dictionary_value = dictionary[key]
+            self.check_dictionary_value(dictionary_value)
+
+    def check_list(self, dictionary):
+        for dictionary_value in dictionary:
+            self.check_dictionary_value(dictionary_value)
+
     def __init__(self, dictionary):
         if not dictionary:
-            for key in dictionary:
-                if not dictionary[key]:
-                    raise exceptions.InvalidQueryException(
-                        "This query has invalid keys or values.")
+            raise exceptions.InvalidQueryException(
+                "This query has invalid keys or values.")
+
+        self.check_dictionary(dictionary)
+
         self.data = dictionary
 
     @abc.abstractmethod
@@ -76,7 +101,7 @@ class QueryCountValidator(SDBaseValidator):
         if "bypass-cache" in self.data:
             query_size -= 1
 
-        if query_size > 10:
+        if query_size > MAX_QUERY_SIZE:
             raise exceptions.MaxLimitException(
                 "The query count entity has a limit of 10 queries by request.")
         return True
@@ -193,11 +218,6 @@ class IndexValidator(SDBaseValidator):
         Returns:
             false if dictionary don't have empty fields
         """
-        if not self.data:
-            for key in self.data:
-                if not self.data[key]:
-                    raise exceptions.InvalidIndexException(
-                        "This index has invalid keys or values.")
         for value in self.data.values():
             # Value is a dictionary when it is an entity being indexed:
             # "my-entity": {"year": 2016}
@@ -217,7 +237,7 @@ class IndexValidator(SDBaseValidator):
         if "auto-create-fields" in self.data:
             indexation_size -= 1
 
-        if indexation_size > 1000:
+        if indexation_size > MAX_INDEXATION_SIZE:
             raise exceptions.InvalidIndexException(
                 "Your index command shouldn't have more than 1000 values.")
 

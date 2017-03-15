@@ -82,7 +82,7 @@ class SlicingDice(SlicingDiceAPI):
     """
     def __init__(
         self, write_key=None, read_key=None, master_key=None,
-            custom_key=None, use_ssl=True, timeout=60, test=False):
+            custom_key=None, use_ssl=True, timeout=60, uses_test_endpoint=False):
         """Instantiate a new SlicingDice object.
 
         Keyword arguments:
@@ -95,7 +95,7 @@ class SlicingDice(SlicingDiceAPI):
         """
         super(SlicingDice, self).__init__(
             master_key, write_key, read_key, custom_key, use_ssl, timeout)
-        self.test = test
+        self.uses_test_endpoint = uses_test_endpoint
 
     def _count_query_wrapper(self, url, query):
         """Validate count query and make request.
@@ -129,7 +129,7 @@ class SlicingDice(SlicingDiceAPI):
 
     def _wrapper_test(self):
         base_url = SlicingDice.BASE_URL
-        if self.test:
+        if self.uses_test_endpoint:
             base_url += "/test"
         return base_url
 
