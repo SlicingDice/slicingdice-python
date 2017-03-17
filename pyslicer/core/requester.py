@@ -10,11 +10,12 @@ class Requester(object):
     def __init__(self, use_ssl, timeout):
         self.use_ssl = use_ssl
         self.timeout = timeout
+        self.session = requests.Session()
 
     def post(self, url, data, headers):
         """Executes a post request result object"""
         try:
-            return requests.post(
+            return self.session.post(
                 url,
                 data=data,
                 verify=self.use_ssl,
@@ -28,7 +29,7 @@ class Requester(object):
     def put(self, url, data, headers):
         """Returns a put request result object"""
         try:
-            return requests.put(
+            return self.session.put(
                 url,
                 data=data,
                 verify=self.use_ssl,
@@ -42,7 +43,7 @@ class Requester(object):
     def get(self, url, headers):
         """Returns a get request result object"""
         try:
-            return requests.get(
+            return self.session.get(
                 url,
                 verify=self.use_ssl,
                 headers=headers,
@@ -55,7 +56,7 @@ class Requester(object):
     def delete(self, url, headers):
         """Returns a delete request result object"""
         try:
-            return requests.delete(
+            return self.session.delete(
                 url,
                 verify=self.use_ssl,
                 headers=headers,
