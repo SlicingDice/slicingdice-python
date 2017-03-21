@@ -27,23 +27,23 @@ pip install pyslicer
 from pyslicer import SlicingDice
 
 # Configure the client
-client = SlicingDice(master_key='API_KEY')
+client = SlicingDice(master_key='API_KEY', uses_test_endpoint=False)
 
 # Indexing data
 index_data = {
-    'user1@slicingdice.com': {
-        'age': 22
+    "user1@slicingdice.com": {
+        "age": 22
     },
-    'auto-create-fields': True
+    "auto-create-fields": True
 }
 client.index(index_data)
 
 # Querying data
 query_data = {
-    'users-between-20-and-40': [
+    "users-between-20-and-40": [
         {
-            'age': {
-                'range': [
+            "age": {
+                "range": [
                     20,
                     40
                 ]
@@ -64,13 +64,14 @@ print client.count_entity(query_data)
 
 ### Constructor
 
-`__init__(self, write_key=None, read_key=None, master_key=None, custom_key=None, use_ssl=False, timeout=60)`
-* `write_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
-* `read_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
-* `master_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
-* `custom_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
+`__init__(self, write_key=None, read_key=None, master_key=None, custom_key=None, use_ssl=True, timeout=60, uses_test_endpoint=False)`
+* `write_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API Write Key.
+* `read_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API Read Key.
+* `master_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API Master Key.
+* `custom_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API Custom Key.
 * `use_ssl (bool)` - Define if the requests verify SSL for HTTPS requests.
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
+* `uses_test_endpoint (bool)` - If false the client will send requests to production end-point, otherwise to tests end-point.
 
 ### `get_projects()`
 Get all created projects, both active and inactive ones. This method corresponds to a [GET request at /project](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-project).
@@ -79,8 +80,8 @@ Get all created projects, both active and inactive ones. This method corresponds
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_API_KEY')
-print sd.get_projects()
+client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+print client.get_projects()
 ```
 
 #### Output example
@@ -113,8 +114,8 @@ Get all created fields, both active and inactive ones. This method corresponds t
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_API_KEY')
-print sd.get_fields()
+client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+print client.get_fields()
 ```
 
 #### Output example
@@ -152,15 +153,15 @@ Create a new field. This method corresponds to a [POST request at /field](http:/
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_API_KEY')
+client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
 field = {
-    'name': 'Year',
-    'api-name': 'year',
-    'type': 'integer',
-    'description': 'Year of manufacturing',
-    'storage': 'latest-value'
+    "name": "Year",
+    "api-name": "year",
+    "type": "integer",
+    "description": "Year of manufacturing",
+    "storage": "latest-value"
 }
-print sd.create_field(field)
+print client.create_field(field)
 ```
 
 #### Output example
@@ -172,49 +173,50 @@ print sd.create_field(field)
 }
 ```
 
-### `index(json_data, auto_create_fields=False, test=False)`
+### `index(json_data, auto_create_fields=False)`
 Index data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /index](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-index).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_WRITE_API_KEY')
+client = SlicingDice('MASTER_OR_WRITE_API_KEY', uses_test_endpoint=False)
 index_data = {
-    'user1@slicingdice.com': {
-        'car-model': 'Ford Ka',
-        'year': 2016
+    "user1@slicingdice.com": {
+        "car-model": "Ford Ka",
+        "year": 2016
     },
-    'user2@slicingdice.com': {
-        'car-model': 'Honda Fit',
-        'year': 2016
+    "user2@slicingdice.com": {
+        "car-model": "Honda Fit",
+        "year": 2016
     },
-    'user3@slicingdice.com': {
-        'car-model': 'Toyota Corolla',
-        'year': 2010,
-        'test-drives': [
+    "user3@slicingdice.com": {
+        "car-model": "Toyota Corolla",
+        "year": 2010,
+        "test-drives": [
             {
-                'value': 'NY',
-                'date': '2016-08-17T13:23:47+00:00'
+                "value": "NY",
+                "date": "2016-08-17T13:23:47+00:00"
             }, {
-                'value': 'NY',
-                'date': '2016-08-17T13:23:47+00:00'
+                "value": "NY",
+                "date": "2016-08-17T13:23:47+00:00"
             }, {
-                'value': 'CA',
-                'date': '2016-04-05T10:20:30Z'
+                "value": "CA",
+                "date": "2016-04-05T10:20:30Z"
             }
         ]
     },
-    'user4@slicingdice.com': {
-        'car-model': 'Ford Ka',
-        'year': 2005,
-        'test-drives': {
-            'value': 'NY',
-            'date': '2016-08-17T13:23:47+00:00'
+    "user4@slicingdice.com": {
+        "car-model": "Ford Ka",
+        "year": 2005,
+        "test-drives": {
+            "value": "NY",
+            "date": "2016-08-17T13:23:47+00:00"
         }
-    }
+    },
+    "auto-create-fields": True
 }
-print sd.index(index_data)
+print client.index(index_data)
 ```
 
 #### Output example
@@ -223,25 +225,25 @@ print sd.index(index_data)
 {
     "status": "success",
     "indexed-entities": 4,
-    "indexed-fields": 10,
+    "indexed-fields": 12,
     "took": 0.023
 }
 ```
 
-### `exists_entity(ids, test=False)`
+### `exists_entity(ids)`
 Verify which entities exist in a project given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
+client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 ids = [
-    'user1@slicingdice.com',
-    'user2@slicingdice.com',
-    'user3@slicingdice.com'
+    "user1@slicingdice.com",
+    "user2@slicingdice.com",
+    "user3@slicingdice.com"
 ]
-print sd.exists_entity(ids)
+print client.exists_entity(ids)
 ```
 
 #### Output example
@@ -260,15 +262,15 @@ print sd.exists_entity(ids)
 }
 ```
 
-### `count_entity_total(test=False)`
+### `count_entity_total()`
 Count the number of indexed entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
-print sd.count_entity_total()
+client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+print client.count_entity_total()
 ```
 
 #### Output example
@@ -283,38 +285,38 @@ print sd.count_entity_total()
 }
 ```
 
-### `count_entity(json_data, test=False)`
+### `count_entity(json_data)`
 Count the number of entities attending the given query. This method corresponds to a [POST request at /query/count/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-entity).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
+client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'users-from-ny-or-ca': [
+    "corolla-or-fit": [
         {
-            'state': {
-                'equals': 'NY'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         },
-        'or',
+        "or",
         {
-            'state-origin': {
-                'equals': 'CA'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
     ],
-    'users-from-ny': [
+    "ford-ka": [
         {
-            'state': {
-                'equals': 'NY'
+            "car-model": {
+                "equals": "ford ka"
             }
         }
     ],
-    'bypass-cache': False
+    "bypass-cache": False
 }
-print sd.count_entity(query)
+print client.count_entity(query)
 ```
 
 #### Output example
@@ -323,49 +325,47 @@ print sd.count_entity(query)
 {
     "status": "success",
     "result": {
-        "users-from-ny-or-ca": 175,
-        "users-from-ny": 296
+        "corolla-or-fit": 2,
+        "ford-ka": 2
     },
-    "took": 0.103
+    "took": 0.049
 }
 ```
 
-### `count_event(json_data, test=False)`
+### `count_event(json_data)`
 Count the number of occurrences for time-series events attending the given query. This method corresponds to a [POST request at /query/count/event](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-event).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
+client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'users-from-ny-in-jan': [
+    "test-drives-in-ny": [
         {
-        'test-field': {
-                'equals': 'NY',
-                'between': [
-                    '2016-01-01T00:00:00Z',
-                    '2016-01-31T00:00:00Z'
-                ],
-                'minfreq': 2
+        "test-drives": {
+                "equals": "NY",
+                "between": [
+                    "2016-08-16T00:00:00Z",
+                    "2016-08-18T00:00:00Z"
+                ]
             }
         }
     ],
-    'users-from-ny-in-feb': [
+    "test-drives-in-ca": [
         {
-            'test-field': {
-                'equals': 'NY',
-                'between': [
-                    '2016-02-01T00:00:00Z',
-                    '2016-02-28T00:00:00Z'
-                ],
-                'minfreq': 2
+            "test-drives": {
+                "equals": "CA",
+                "between": [
+                    "2016-04-04T00:00:00Z",
+                    "2016-04-06T00:00:00Z"
+                ]
             }
         }
     ],
-    'bypass-cache': True
+    "bypass-cache": True
 }
-print sd.count_event(query)
+print client.count_event(query)
 ```
 
 #### Output example
@@ -374,192 +374,129 @@ print sd.count_event(query)
 {
     "status": "success",
     "result": {
-        "users-from-ny-in-jan": 175,
-        "users-from-ny-in-feb": 296
+        "test-drives-in-ny": 3,
+        "test-drives-in-ca": 1
     },
-    "took": 0.103
+    "took": 0.046
 }
 ```
 
-### `top_values(json_data, test=False)`
+### `top_values(json_data)`
 Return the top values for entities attending the given query. This method corresponds to a [POST request at /query/top_values](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-top-values).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
+client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'user-gender': {
-        'gender': 2
+    "car-year": {
+        "year": 2
     },
-    'operating-systems': {
-        'os': 3
-    },
-    'linux-operating-systems': {
-        'os': 3,
-        'contains': [
-            'linux',
-            'unix'
-        ]
+    "car models": {
+        "car-model": 3
     }
 }
-print sd.top_values(query)
+print client.top_values(query)
 ```
 
 #### Output example
 
 ```json
 {
-    "status": "success",
     "result": {
-        "user-gender": {
-            "gender": [
+        "car models": {
+            "car-model": [
                 {
-                    "quantity": 6.0,
-                    "value": "male"
-                }, {
-                    "quantity": 4.0,
-                    "value": "female"
+                    "quantity": 2,
+                    "value": "ford ka"
+                },
+                {
+                    "quantity": 1,
+                    "value": "honda fit"
+                },
+                {
+                    "quantity": 1,
+                    "value": "toyota corolla"
                 }
             ]
         },
-        "operating-systems": {
-            "os": [
+        "car-year": {
+            "year": [
                 {
-                    "quantity": 55.0,
-                    "value": "windows"
-                }, {
-                    "quantity": 25.0,
-                    "value": "macos"
-                }, {
-                    "quantity": 12.0,
-                    "value": "linux"
-                }
-            ]
-        },
-        "linux-operating-systems": {
-            "os": [
+                    "quantity": 2,
+                    "value": "2016"
+                },
                 {
-                    "quantity": 12.0,
-                    "value": "linux"
-                }, {
-                    "quantity": 3.0,
-                    "value": "debian-linux"
-                }, {
-                    "quantity": 2.0,
-                    "value": "unix"
+                    "quantity": 1,
+                    "value": "2010"
                 }
             ]
         }
     },
-    "took": 0.103
+    "took": 0.034,
+    "status": "success"
 }
 ```
 
-### `aggregation(json_data, test=False)`
+### `aggregation(json_data)`
 Return the aggregation of all fields in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
+client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'query': [
+    "query": [
         {
-            'gender': 2
-        },
-        {
-            'os': 2,
-            'equals': [
-                'linux',
-                'macos',
-                'windows'
+            "car-model": 2,
+            "equals": [
+                "honda fit",
+                "toyota corolla"
             ]
-        },
-        {
-            'browser': 2
         }
     ]
 }
-print sd.aggregation(query)
+print client.aggregation(query)
 ```
 
 #### Output example
 
 ```json
 {
-    "status": "success",
     "result": {
-        "gender": [
+        "year": [
             {
-                "quantity": 6,
-                "value": "male",
-                "os": [
+                "quantity": 2,
+                "value": "2016",
+                "car-model": [
                     {
-                        "quantity": 5,
-                        "value": "windows",
-                        "browser": [
-                            {
-                                "quantity": 3,
-                                "value": "safari"
-                            }, {
-                                "quantity": 2,
-                                "value": "internet explorer"
-                            }
-                        ]
-                    }, {
                         "quantity": 1,
-                        "value": "linux",
-                        "browser": [
-                            {
-                                "quantity": 1,
-                                "value": "chrome"
-                            }
-                        ]
+                        "value": "honda fit"
                     }
                 ]
-            }, {
-                "quantity": 4,
-                "value": "female",
-                "os": [
-                    {
-                        "quantity": 3,
-                        "value": "macos",
-                        "browser": [
-                            {
-                                "quantity": 3,
-                                "value": "chrome"
-                            }
-                        ]
-                    }, {
-                        "quantity": 1,
-                        "value": "linux",
-                        "browser": [
-                            {
-                                "quantity": 1,
-                                "value": "chrome"
-                            }
-                        ]
-                    }
-                ]
+            },
+            {
+                "quantity": 1,
+                "value": "2005"
             }
         ]
     },
-    "took": 0.103
+    "took":0.079,
+    "status":"success"
 }
 ```
 
-### `get_saved_queries(test=False)`
+### `get_saved_queries()`
 Get all saved queries. This method corresponds to a [GET request at /query/saved](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-saved).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_API_KEY')
-print sd.get_saved_queries()
+client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+print client.get_saved_queries()
 ```
 
 #### Output example
@@ -602,33 +539,33 @@ print sd.get_saved_queries()
 }
 ```
 
-### `create_saved_query(json_data, test=False)`
+### `create_saved_query(json_data)`
 Create a saved query at SlicingDice. This method corresponds to a [POST request at /query/saved](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-saved).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_API_KEY')
+client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
 query = {
-    'name': 'my-saved-query',
-    'type': 'count/entity',
-    'query': [
+    "name": "my-saved-query",
+    "type": "count/entity",
+    "query": [
         {
-            'state': {
-                'equals': 'NY'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
-        'or',
+        "or",
         {
-            'state-origin': {
-                'equals': 'CA'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
-    'cache-period': 100
+    "cache-period": 100
 }
-print sd.create_saved_query(query)
+print client.create_saved_query(query)
 ```
 
 #### Output example
@@ -640,14 +577,14 @@ print sd.create_saved_query(query)
     "type": "count/entity",
     "query": [
         {
-            "state": {
-                "equals": "NY"
+            "car-model": {
+                "equals": "honda fit"
             }
         },
         "or",
         {
-            "state-origin": {
-                "equals": "CA"
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
@@ -656,32 +593,32 @@ print sd.create_saved_query(query)
 }
 ```
 
-### `update_saved_query(query_name, json_data, test=False)`
+### `update_saved_query(query_name, json_data)`
 Update an existing saved query at SlicingDice. This method corresponds to a [PUT request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-put-query-saved-query-name).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_API_KEY')
+client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
 new_query = {
-    'type': 'count/entity',
-    'query': [
+    "type": "count/entity",
+    "query": [
         {
-            'state': {
-                'equals': 'NY'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
-        'or',
+        "or",
         {
-            'state-origin': {
-                'equals': 'CA'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
-    'cache-period': 100
+    "cache-period": 100
 }
-print sd.update_saved_query('my-saved-query', new_query)
+print client.update_saved_query('my-saved-query', new_query)
 ```
 
 #### Output example
@@ -693,14 +630,14 @@ print sd.update_saved_query('my-saved-query', new_query)
     "type": "count/entity",
     "query": [
         {
-            "state": {
-                "equals": "NY"
+            "car-model": {
+                "equals": "honda fit"
             }
         },
         "or",
         {
-            "state-origin": {
-                "equals": "CA"
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
@@ -709,15 +646,15 @@ print sd.update_saved_query('my-saved-query', new_query)
 }
 ```
 
-### `get_saved_query(query_name, test=False)`
+### `get_saved_query(query_name)`
 Executed a saved query at SlicingDice. This method corresponds to a [GET request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-saved-query-name).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
-print sd.get_saved_query('my-saved-query')
+client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+print client.get_saved_query('my-saved-query')
 ```
 
 #### Output example
@@ -728,33 +665,33 @@ print sd.get_saved_query('my-saved-query')
     "type": "count/entity",
     "query": [
         {
-            "state": {
-                "equals": "NY"
+            "car-model": {
+                "equals": "honda fit"
             }
         },
         "or",
         {
-            "state-origin": {
-                "equals": "CA"
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
     "result": {
-        "my-saved-query": 175
+        "my-saved-query": 2
     },
-    "took": 0.103
+    "took": 0.043
 }
 ```
 
-### `delete_saved_query(query_name, test=False)`
+### `delete_saved_query(query_name)`
 Delete a saved query at SlicingDice. This method corresponds to a [DELETE request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-delete-query-saved-query-name).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_API_KEY')
-print sd.delete_saved_query('my-saved-query')
+client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+print client.delete_saved_query('my-saved-query')
 ```
 
 #### Output example
@@ -766,47 +703,47 @@ print sd.delete_saved_query('my-saved-query')
     "type": "count/entity",
     "query": [
         {
-            "state": {
-                "equals": "NY"
+            "car-model": {
+                "equals": "honda fit"
             }
         },
         "or",
         {
-            "state-origin": {
-                "equals": "CA"
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
-    "took": 0.103
+    "took": 0.043
 }
 ```
 
-### `result(json_data, test=False)`
+### `result(json_data)`
 Retrieve indexed values for entities attending the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
+client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'query': [
+    "query": [
         {
-            'users-from-ny': {
-                'equals': 'NY'
+            "car-model": {
+                "equals": "ford ka"
             }
         },
-        'or',
+        "or",
         {
-            'users-from-ca': {
-                'equals': 'CA'
+            "car-model": {
+                "equals": "honda fit"
             }
         }
     ],
-    'fields': ['name', 'year'],
-    'limit': 2
+    "fields": ["car-model", "year"],
+    "limit": 2
 }
-print sd.result(query)
+print client.result(query)
 ```
 
 #### Output example
@@ -815,45 +752,46 @@ print sd.result(query)
 {
     "status": "success",
     "data": {
-        "user1@slicingdice.com": {
-            "name": "John",
-            "year": 2016
+        "customer5@mycustomer.com": {
+            "year": "2005",
+            "car-model": "ford ka"
         },
-        "user2@slicingdice.com": {
-            "name": "Mary",
-            "year": 2005
+        "user1@slicingdice.com": {
+            "year":"2016",
+            "car-model": "ford ka"
         }
     },
-    "took": 0.103
+    "page": 1,
+    "took": 0.053
 }
 ```
 
-### `score(json_data, test=False)`
+### `score(json_data)`
 Retrieve indexed values as well as their relevance for entities attending the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
-sd = SlicingDice('MASTER_OR_READ_API_KEY')
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 query = {
-    'query': [
+    "query": [
         {
-            'users-from-ny': {
-                'equals': 'NY'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         },
-        'or',
+        "or",
         {
-            'users-from-ca': {
-                'equals': 'CA'
+            "car-model": {
+                "equals": "honda fit"
             }
         }
     ],
-    'fields': ['name', 'year'],
-    'limit': 2
+    "fields": ["car-model", "year"],
+    "limit": 2
 }
-print sd.score(query)
+print client.score(query)
 ```
 
 #### Output example
@@ -862,18 +800,21 @@ print sd.score(query)
 {
     "status": "success",
     "data": {
-        "user1@slicingdice.com": {
-            "name": "John",
-            "year": 2016,
-            "score": 2
+        "user3@slicingdice.com": {
+            "score": 1,
+            "year": "2010",
+            "car-model": "toyota corolla"
         },
         "user2@slicingdice.com": {
-            "name": "Mary",
-            "year": 2005,
-            "score": 1
+            "score": 1,
+            "year": "2016",
+            "car-model": "honda fit"
         }
     },
-    "took": 0.103
+    "page": 1,
+    "page": 1,
+    "next-page": null,
+    "took": 0.063
 }
 ```
 
