@@ -31,19 +31,19 @@ client = SlicingDice(master_key='API_KEY', uses_test_endpoint=False)
 
 # Indexing data
 index_data = {
-    'user1@slicingdice.com': {
-        'age': 22
+    "user1@slicingdice.com": {
+        "age": 22
     },
-    'auto-create-fields': True
+    "auto-create-fields": True
 }
 client.index(index_data)
 
 # Querying data
 query_data = {
-    'users-between-20-and-40': [
+    "users-between-20-and-40": [
         {
-            'age': {
-                'range': [
+            "age": {
+                "range": [
                     20,
                     40
                 ]
@@ -155,11 +155,11 @@ Create a new field. This method corresponds to a [POST request at /field](http:/
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
 field = {
-    'name': 'Year',
-    'api-name': 'year',
-    'type': 'integer',
-    'description': 'Year of manufacturing',
-    'storage': 'latest-value'
+    "name": "Year",
+    "api-name": "year",
+    "type": "integer",
+    "description": "Year of manufacturing",
+    "storage": "latest-value"
 }
 print client.create_field(field)
 ```
@@ -182,36 +182,36 @@ Index data to existing entities or create new entities, if necessary. This metho
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_WRITE_API_KEY', uses_test_endpoint=False)
 index_data = {
-    'user1@slicingdice.com': {
-        'car-model': 'Ford Ka',
-        'year': 2016
+    "user1@slicingdice.com": {
+        "car-model": "Ford Ka",
+        "year": 2016
     },
-    'user2@slicingdice.com': {
-        'car-model': 'Honda Fit',
-        'year': 2016
+    "user2@slicingdice.com": {
+        "car-model": "Honda Fit",
+        "year": 2016
     },
-    'user3@slicingdice.com': {
-        'car-model': 'Toyota Corolla',
-        'year': 2010,
-        'test-drives': [
+    "user3@slicingdice.com": {
+        "car-model": "Toyota Corolla",
+        "year": 2010,
+        "test-drives": [
             {
-                'value': 'NY',
-                'date': '2016-08-17T13:23:47+00:00'
+                "value": "NY",
+                "date": "2016-08-17T13:23:47+00:00"
             }, {
-                'value': 'NY',
-                'date': '2016-08-17T13:23:47+00:00'
+                "value": "NY",
+                "date": "2016-08-17T13:23:47+00:00"
             }, {
-                'value': 'CA',
-                'date': '2016-04-05T10:20:30Z'
+                "value": "CA",
+                "date": "2016-04-05T10:20:30Z"
             }
         ]
     },
-    'user4@slicingdice.com': {
-        'car-model': 'Ford Ka',
-        'year': 2005,
-        'test-drives': {
-            'value': 'NY',
-            'date': '2016-08-17T13:23:47+00:00'
+    "user4@slicingdice.com": {
+        "car-model": "Ford Ka",
+        "year": 2005,
+        "test-drives": {
+            "value": "NY",
+            "date": "2016-08-17T13:23:47+00:00"
         }
     },
     "auto-create-fields": True
@@ -239,9 +239,9 @@ Verify which entities exist in a project given a list of entity IDs. This method
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 ids = [
-    'user1@slicingdice.com',
-    'user2@slicingdice.com',
-    'user3@slicingdice.com'
+    "user1@slicingdice.com",
+    "user2@slicingdice.com",
+    "user3@slicingdice.com"
 ]
 print client.exists_entity(ids)
 ```
@@ -294,27 +294,27 @@ Count the number of entities attending the given query. This method corresponds 
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'corolla-or-fit': [
+    "corolla-or-fit": [
         {
-            'car-model': {
-                'equals': 'toyota corolla'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
     ],
-    'ford-ka': [
+    "ford-ka": [
         {
-            'car-model': {
-                'equals': 'ford ka'
+            "car-model": {
+                "equals": "ford ka"
             }
         }
     ],
-    'bypass-cache': False
+    "bypass-cache": False
 }
 print client.count_entity(query)
 ```
@@ -341,29 +341,29 @@ Count the number of occurrences for time-series events attending the given query
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'test-drives-in-ny': [
+    "test-drives-in-ny": [
         {
-        'test-drives': {
-                'equals': 'NY',
-                'between': [
-                    '2016-08-16T00:00:00Z',
-                    '2016-08-18T00:00:00Z'
+        "test-drives": {
+                "equals": "NY",
+                "between": [
+                    "2016-08-16T00:00:00Z",
+                    "2016-08-18T00:00:00Z"
                 ]
             }
         }
     ],
-    'test-drives-in-ca': [
+    "test-drives-in-ca": [
         {
-            'test-drives': {
-                'equals': 'CA',
-                'between': [
-                    '2016-04-04T00:00:00Z',
-                    '2016-04-06T00:00:00Z'
+            "test-drives": {
+                "equals": "CA",
+                "between": [
+                    "2016-04-04T00:00:00Z",
+                    "2016-04-06T00:00:00Z"
                 ]
             }
         }
     ],
-    'bypass-cache': True
+    "bypass-cache": True
 }
 print client.count_event(query)
 ```
@@ -390,11 +390,11 @@ Return the top values for entities attending the given query. This method corres
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'car-year': {
-        'year': 2
+    "car-year": {
+        "year": 2
     },
-    'car models': {
-        'car-model': 3
+    "car models": {
+        "car-model": 3
     }
 }
 print client.top_values(query)
@@ -448,12 +448,12 @@ Return the aggregation of all fields in the given query. This method corresponds
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'query': [
+    "query": [
         {
-            'car-model': 2,
-            'equals': [
-                'honda fit',
-                'toyota corolla'
+            "car-model": 2,
+            "equals": [
+                "honda fit",
+                "toyota corolla"
             ]
         }
     ]
@@ -548,22 +548,22 @@ Create a saved query at SlicingDice. This method corresponds to a [POST request 
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
 query = {
-    'name': 'my-saved-query',
-    'type': 'count/entity',
-    'query': [
+    "name": "my-saved-query",
+    "type": "count/entity",
+    "query": [
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'toyota corolla'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
-    'cache-period': 100
+    "cache-period": 100
 }
 print client.create_saved_query(query)
 ```
@@ -575,20 +575,20 @@ print client.create_saved_query(query)
     "status": "success",
     "name": "my-saved-query",
     "type": "count/entity",
-    'query': [
+    "query": [
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'toyota corolla'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
-    'cache-period': 100,
+    "cache-period": 100,
     "took": 0.103
 }
 ```
@@ -602,21 +602,21 @@ Update an existing saved query at SlicingDice. This method corresponds to a [PUT
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
 new_query = {
-    'type': 'count/entity',
-    'query': [
+    "type": "count/entity",
+    "query": [
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'toyota corolla'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
-    'cache-period': 100
+    "cache-period": 100
 }
 print client.update_saved_query('my-saved-query', new_query)
 ```
@@ -628,20 +628,20 @@ print client.update_saved_query('my-saved-query', new_query)
     "status": "success",
     "name": "my-saved-query",
     "type": "count/entity",
-    'query': [
+    "query": [
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'toyota corolla'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
-    'cache-period': 100,
+    "cache-period": 100,
     "took": 0.103
 }
 ```
@@ -663,16 +663,16 @@ print client.get_saved_query('my-saved-query')
 {
     "status": "success",
     "type": "count/entity",
-    'query': [
+    "query": [
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'toyota corolla'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
@@ -701,16 +701,16 @@ print client.delete_saved_query('my-saved-query')
     "status": "success",
     "deleted-query": "my-saved-query",
     "type": "count/entity",
-    'query': [
+    "query": [
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'toyota corolla'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         }
     ],
@@ -727,21 +727,21 @@ Retrieve indexed values for entities attending the given query. This method corr
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 query = {
-    'query': [
+    "query": [
         {
-            'car-model': {
-                'equals': 'ford ka'
+            "car-model": {
+                "equals": "ford ka"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         }
     ],
-    'fields': ['car-model', 'year'],
-    'limit': 2
+    "fields": ["car-model", "year"],
+    "limit": 2
 }
 print client.result(query)
 ```
@@ -775,21 +775,21 @@ Retrieve indexed values as well as their relevance for entities attending the gi
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY')
 query = {
-    'query': [
+    "query": [
         {
-            'car-model': {
-                'equals': 'toyota corolla'
+            "car-model": {
+                "equals": "toyota corolla"
             }
         },
-        'or',
+        "or",
         {
-            'car-model': {
-                'equals': 'honda fit'
+            "car-model": {
+                "equals": "honda fit"
             }
         }
     ],
-    'fields': ['car-model', 'year'],
-    'limit': 2
+    "fields": ["car-model", "year"],
+    "limit": 2
 }
 print client.score(query)
 ```
