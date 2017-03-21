@@ -164,7 +164,7 @@ class SlicingDice(SlicingDiceAPI):
         """Create field in Slicing Dice
 
         Keyword arguments:
-        data -- A dictionary in the Slicing Dice field
+        data -- A dictionary or list on the Slicing Dice field
             format.
         """
         base_url = self._wrapper_test()
