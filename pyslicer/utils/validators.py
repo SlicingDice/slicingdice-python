@@ -260,17 +260,20 @@ class IndexValidator(SDBaseValidator):
 
 
 class FieldValidator(SDBaseValidator):
-    def __init__(self, dictionary_field):
+    def __init__(self, data_field):
         """
         Parameters:
-            dictionary_field(dict) -- A dict field
+            data_field -- A dict or list of fields
         """
-        super(FieldValidator, self).__init__(dictionary_field)
-        self._valid_type_fields = [
-            "unique-id", "boolean", "string", "integer", "decimal",
-            "enumerated", "date", "integer-time-series",
-            "decimal-time-series", "string-time-series"
-        ]
+        if not isinstance(data_field, list):
+            data_field = [data_field]
+        for dictionary_field in data_field:
+            super(FieldValidator, self).__init__(dictionary_field)
+            self._valid_type_fields = [
+                "unique-id", "boolean", "string", "integer", "decimal",
+                "enumerated", "date", "integer-time-series",
+                "decimal-time-series", "string-time-series"
+            ]
 
     def _validate_name(self):
         """Validate field name"""
