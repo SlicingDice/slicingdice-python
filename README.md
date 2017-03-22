@@ -19,8 +19,10 @@ Whether you want to test the client installation or simply check more examples o
 
 In order to install the Python client, you only need to use [`pip`](https://packaging.python.org/installing/).
 
+**IMPORTANT:** Currently we only support Python 2.7
+
 ```bash
-pip install pyslicer
+pip install pyslicer --extra-index-url=https://packagecloud.io/slicingdice/clients/pypi/simple
 ```
 
 ## Usage
