@@ -7,15 +7,49 @@ import pyslicer.exceptions as exceptions
 
 from pyslicer.utils.data_utils import is_str_empty
 
+MAX_QUERY_SIZE = 10
+
+MAX_INDEXATION_SIZE = 1000
+
 
 class SDBaseValidator(object):
     """Base field, query and index validator."""
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, dictionary):
-        if not all(dictionary) or not all(dictionary.values()):
-            raise exceptions.InvalidIndexException(
+    def check_dictionary_value(self, dictionary_value):
+        if isinstance(dictionary_value, dict):
+            self.check_dictionary(dictionary_value)
+        elif isinstance(dictionary_value, list):
+            self.check_list(dictionary_value)
+        else:
+            if dictionary_value is None or dictionary_value == "":
+                raise exceptions.InvalidQueryException(
+                    "This query has invalid keys or values.")
+
+    def check_dictionary(self, dictionary):
+        if not dictionary:
+            raise exceptions.InvalidQueryException(
                 "This query has invalid keys or values.")
+
+        for key in dictionary:
+            dictionary_value = dictionary[key]
+            self.check_dictionary_value(dictionary_value)
+
+    def check_list(self, dictionary_list):
+        if not dictionary_list:
+            raise exceptions.InvalidQueryException(
+                "This query has invalid keys or values.")
+
+        for dictionary_value in dictionary_list:
+            self.check_dictionary_value(dictionary_value)
+
+    def __init__(self, dictionary):
+        if not dictionary:
+            raise exceptions.InvalidQueryException(
+                "This query has invalid keys or values.")
+
+        self.check_dictionary(dictionary)
+
         self.data = dictionary
 
     @abc.abstractmethod
@@ -48,7 +82,7 @@ class SavedQueryValidator(SDBaseValidator):
     def validator(self):
         """
         Returns:
-            true if query is valid
+            true if saved query is valid
         """
         if self._has_valid_type():
             return True
@@ -64,7 +98,17 @@ class QueryCountValidator(SDBaseValidator):
         super(QueryCountValidator, self).__init__(queries)
 
     def validator(self):
-        if len(self.data) > 10:
+        """
+        Returns:
+            true if count query is valid
+        """
+        query_size = len(self.data)
+
+        # bypass-cache property should not be considered as query
+        if "bypass-cache" in self.data:
+            query_size -= 1
+
+        if query_size > MAX_QUERY_SIZE:
             raise exceptions.MaxLimitException(
                 "The query count entity has a limit of 10 queries by request.")
         return True
@@ -83,6 +127,7 @@ class QueryValidator(SDBaseValidator):
 
         Returns:
             true if exceeds the limit
+            false otherwise
         """
         if len(self.data) > 5:
             return True
@@ -136,6 +181,11 @@ class QueryDataExtractionValidator(SDBaseValidator):
         super(QueryDataExtractionValidator, self).__init__(queries)
 
     def _valid_keys(self):
+        """Validate a data extraction query
+
+        Returns:
+            true if query is valid
+        """
         if "fields" in self.data:
             value = self.data["fields"]
             if not isinstance(value, list):
@@ -175,9 +225,6 @@ class IndexValidator(SDBaseValidator):
         Returns:
             false if dictionary don't have empty fields
         """
-        if not all(self.data) or not all(self.data.values()):
-            raise exceptions.InvalidIndexException(
-                "This index has invalid keys or values.")
         for value in self.data.values():
             # Value is a dictionary when it is an entity being indexed:
             # "my-entity": {"year": 2016}
@@ -190,27 +237,43 @@ class IndexValidator(SDBaseValidator):
                     "The value for an id should be a dictionary")
         return False
 
+    def check_indexation_size(self):
+        indexation_size = len(self.data)
+
+        # auto-create-fields property should not be considered as indexation
+        if "auto-create-fields" in self.data:
+            indexation_size -= 1
+
+        if indexation_size > MAX_INDEXATION_SIZE:
+            raise exceptions.InvalidIndexException(
+                "Your index command shouldn't have more than 1000 values.")
+
+        return True
+
     def validator(self):
         """
         Returns:
             true if query is valid
         """
-        if not self._has_empty_field():
+        if not self._has_empty_field() and self.check_indexation_size():
             return True
 
 
 class FieldValidator(SDBaseValidator):
-    def __init__(self, dictionary_field):
+    def __init__(self, data_field):
         """
         Parameters:
-            dictionary_field(dict) -- A dict field
+            data_field -- A dict or list of fields
         """
-        super(FieldValidator, self).__init__(dictionary_field)
-        self._valid_type_fields = [
-            "unique-id", "boolean", "string", "integer", "decimal",
-            "enumerated", "date", "integer-time-series",
-            "decimal-time-series", "string-time-series"
-        ]
+        if not isinstance(data_field, list):
+            data_field = [data_field]
+        for dictionary_field in data_field:
+            super(FieldValidator, self).__init__(dictionary_field)
+            self._valid_type_fields = [
+                "unique-id", "boolean", "string", "integer", "decimal",
+                "enumerated", "date", "integer-time-series",
+                "decimal-time-series", "string-time-series"
+            ]
 
     def _validate_name(self):
         """Validate field name"""
@@ -246,8 +309,8 @@ class FieldValidator(SDBaseValidator):
             raise exceptions.InvalidFieldTypeException(
                 "This field have a invalid type.")
 
-    def _validate_field_decimal_places(self):
-        """Validate field decimal places"""
+    def _validate_field_decimal_type(self):
+        """Validate field decimal type"""
         decimal_types = ["decimal", "decimal-time-series"]
         if self.data['type'] not in decimal_types:
             raise exceptions.InvalidFieldException(
@@ -284,7 +347,5 @@ class FieldValidator(SDBaseValidator):
         if 'description' in self.data:
             self._validate_description()
         if 'decimal-place' in self.data:
-            self._validate_field_decimal_places()
-        # if 'storage' in self.data:
-        #    self._validate_field_storage()
+            self._validate_field_decimal_type()
         return True

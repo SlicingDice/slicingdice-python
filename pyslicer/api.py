@@ -20,15 +20,15 @@ class SlicingDiceAPI(object):
 
     def __init__(
         self, master_key=None, write_key=None, read_key=None,
-            custom_key=None, use_ssl=False, timeout=60):
+            custom_key=None, use_ssl=True, timeout=60):
         """Instantiate a new SlicerDicer object.
 
         Keyword arguments:
         key(string or SlicerKey) -- Key(s) to access API
-        timeout(int) -- Define timeout to request,
-            defaults 30 secs(Optional).
         use_ssl(bool) -- Define if the request uses verification SSL for
             HTTPS requests. Defaults False.(Optional)
+        timeout(int) -- Define timeout to request,
+            defaults 30 secs(Optional).
         """
         self.keys = self._organize_keys(
             master_key, custom_key, read_key, write_key)
@@ -69,8 +69,7 @@ class SlicingDiceAPI(object):
         """Select automatically a key to make the request in Slicing Dice
 
         Keyword arguments:
-        need_write(bool) -- Define if this request needs write in Slicing
-            Dice API.
+        key_level(int) -- Define the key level needed
         """
         current_key_level = self._get_key()
         if current_key_level[1] == 2:
@@ -81,7 +80,14 @@ class SlicingDiceAPI(object):
         return current_key_level[0]
 
     def _make_request(self, url, req_type, key_level, json_data=None):
-        """Returns a object request result"""
+        """Returns a object request result
+
+        Keyword arguments:
+        url(string) -- the url to make a request
+        req_type(string) -- the request type (POST, PUT, DELETE or GET)
+        key_level(int) -- Define the key level needed
+        json_data(json) -- The json to use on request (default None)
+        """
         self._check_key(key_level)
         headers = {'Content-Type': 'application/json',
                    'Authorization': self._api_key}
@@ -112,14 +118,18 @@ class SlicingDiceAPI(object):
         return self._handler_request(req)
 
     def _handler_request(self, req):
-        """Handler request response"""
+        """Handler request response
+
+        Keyword arguments:
+        req -- the request object
+        """
         if req is None:
             raise exceptions.SlicingDiceException("Bad request.")
 
         try:
             result = ujson.loads(req.text)
-        except ValueError:
-            raise exceptions.InternalException
+        except ValueError as e:
+            raise exceptions.InternalException("Error while trying to load Json: %s" % e.message)
 
         sd_response = SDHandlerResponse(
             result=result,

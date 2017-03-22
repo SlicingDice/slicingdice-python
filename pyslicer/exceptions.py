@@ -42,6 +42,12 @@ class AuthInvalidRemoteException(SlicingDiceException):
             self, *args, **kwargs)
 
 
+class CustomKeyInvalidFieldCreationException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(CustomKeyInvalidFieldCreationException, self).__init__(
+            self, *args, **kwargs)
+
+
 class CustomKeyInvalidPermissionForFieldException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(CustomKeyInvalidPermissionForFieldException, self).__init__(
@@ -63,6 +69,12 @@ class CustomKeyNotPermittedException(SlicingDiceException):
 class CustomKeyRouteNotPermittedException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(CustomKeyRouteNotPermittedException, self).__init__(
+            self, *args, **kwargs)
+
+
+class DemoApiInvalidEndpointException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(DemoApiInvalidEndpointException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -88,6 +100,30 @@ class RequestRateLimitException(SlicingDiceException):
 class RequestInvalidJsonException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(RequestInvalidJsonException, self).__init__(
+            self, *args, **kwargs)
+
+
+class RequestInvalidHttpMethodException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(RequestInvalidHttpMethodException, self).__init__(
+            self, *args, **kwargs)
+
+
+class RequestInvalidEndpointException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(RequestInvalidEndpointException, self).__init__(
+            self, *args, **kwargs)
+
+
+class RequestIncorrectHttpException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(RequestIncorrectHttpException, self).__init__(
+            self, *args, **kwargs)
+
+
+class RequestExceedLimitException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(RequestExceedLimitException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -189,6 +225,12 @@ class FieldInvalidDescriptionException(SlicingDiceException):
             self, *args, **kwargs)
 
 
+class FieldExceedDescriptionlengthException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(FieldExceedDescriptionlengthException, self).__init__(
+            self, *args, **kwargs)
+
+
 class FieldInvalidCardinalityException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(FieldInvalidCardinalityException, self).__init__(
@@ -207,10 +249,34 @@ class FieldRangeLimitException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-# Index errors
-class IndexEntityKeyTypeException(SlicingDiceException):
+class FieldExceededMaxNameLenghtException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexEntityKeyTypeException, self).__init__(
+        super(FieldExceededMaxNameLenghtException, self).__init__(
+            self, *args, **kwargs)
+
+
+class FieldExceededMaxApiNameLenghtException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(FieldExceededMaxApiNameLenghtException, self).__init__(
+            self, *args, **kwargs)
+
+
+class FieldEmptyEntityIdException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(FieldEmptyEntityIdException, self).__init__(
+            self, *args, **kwargs)
+
+
+class FieldExceededPermitedValueException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(FieldExceededPermitedValueException, self).__init__(
+            self, *args, **kwargs)
+
+
+# Index errors
+class IndexInvalidDecimalPlacesException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(IndexInvalidDecimalPlacesException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -244,9 +310,9 @@ class IndexFieldValueTooBigException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class IndexDateFormatException(SlicingDiceException):
+class IndexTimeSeriesDateFormatException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexDateFormatException, self).__init__(
+        super(IndexTimeSeriesDateFormatException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -265,6 +331,12 @@ class IndexIdLimitException(SlicingDiceException):
 class IndexFieldLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(IndexFieldLimitException, self).__init__(
+            self, *args, **kwargs)
+
+
+class IndexDateFormatException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(IndexDateFormatException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -307,6 +379,18 @@ class QueryTimeSeriesInvalidPrecisionMinutesException(SlicingDiceException):
 class QueryTimeSeriesInvalidPrecisionHoursException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(QueryTimeSeriesInvalidPrecisionHoursException, self).__init__(
+            self, *args, **kwargs)
+
+
+class QueryRelativeIntervalException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(QueryRelativeIntervalException, self).__init__(
+            self, *args, **kwargs)
+
+
+class QueryDateFormatException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(QueryDateFormatException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -365,9 +449,9 @@ class QueryEventCountQueryException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class QueryDateFormatException(SlicingDiceException):
+class QueryInvalidMetricException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QueryDateFormatException, self).__init__(
+        super(QueryInvalidMetricException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -566,6 +650,42 @@ class QueryAggregationInvalidFilterQueryException(SlicingDiceException):
 class QueryCountInvalidParameterErrorException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(QueryCountInvalidParameterErrorException, self).__init__(
+            self, *args, **kwargs)
+
+
+class QueryInvalidMinfreqException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(QueryInvalidMinfreqException, self).__init__(
+            self, *args, **kwargs)
+
+
+class QueryExceededMaxNumberQuerysException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(QueryExceededMaxNumberQuerysException, self).__init__(
+            self, *args, **kwargs)
+
+
+class QueryInvalidOperatorUsageException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(QueryInvalidOperatorUsageException, self).__init__(
+            self, *args, **kwargs)
+
+
+class QueryInvalidParameterUsageException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(QueryInvalidParameterUsageException, self).__init__(
+            self, *args, **kwargs)
+
+
+class QueryParameterInvalidFieldUsageException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(QueryParameterInvalidFieldUsageException, self).__init__(
+            self, *args, **kwargs)
+
+
+class QueryInvalidFieldUsageException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(QueryInvalidFieldUsageException, self).__init__(
             self, *args, **kwargs)
 
 

@@ -17,6 +17,7 @@ run the script with:
 """
 
 import json
+import os
 import sys
 import time
 
@@ -32,15 +33,20 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class SlicingDiceTester(object):
     """Test orchestration class."""
-    def __init__(self, api_key, verbose=False):
-        self.client = SlicingDice(api_key)
+    def __init__(self, api_key, verbose=False, uses_test_endpoint=True):
+        # The Slicing Dice API client
+        self.client = SlicingDice(master_key=api_key,
+                                  uses_test_endpoint=uses_test_endpoint)
 
         # Translation table for fields with timestamp
         self.field_translation = {}
 
-        self.sleep_time = 10  # seconds
-        self.path = 'examples/'  # Directory containing examples to test
-        self.extension = '.json'  # Examples file format
+        # Sleep time in seconds
+        self.sleep_time = int(os.environ.get("CLIENT_SLEEP_TIME", 10))
+        # Directory containing examples to test
+        self.path = 'examples/'
+        # Examples file format
+        self.extension = '.json'
 
         self.num_successes = 0
         self.num_fails = 0
@@ -84,7 +90,8 @@ class SlicingDiceTester(object):
             print
 
     def _empty_field_translation(self):
-        """Empty field translation table so tests don't intefere each other."""
+        """Erase field translation table so tests don't interfere each
+        other."""
         self.field_translation = {}
 
     def load_test_data(self, query_type):
@@ -113,7 +120,7 @@ class SlicingDiceTester(object):
 
         for field in test['fields']:
             self._append_timestamp_to_field_name(field)
-            self.client.create_field(field, test=True)
+            self.client.create_field(field)
 
             if self.verbose:
                 print '    - {}'.format(field['api-name'])
@@ -168,7 +175,6 @@ class SlicingDiceTester(object):
         Parameters:
         test -- Dictionary containing test name, fields metadata, data to be
             indexed, query, and expected results.
-        auto_create -- Auto create a field if not exists.
         """
         is_singular = len(test['index']) == 1
         entity_or_entities = 'entity' if is_singular else 'entities'
@@ -179,7 +185,7 @@ class SlicingDiceTester(object):
         if self.verbose:
             print '    - {}'.format(index_data)
 
-        self.client.index(index_data, test=True)
+        self.client.index(index_data)
 
         # Wait a few seconds so the data can be indexed by SlicingDice
         time.sleep(self.sleep_time)
@@ -200,13 +206,23 @@ class SlicingDiceTester(object):
             print '    - {}'.format(query_data)
 
         if query_type == 'count_entity':
-            result = self.client.count_entity(query_data, test=True)
+            result = self.client.count_entity(
+                query_data)
         elif query_type == 'count_event':
-            result = self.client.count_event(query_data, test=True)
+            result = self.client.count_event(
+                query_data)
         elif query_type == 'top_values':
-            result = self.client.top_values(query_data, test=True)
+            result = self.client.top_values(
+                query_data)
         elif query_type == 'aggregation':
-            result = self.client.aggregation(query_data, test=True)
+            result = self.client.aggregation(
+                query_data)
+        elif query_type == 'score':
+            result = self.client.score(
+                query_data)
+        elif query_type == 'result':
+            result = self.client.result(
+                query_data)
 
         return result
 
@@ -244,6 +260,12 @@ class SlicingDiceTester(object):
                 continue
 
             if value != result[key]:
+                time.sleep(self.sleep_time * 3)
+                test['query'].update({"bypass-cache": True})
+                result2 = self.execute_query(query_type, test)
+                if value == result2[key]:
+                    print "  Passed at second try"
+                    continue
                 self.num_fails += 1
                 self.failed_tests.append(test['name'])
 
@@ -264,15 +286,26 @@ def main():
         'count_event',
         'top_values',
         'aggregation',
+        'score',
+        'result'
     ]
 
-    # Testing class with demo API key
+    # Testing class with demo API key or one of your API key
+    # by enviroment variable
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
+    api_key = os.environ.get(
+        "SD_API_KEY",
+        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vO'
+         'DFtIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MjQyLCJ'
+         'jbGllbnRfaWQiOjEwfQ.F-4SC7SREZAu7zo0vdM366kDigYYUBmzCc_EY_THRkg'))
+
+    # MODE_TEST give us if you want to use endpoint Test or Prod
+    mode_test = os.environ.get("MODE_TEST", "test")
+    uses_test_endpoint = False if mode_test.lower() == 'prod' else True
     sd_tester = SlicingDiceTester(
-        api_key=('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMW0'
-                 'iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMCwiY2xpZW5'
-                 '0X2lkIjoxMH0.xRBHeDxTzYAgFyuU94SWFbjITeoxgyRCQGdIee8qrLA'),
-        verbose=False)
+        api_key=api_key,
+        verbose=False,
+        uses_test_endpoint=uses_test_endpoint)
 
     try:
         for query_type in query_types:
