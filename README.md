@@ -27,6 +27,13 @@ pip install pyslicer --extra-index-url=https://packagecloud.io/slicingdice/clien
 
 ## Usage
 
+The following code snippet is an example of how to add and query data
+using the SlicingDice python client. We entry data informing
+'user1@slicingdice.com' has age 22 and then query the database for
+the number of users with age between 20 and 40 years old.
+If this is the first register ever entered into the system,
+ the answer should be 1.
+
 ```python
 from pyslicer import SlicingDice
 
@@ -290,7 +297,7 @@ print client.count_entity_total()
 ```
 
 ### `count_entity(json_data)`
-Count the number of entities attending the given query. This method corresponds to a [POST request at /query/count/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-entity).
+Count the number of entities matching the given query. This method corresponds to a [POST request at /query/count/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-entity).
 
 #### Request example
 
@@ -337,7 +344,7 @@ print client.count_entity(query)
 ```
 
 ### `count_event(json_data)`
-Count the number of occurrences for time-series events attending the given query. This method corresponds to a [POST request at /query/count/event](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-event).
+Count the number of occurrences for time-series events matching the given query. This method corresponds to a [POST request at /query/count/event](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-event).
 
 #### Request example
 
@@ -386,7 +393,7 @@ print client.count_event(query)
 ```
 
 ### `top_values(json_data)`
-Return the top values for entities attending the given query. This method corresponds to a [POST request at /query/top_values](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-top-values).
+Return the top values for entities matching the given query. This method corresponds to a [POST request at /query/top_values](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-top-values).
 
 #### Request example
 
@@ -723,7 +730,7 @@ print client.delete_saved_query('my-saved-query')
 ```
 
 ### `result(json_data)`
-Retrieve indexed values for entities attending the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
+Retrieve indexed values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
 
 #### Request example
 
@@ -771,7 +778,7 @@ print client.result(query)
 ```
 
 ### `score(json_data)`
-Retrieve indexed values as well as their relevance for entities attending the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
+Retrieve indexed values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
 
 #### Request example
 
