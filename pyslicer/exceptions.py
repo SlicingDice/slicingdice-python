@@ -764,3 +764,9 @@ class InvalidSlicingDiceKeysException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(InvalidSlicingDiceKeysException, self).__init__(
             self, *args, **kwargs)
+
+
+class FieldInvalidRangeException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(FieldInvalidRangeException, self).__init__(
+            self, *args, **kwargs)
