@@ -33,6 +33,7 @@ __mapped_errors = {
     31: exceptions.AccountPaymentRequiredException,
     32: exceptions.AccountBannedException,
     33: exceptions.AccountDisabledException,
+    39: exceptions.FieldInvalidRangeException,
     # Field errors (40 - 59)
     40: exceptions.FieldMissingParamException,
     41: exceptions.FieldTypeException,
