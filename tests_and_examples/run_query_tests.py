@@ -268,7 +268,7 @@ class SlicingDiceTester(object):
                         print "  Passed at second try"
                         continue
                 except SlicingDiceException as e:
-                    result2 = {'result': {'error': str(e)}}
+                    print str(e)
 
                 self.num_fails += 1
                 self.failed_tests.append(test['name'])
