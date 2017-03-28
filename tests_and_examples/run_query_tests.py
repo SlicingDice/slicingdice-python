@@ -262,10 +262,14 @@ class SlicingDiceTester(object):
             if value != result[key]:
                 time.sleep(self.sleep_time * 3)
                 test['query'].update({"bypass-cache": True})
-                result2 = self.execute_query(query_type, test)
-                if value == result2[key]:
-                    print "  Passed at second try"
-                    continue
+                try:
+                    result2 = self.execute_query(query_type, test)
+                    if value == result2[key]:
+                        print "  Passed at second try"
+                        continue
+                except SlicingDiceException as e:
+                    result2 = {'result': {'error': str(e)}}
+
                 self.num_fails += 1
                 self.failed_tests.append(test['name'])
 
