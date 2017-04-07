@@ -201,9 +201,6 @@ class QueryDataExtractionValidator(SDBaseValidator):
             if not isinstance(limit, int):
                 raise exceptions.InvalidQueryException(
                     "The key 'limit' in query has a invalid value.")
-            if limit > 100:
-                raise exceptions.InvalidQueryException(
-                    "The field 'limit' has a value max of 100.")
         return True
 
     def validator(self):
