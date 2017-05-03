@@ -184,7 +184,7 @@ print client.create_field(field)
 }
 ```
 
-### `index(json_data, auto_create_fields=False)`
+### `index(json_data)`
 Index data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /index](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-index).
 
 #### Request example

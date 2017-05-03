@@ -186,17 +186,13 @@ class SlicingDice(SlicingDiceAPI):
             req_type="get",
             key_level=2)
 
-    def index(self, data, auto_create_fields=False):
+    def index(self, data):
         """Make a index in Slicing Dice API
 
         Keyword arguments:
         data -- A dictionary in the Slicing Dice index
             format.
-        auto_create_fields(bool) -- if true SlicingDice API will automatically
-            create nonexistent fields (default False)
         """
-        if auto_create_fields:
-            data["auto-create-fields"] = True
         base_url = self._wrapper_test()
         sd_data = validators.IndexValidator(data)
         if sd_data.validator():
