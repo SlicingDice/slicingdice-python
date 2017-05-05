@@ -321,7 +321,7 @@ query = [
                 }
             }
         ],
-        "bypass-cache": false
+        "bypass-cache": False
     },
     {
         "query-name": "ford-ka",
@@ -332,7 +332,7 @@ query = [
                 }
             }
         ],
-        "bypass-cache": false
+        "bypass-cache": False
     }
 ]
 print client.count_entity(query)
@@ -373,7 +373,7 @@ query = [
                 }
             }
         ],
-        "bypass-cache": true
+        "bypass-cache": True
     },
     {
         "query-name": "test-drives-in-ca",
@@ -388,7 +388,7 @@ query = [
                 }
             }
         ],
-        "bypass-cache": true
+        "bypass-cache": True
     }
 ]
 print client.count_event(query)
