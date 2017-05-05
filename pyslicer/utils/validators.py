@@ -32,7 +32,10 @@ class SDBaseValidator(object):
                 "This query has invalid keys or values.")
 
         for key in dictionary:
-            dictionary_value = dictionary[key]
+            if isinstance(key, dict):
+                dictionary_value = key.get('query')
+            else:
+                dictionary_value = dictionary[key]
             self.check_dictionary_value(dictionary_value)
 
     def check_list(self, dictionary_list):
