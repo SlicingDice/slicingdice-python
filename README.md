@@ -85,15 +85,15 @@ print client.count_entity(query_data)
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
 * `uses_test_endpoint (bool)` - If false the client will send requests to production end-point, otherwise to tests end-point.
 
-### `get_projects()`
-Get all created projects, both active and inactive ones. This method corresponds to a [GET request at /project](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-project).
+### `get_database()`
+Get information about current database(related to api keys informed on construction). This method corresponds to a [GET request at /database](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-database).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-print client.get_projects()
+print client.get_database()
 ```
 
 #### Output example
@@ -102,16 +102,16 @@ print client.get_projects()
 {
     "active": [
         {
-            "name": "Project 1",
-            "description": "My first project",
+            "name": "Database 1",
+            "description": "My first database",
             "data-expiration": 30,
             "created-at": "2016-04-05T10:20:30Z"
         }
     ],
     "inactive": [
         {
-            "name": "Project 2",
-            "description": "My second project",
+            "name": "Database 2",
+            "description": "My second database",
             "data-expiration": 90,
             "created-at": "2016-04-05T10:20:30Z"
         }
@@ -243,7 +243,7 @@ print client.insert(insert_data)
 ```
 
 ### `exists_entity(ids)`
-Verify which entities exist in a project given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
+Verify which entities exist in a database given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
 
 #### Request example
 
