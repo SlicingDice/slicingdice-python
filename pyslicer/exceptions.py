@@ -273,94 +273,94 @@ class FieldExceededPermitedValueException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-# Index errors
-class IndexInvalidDecimalPlacesException(SlicingDiceException):
+# Insertion errors
+class InsertInvalidDecimalPlacesException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexInvalidDecimalPlacesException, self).__init__(
+        super(InsertInvalidDecimalPlacesException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexEntityValueTypeException(SlicingDiceException):
+class InsertEntityValueTypeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexEntityValueTypeException, self).__init__(
+        super(InsertEntityValueTypeException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldNameTypeException(SlicingDiceException):
+class InsertFieldNameTypeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldNameTypeException, self).__init__(
+        super(InsertFieldNameTypeException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldTypeException(SlicingDiceException):
+class InsertFieldTypeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldTypeException, self).__init__(
+        super(InsertFieldTypeException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexEntityNameTooBigException(SlicingDiceException):
+class InsertEntityNameTooBigException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexEntityNameTooBigException, self).__init__(
+        super(InsertEntityNameTooBigException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldValueTooBigException(SlicingDiceException):
+class InsertFieldValueTooBigException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldValueTooBigException, self).__init__(
+        super(InsertFieldValueTooBigException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexTimeSeriesDateFormatException(SlicingDiceException):
+class InsertTimeSeriesDateFormatException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexTimeSeriesDateFormatException, self).__init__(
+        super(InsertTimeSeriesDateFormatException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldNotActiveException(SlicingDiceException):
+class InsertFieldNotActiveException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldNotActiveException, self).__init__(
+        super(InsertFieldNotActiveException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexIdLimitException(SlicingDiceException):
+class InsertIdLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexIdLimitException, self).__init__(
+        super(InsertIdLimitException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldLimitException(SlicingDiceException):
+class InsertFieldLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldLimitException, self).__init__(
+        super(InsertFieldLimitException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexDateFormatException(SlicingDiceException):
+class InsertDateFormatException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexDateFormatException, self).__init__(
+        super(InsertDateFormatException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldStringEmptyValueException(SlicingDiceException):
+class InsertFieldStringEmptyValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldStringEmptyValueException, self).__init__(
+        super(InsertFieldStringEmptyValueException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldTimeseriesInvalidParameterException(SlicingDiceException):
+class InsertFieldTimeseriesInvalidParameterException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldTimeseriesInvalidParameterException, self).__init__(
+        super(InsertFieldTimeseriesInvalidParameterException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldNumericInvalidValueException(SlicingDiceException):
+class InsertFieldNumericInvalidValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldNumericInvalidValueException, self).__init__(
+        super(InsertFieldNumericInvalidValueException, self).__init__(
             self, *args, **kwargs)
 
 
-class IndexFieldTimeseriesMissingValueException(SlicingDiceException):
+class InsertFieldTimeseriesMissingValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(IndexFieldTimeseriesMissingValueException, self).__init__(
+        super(InsertFieldTimeseriesMissingValueException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -713,9 +713,9 @@ class WrongTypeException(SlicingDiceException):
         super(WrongTypeException, self).__init__(self, *args, **kwargs)
 
 
-class InvalidIndexException(SlicingDiceException):
+class InvalidInsertException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InvalidIndexException, self).__init__(self, *args, **kwargs)
+        super(InvalidInsertException, self).__init__(self, *args, **kwargs)
 
 
 class InvalidQueryTypeException(SlicingDiceException):

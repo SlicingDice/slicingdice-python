@@ -66,7 +66,7 @@ class SlicingDice(SlicingDiceAPI):
                 }
                 print sd.query(query_json)
 
-        To make a index:
+        To insert data:
 
                 indexing_json = {
                     'foo@bar.com': {
@@ -78,7 +78,7 @@ class SlicingDice(SlicingDiceAPI):
                         'pyslicer-integer-field': 42,
                     },
                 }
-                print sd.index(indexing_json)
+                print sd.insert(indexing_json)
     """
     def __init__(
         self, write_key=None, read_key=None, master_key=None,
@@ -151,8 +151,8 @@ class SlicingDice(SlicingDiceAPI):
             req_type=req_type,
             key_level=2)
 
-    def get_projects(self):
-        """Get a list of projects (all)"""
+    def get_database(self):
+        """Get a database associated with this client (related to keys passed on construction)"""
         url = SlicingDice.BASE_URL + URLResources.PROJECT
         return self._make_request(
             url=url,
@@ -177,7 +177,7 @@ class SlicingDice(SlicingDiceAPI):
                 json_data=ujson.dumps(data),
                 key_level=1)
 
-    def get_fields(self):
+    def get_columns(self):
         """Get a list of fields"""
         base_url = self._wrapper_test()
         url = base_url + URLResources.FIELD
@@ -186,17 +186,17 @@ class SlicingDice(SlicingDiceAPI):
             req_type="get",
             key_level=2)
 
-    def index(self, data):
-        """Make a index in Slicing Dice API
+    def insert(self, data):
+        """Insert data into Slicing Dice API
 
         Keyword arguments:
-        data -- A dictionary in the Slicing Dice index
+        data -- A dictionary in the Slicing Dice data format
             format.
         """
         base_url = self._wrapper_test()
-        sd_data = validators.IndexValidator(data)
+        sd_data = validators.InsertValidator(data)
         if sd_data.validator():
-            url = base_url + URLResources.INDEX
+            url = base_url + URLResources.INSERT
             return self._make_request(
                 url=url,
                 json_data=ujson.dumps(data),

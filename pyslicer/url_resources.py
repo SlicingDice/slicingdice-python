@@ -5,7 +5,7 @@
 class URLResources(object):
     PROJECT = "/project/"
     FIELD = "/field/"
-    INDEX = "/index/"
+    INSERT = "/insert/"
     QUERY_COUNT_ENTITY = "/query/count/entity/"
     QUERY_COUNT_ENTITY_TOTAL = "/query/count/entity/total/"
     QUERY_COUNT_EVENT = "/query/count/event/"

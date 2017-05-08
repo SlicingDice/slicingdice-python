@@ -2,7 +2,7 @@
 
 This script tests SlicingDice by running tests suites, each composed by:
     - Creating fields
-    - Indexing data
+    - Insertion of data
     - Querying
     - Comparing results
 
@@ -81,7 +81,7 @@ class SlicingDiceTester(object):
                     self.get_fields_from_index_data(test)
                 else:
                     self.create_fields(test)
-                self.index_data(test)
+                self.insert_data(test)
                 result = self.execute_query(query_type, test)
             except SlicingDiceException as e:
                 result = {'result': {'error': str(e)}}
@@ -112,7 +112,7 @@ class SlicingDiceTester(object):
 
         Parameters:
         test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+            insert, query, and expected results.
         """
         is_singular = len(test['fields']) == 1
         field_or_fields = 'field' if is_singular else 'fields'
@@ -155,11 +155,11 @@ class SlicingDiceTester(object):
         return str(int(time.time() * 10))
 
     def get_fields_from_index_data(self, test):
-        """Get all field names from index data and translate them.
+        """Get all field names from inserted data and translate them.
 
         Parameters:
         test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+            inserted, query, and expected results.
         """
         print '  Auto-creating fields'
         for entity, data in test['index'].items():
@@ -169,12 +169,12 @@ class SlicingDiceTester(object):
                         self._append_timestamp_to_field_name(
                             {"api-name": field, "name": field})
 
-    def index_data(self, test):
-        """Index data to SlicingDice.
+    def insert_data(self, test):
+        """Insert data to SlicingDice.
 
         Parameters:
         test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+            inserted, query, and expected results.
         """
         is_singular = len(test['index']) == 1
         entity_or_entities = 'entity' if is_singular else 'entities'
@@ -185,9 +185,9 @@ class SlicingDiceTester(object):
         if self.verbose:
             print '    - {}'.format(index_data)
 
-        self.client.index(index_data)
+        self.client.insert(index_data)
 
-        # Wait a few seconds so the data can be indexed by SlicingDice
+        # Wait a few seconds so the data can be inserted by SlicingDice
         time.sleep(self.sleep_time)
 
     def execute_query(self, query_type, test):
@@ -197,7 +197,7 @@ class SlicingDiceTester(object):
         query_type -- String containing the name of the query that will be
             tested. This name must match the JSON file name as well.
         test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+            inserted, query, and expected results.
         """
         query_data = self._translate_field_names(test['query'])
         print '  Querying'
@@ -249,7 +249,7 @@ class SlicingDiceTester(object):
         query_type -- String containing the name of the query that will be
             tested. This name must match the JSON file name as well.
         test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+            inserted, query, and expected results.
         result -- Dictionary containing received result after querying
             SlicingDice.
         """

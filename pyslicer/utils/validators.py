@@ -13,7 +13,7 @@ MAX_INDEXATION_SIZE = 1000
 
 
 class SDBaseValidator(object):
-    """Base field, query and index validator."""
+    """Base field, query and insertion validator."""
     __metaclass__ = abc.ABCMeta
 
     def check_dictionary_value(self, dictionary_value):
@@ -209,13 +209,13 @@ class QueryDataExtractionValidator(SDBaseValidator):
         return False
 
 
-class IndexValidator(SDBaseValidator):
-    def __init__(self, dictionary_index):
+class InsertValidator(SDBaseValidator):
+    def __init__(self, dictionary_to_insert):
         """
         Parameters:
-            dictionary_index(dict) -- A dict query
+            dictionary_to_insert(dict) -- A dict query
         """
-        super(IndexValidator, self).__init__(dictionary_index)
+        super(InsertValidator, self).__init__(dictionary_to_insert)
 
     def _has_empty_field(self):
         """Check empty fields in dictionary
@@ -223,7 +223,7 @@ class IndexValidator(SDBaseValidator):
             false if dictionary don't have empty fields
         """
         for value in self.data.values():
-            # Value is a dictionary when it is an entity being indexed:
+            # Value is a dictionary when it is an entity being inserted:
             # "my-entity": {"year": 2016}
             # It can also be a parameter, such as "auto-create-fields":
             # "auto-create-fields": true
@@ -234,16 +234,16 @@ class IndexValidator(SDBaseValidator):
                     "The value for an id should be a dictionary")
         return False
 
-    def check_indexation_size(self):
+    def check_insertion_size(self):
         indexation_size = len(self.data)
 
-        # auto-create-fields property should not be considered as indexation
+        # auto-create-fields property should not be considered as insertion of data
         if "auto-create-fields" in self.data:
             indexation_size -= 1
 
         if indexation_size > MAX_INDEXATION_SIZE:
-            raise exceptions.InvalidIndexException(
-                "Your index command shouldn't have more than 1000 values.")
+            raise exceptions.InvalidInsertException(
+                "Your insertion command shouldn't have more than 1000 values.")
 
         return True
 
@@ -252,7 +252,7 @@ class IndexValidator(SDBaseValidator):
         Returns:
             true if query is valid
         """
-        if not self._has_empty_field() and self.check_indexation_size():
+        if not self._has_empty_field() and self.check_insertion_size():
             return True
 
 
