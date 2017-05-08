@@ -51,7 +51,8 @@ client.insert(insert_data)
 
 # Querying data
 query_data = {
-    "users-between-20-and-40": [
+    "query-name": "users-between-20-and-40",
+    "query": [
         {
             "age": {
                 "range": [
@@ -304,29 +305,36 @@ Count the number of entities matching the given query. This method corresponds t
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
-query = {
-    "corolla-or-fit": [
-        {
-            "car-model": {
-                "equals": "toyota corolla"
+query = [
+    {
+        "query-name": "corolla-or-fit",
+        "query": [
+            {
+                "car-model": {
+                    "equals": "toyota corolla"
+                }
+            },
+            "or",
+            {
+                "car-model": {
+                    "equals": "honda fit"
+                }
             }
-        },
-        "or",
-        {
-            "car-model": {
-                "equals": "honda fit"
+        ],
+        "bypass-cache": False
+    },
+    {
+        "query-name": "ford-ka",
+        "query": [
+            {
+                "car-model": {
+                    "equals": "ford ka"
+                }
             }
-        },
-    ],
-    "ford-ka": [
-        {
-            "car-model": {
-                "equals": "ford ka"
-            }
-        }
-    ],
-    "bypass-cache": False
-}
+        ],
+        "bypass-cache": False
+    }
+]
 print client.count_entity(query)
 ```
 
@@ -351,31 +359,38 @@ Count the number of occurrences for time-series events matching the given query.
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
-query = {
-    "test-drives-in-ny": [
-        {
-        "test-drives": {
-                "equals": "NY",
-                "between": [
-                    "2016-08-16T00:00:00Z",
-                    "2016-08-18T00:00:00Z"
-                ]
+query = [
+    {
+        "query-name": "test-drives-in-ny",
+        "query": [
+            {
+                "test-drives": {
+                    "equals": "NY",
+                    "between": [
+                        "2016-08-16T00:00:00Z",
+                        "2016-08-18T00:00:00Z"
+                    ]
+                }
             }
-        }
-    ],
-    "test-drives-in-ca": [
-        {
-            "test-drives": {
-                "equals": "CA",
-                "between": [
-                    "2016-04-04T00:00:00Z",
-                    "2016-04-06T00:00:00Z"
-                ]
+        ],
+        "bypass-cache": True
+    },
+    {
+        "query-name": "test-drives-in-ca",
+        "query": [
+            {
+                "test-drives": {
+                    "equals": "CA",
+                    "between": [
+                        "2016-04-04T00:00:00Z",
+                        "2016-04-06T00:00:00Z"
+                    ]
+                }
             }
-        }
-    ],
-    "bypass-cache": True
-}
+        ],
+        "bypass-cache": True
+    }
+]
 print client.count_event(query)
 ```
 
