@@ -45,7 +45,7 @@ insert_data = {
     "user1@slicingdice.com": {
         "age": 22
     },
-    "auto-create-fields": True
+    "auto-create-columns": True
 }
 client.insert(insert_data)
 
@@ -118,15 +118,15 @@ print client.get_projects()
 }
 ```
 
-### `get_fields(test=False)`
-Get all created fields, both active and inactive ones. This method corresponds to a [GET request at /field](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-field).
+### `get_columns(test=False)`
+Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-column).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-print client.get_fields()
+print client.get_columns()
 ```
 
 #### Output example
@@ -157,22 +157,22 @@ print client.get_fields()
 }
 ```
 
-### `create_field(json_data, test=False)`
-Create a new field. This method corresponds to a [POST request at /field](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-field).
+### `create_column(json_data, test=False)`
+Create a new column. This method corresponds to a [POST request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-column).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-field = {
+column = {
     "name": "Year",
     "api-name": "year",
     "type": "integer",
     "description": "Year of manufacturing",
     "storage": "latest-value"
 }
-print client.create_field(field)
+print client.create_column(column)
 ```
 
 #### Output example
@@ -225,7 +225,7 @@ insert_data = {
             "date": "2016-08-17T13:23:47+00:00"
         }
     },
-    "auto-create-fields": True
+    "auto-create-columns": True
 }
 print client.insert(insert_data)
 ```
@@ -236,7 +236,7 @@ print client.insert(insert_data)
 {
     "status": "success",
     "inserted-entities": 4,
-    "inserted-fields": 12,
+    "inserted-columns": 12,
     "took": 0.023
 }
 ```
@@ -451,7 +451,7 @@ print client.top_values(query)
 ```
 
 ### `aggregation(json_data)`
-Return the aggregation of all fields in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
+Return the aggregation of all columns in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
 
 #### Request example
 
@@ -751,7 +751,7 @@ query = {
             }
         }
     ],
-    "fields": ["car-model", "year"],
+    "columns": ["car-model", "year"],
     "limit": 2
 }
 print client.result(query)
@@ -799,7 +799,7 @@ query = {
             }
         }
     ],
-    "fields": ["car-model", "year"],
+    "columns": ["car-model", "year"],
     "limit": 2
 }
 print client.score(query)

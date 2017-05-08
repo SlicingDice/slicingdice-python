@@ -42,15 +42,15 @@ class AuthInvalidRemoteException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class CustomKeyInvalidFieldCreationException(SlicingDiceException):
+class CustomKeyInvalidcolumnCreationException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(CustomKeyInvalidFieldCreationException, self).__init__(
+        super(CustomKeyInvalidcolumnCreationException, self).__init__(
             self, *args, **kwargs)
 
 
-class CustomKeyInvalidPermissionForFieldException(SlicingDiceException):
+class CustomKeyInvalidPermissionForcolumnException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(CustomKeyInvalidPermissionForFieldException, self).__init__(
+        super(CustomKeyInvalidPermissionForcolumnException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -152,124 +152,124 @@ class AccountDisabledException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-# Field errors
-class FieldMissingParamException(SlicingDiceException):
+# column errors
+class columnMissingParamException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldMissingParamException, self).__init__(
+        super(columnMissingParamException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldTypeException(SlicingDiceException):
+class columnTypeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldTypeException, self).__init__(
+        super(columnTypeException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldIntegerValuesException(SlicingDiceException):
+class columnIntegerValuesException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldIntegerValuesException, self).__init__(
+        super(columnIntegerValuesException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldAlreadyExistsException(SlicingDiceException):
+class columnAlreadyExistsException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldAlreadyExistsException, self).__init__(
+        super(columnAlreadyExistsException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldLimitException(SlicingDiceException):
+class columnLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldLimitException, self).__init__(
+        super(columnLimitException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldTimeSeriesLimitException(SlicingDiceException):
+class columnTimeSeriesLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldTimeSeriesLimitException, self).__init__(
+        super(columnTimeSeriesLimitException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldTimeSeriesSystemLimitException(SlicingDiceException):
+class columnTimeSeriesSystemLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldTimeSeriesSystemLimitException, self).__init__(
+        super(columnTimeSeriesSystemLimitException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldDecimalTypeException(SlicingDiceException):
+class columnDecimalTypeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldDecimalTypeException, self).__init__(
+        super(columnDecimalTypeException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldStorageValueException(SlicingDiceException):
+class columnStorageValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldStorageValueException, self).__init__(
+        super(columnStorageValueException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldInvalidApiNameException(SlicingDiceException):
+class columnInvalidApiNameException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldInvalidApiNameException, self).__init__(
+        super(columnInvalidApiNameException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldInvalidNameException(SlicingDiceException):
+class columnInvalidNameException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldInvalidNameException, self).__init__(
+        super(columnInvalidNameException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldInvalidDescriptionException(SlicingDiceException):
+class columnInvalidDescriptionException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldInvalidDescriptionException, self).__init__(
+        super(columnInvalidDescriptionException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldExceedDescriptionlengthException(SlicingDiceException):
+class columnExceedDescriptionlengthException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldExceedDescriptionlengthException, self).__init__(
+        super(columnExceedDescriptionlengthException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldInvalidCardinalityException(SlicingDiceException):
+class columnInvalidCardinalityException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldInvalidCardinalityException, self).__init__(
+        super(columnInvalidCardinalityException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldDecimalLimitException(SlicingDiceException):
+class columnDecimalLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldDecimalLimitException, self).__init__(
+        super(columnDecimalLimitException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldRangeLimitException(SlicingDiceException):
+class columnRangeLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldRangeLimitException, self).__init__(
+        super(columnRangeLimitException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldExceededMaxNameLenghtException(SlicingDiceException):
+class columnExceededMaxNameLenghtException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldExceededMaxNameLenghtException, self).__init__(
+        super(columnExceededMaxNameLenghtException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldExceededMaxApiNameLenghtException(SlicingDiceException):
+class columnExceededMaxApiNameLenghtException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldExceededMaxApiNameLenghtException, self).__init__(
+        super(columnExceededMaxApiNameLenghtException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldEmptyEntityIdException(SlicingDiceException):
+class columnEmptyEntityIdException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldEmptyEntityIdException, self).__init__(
+        super(columnEmptyEntityIdException, self).__init__(
             self, *args, **kwargs)
 
 
-class FieldExceededPermitedValueException(SlicingDiceException):
+class columnExceededPermitedValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldExceededPermitedValueException, self).__init__(
+        super(columnExceededPermitedValueException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -286,15 +286,15 @@ class InsertEntityValueTypeException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class InsertFieldNameTypeException(SlicingDiceException):
+class InsertcolumnNameTypeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldNameTypeException, self).__init__(
+        super(InsertcolumnNameTypeException, self).__init__(
             self, *args, **kwargs)
 
 
-class InsertFieldTypeException(SlicingDiceException):
+class InsertcolumnTypeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldTypeException, self).__init__(
+        super(InsertcolumnTypeException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -304,9 +304,9 @@ class InsertEntityNameTooBigException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class InsertFieldValueTooBigException(SlicingDiceException):
+class InsertcolumnValueTooBigException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldValueTooBigException, self).__init__(
+        super(InsertcolumnValueTooBigException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -316,9 +316,9 @@ class InsertTimeSeriesDateFormatException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class InsertFieldNotActiveException(SlicingDiceException):
+class InsertcolumnNotActiveException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldNotActiveException, self).__init__(
+        super(InsertcolumnNotActiveException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -328,9 +328,9 @@ class InsertIdLimitException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class InsertFieldLimitException(SlicingDiceException):
+class InsertcolumnLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldLimitException, self).__init__(
+        super(InsertcolumnLimitException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -340,27 +340,27 @@ class InsertDateFormatException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class InsertFieldStringEmptyValueException(SlicingDiceException):
+class InsertcolumnStringEmptyValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldStringEmptyValueException, self).__init__(
+        super(InsertcolumnStringEmptyValueException, self).__init__(
             self, *args, **kwargs)
 
 
-class InsertFieldTimeseriesInvalidParameterException(SlicingDiceException):
+class InsertcolumnTimeseriesInvalidParameterException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldTimeseriesInvalidParameterException, self).__init__(
+        super(InsertcolumnTimeseriesInvalidParameterException, self).__init__(
             self, *args, **kwargs)
 
 
-class InsertFieldNumericInvalidValueException(SlicingDiceException):
+class InsertcolumnNumericInvalidValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldNumericInvalidValueException, self).__init__(
+        super(InsertcolumnNumericInvalidValueException, self).__init__(
             self, *args, **kwargs)
 
 
-class InsertFieldTimeseriesMissingValueException(SlicingDiceException):
+class InsertcolumnTimeseriesMissingValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertFieldTimeseriesMissingValueException, self).__init__(
+        super(InsertcolumnTimeseriesMissingValueException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -425,9 +425,9 @@ class QueryIncorrectOperatorUsageException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class QueryFieldNotActiveException(SlicingDiceException):
+class QuerycolumnNotActiveException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QueryFieldNotActiveException, self).__init__(
+        super(QuerycolumnNotActiveException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -461,9 +461,9 @@ class QueryIntegerException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class QueryFieldLimitException(SlicingDiceException):
+class QuerycolumnLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QueryFieldLimitException, self).__init__(
+        super(QuerycolumnLimitException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -599,9 +599,9 @@ class QueryDataExtractionPageTokenValueException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class QueryDataExtractionFieldLimitException(SlicingDiceException):
+class QueryDataExtractioncolumnLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QueryDataExtractionFieldLimitException, self).__init__(
+        super(QueryDataExtractioncolumnLimitException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -677,15 +677,15 @@ class QueryInvalidParameterUsageException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class QueryParameterInvalidFieldUsageException(SlicingDiceException):
+class QueryParameterInvalidcolumnUsageException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QueryParameterInvalidFieldUsageException, self).__init__(
+        super(QueryParameterInvalidcolumnUsageException, self).__init__(
             self, *args, **kwargs)
 
 
-class QueryInvalidFieldUsageException(SlicingDiceException):
+class QueryInvalidcolumnUsageException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QueryInvalidFieldUsageException, self).__init__(
+        super(QueryInvalidcolumnUsageException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -696,9 +696,9 @@ class InternalException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class FieldCreateInternalException(SlicingDiceException):
+class columnCreateInternalException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldCreateInternalException, self).__init__(
+        super(columnCreateInternalException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -723,24 +723,24 @@ class InvalidQueryTypeException(SlicingDiceException):
         super(InvalidQueryTypeException, self).__init__(self, *args, **kwargs)
 
 
-class InvalidFieldTypeException(SlicingDiceException):
+class InvalidcolumnTypeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InvalidFieldTypeException, self).__init__(self, *args, **kwargs)
+        super(InvalidcolumnTypeException, self).__init__(self, *args, **kwargs)
 
 
-class InvalidFieldException(SlicingDiceException):
+class InvalidcolumnException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InvalidFieldException, self).__init__(self, *args, **kwargs)
+        super(InvalidcolumnException, self).__init__(self, *args, **kwargs)
 
 
-class InvalidFieldNameException(SlicingDiceException):
+class InvalidcolumnNameException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InvalidFieldNameException, self).__init__(self, *args, **kwargs)
+        super(InvalidcolumnNameException, self).__init__(self, *args, **kwargs)
 
 
-class InvalidFieldDescriptionException(SlicingDiceException):
+class InvalidcolumnDescriptionException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InvalidFieldDescriptionException, self).__init__(
+        super(InvalidcolumnDescriptionException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -766,7 +766,7 @@ class InvalidSlicingDiceKeysException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class FieldInvalidRangeException(SlicingDiceException):
+class columnInvalidRangeException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(FieldInvalidRangeException, self).__init__(
+        super(columnInvalidRangeException, self).__init__(
             self, *args, **kwargs)

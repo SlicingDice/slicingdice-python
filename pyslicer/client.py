@@ -35,14 +35,14 @@ class SlicingDice(SlicingDiceAPI):
             from pyslicer.api import SlicingDice
             sd = SlicingDice('my-token')
 
-        To create a field:
+        To create a column:
 
-                field_json = {
-                    'name': 'Pyslicer String Field',
+                column_json = {
+                    'name': 'Pyslicer String column',
                     'description': 'Pyslicer example description',
                     'type': 'string',
                     'cardinality': 'low'}
-                print sd.create_field(field_json)
+                print sd.create_column(column_json)
 
         To make a query:
 
@@ -50,14 +50,14 @@ class SlicingDice(SlicingDiceAPI):
                     'type': 'count',
                     'select': [
                         {
-                            "pyslicer-string-field":
+                            "pyslicer-string-column":
                                 {
                                     "equal": "test_value_1"
                                 }
                         },
                         "or",
                         {
-                            "pyslicer-string-field":
+                            "pyslicer-string-column":
                                 {
                                     "equal": "test_value_2"
                                 }
@@ -70,12 +70,12 @@ class SlicingDice(SlicingDiceAPI):
 
                 inserting_json = {
                     'foo@bar.com': {
-                        'pyslicer-string-field': 'test_value_1',
-                        'pyslicer-integer-field': 42,
+                        'pyslicer-string-column': 'test_value_1',
+                        'pyslicer-integer-column': 42,
                     },
                     'baz@bar.com': {
-                        'pyslicer-string-field': 'test_value_2',
-                        'pyslicer-integer-field': 42,
+                        'pyslicer-string-column': 'test_value_2',
+                        'pyslicer-integer-column': 42,
                     },
                 }
                 print sd.insert(inserting_json)
@@ -160,17 +160,17 @@ class SlicingDice(SlicingDiceAPI):
             key_level=2
         )
 
-    def create_field(self, data):
-        """Create field in Slicing Dice
+    def create_column(self, data):
+        """Create column in Slicing Dice
 
         Keyword arguments:
-        data -- A dictionary or list on the Slicing Dice field
+        data -- A dictionary or list on the Slicing Dice column
             format.
         """
         base_url = self._wrapper_test()
-        sd_data = validators.FieldValidator(data)
+        sd_data = validators.columnValidator(data)
         if sd_data.validator():
-            url = base_url + URLResources.FIELD
+            url = base_url + URLResources.column
             return self._make_request(
                 url=url,
                 req_type="post",
@@ -178,9 +178,9 @@ class SlicingDice(SlicingDiceAPI):
                 key_level=1)
 
     def get_columns(self):
-        """Get a list of fields"""
+        """Get a list of columns"""
         base_url = self._wrapper_test()
-        url = base_url + URLResources.FIELD
+        url = base_url + URLResources.column
         return self._make_request(
             url=url,
             req_type="get",
@@ -243,10 +243,10 @@ class SlicingDice(SlicingDiceAPI):
         if "query" not in query:
             raise exceptions.InvalidQueryException(
                 "The aggregation query must have up the key 'query'.")
-        fields = query["query"]
-        if len(fields) > 5:
+        columns = query["query"]
+        if len(columns) > 5:
             raise exceptions.MaxLimitException(
-                "The aggregation query must have up to 5 fields per request.")
+                "The aggregation query must have up to 5 columns per request.")
         return self._make_request(
             url=url,
             json_data=ujson.dumps(query),
