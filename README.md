@@ -45,7 +45,7 @@ insert_data = {
     "user1@slicingdice.com": {
         "age": 22
     },
-    "auto-create-columns": True
+    "auto-create": ["table", "column"]
 }
 client.insert(insert_data)
 
@@ -225,7 +225,7 @@ insert_data = {
             "date": "2016-08-17T13:23:47+00:00"
         }
     },
-    "auto-create-columns": True
+    "auto-create": ["table", "column"]
 }
 print client.insert(insert_data)
 ```

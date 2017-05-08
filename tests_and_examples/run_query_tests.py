@@ -75,7 +75,7 @@ class SlicingDiceTester(object):
 
             print '  Query type: {}'.format(query_type)
 
-            auto_create = test['insert'].get('auto-create-columns', False)
+            auto_create = test['insert'].get('auto-create', ["table", "column"])
             try:
                 if auto_create:
                     self.get_columns_from_insertion_data(test)
@@ -163,7 +163,7 @@ class SlicingDiceTester(object):
         """
         print '  Auto-creating columns'
         for entity, data in test['insert'].items():
-            if entity != 'auto-create-columns':
+            if entity != 'auto-create':
                 for column in data.keys():
                     if column not in self.column_translation:
                         self._append_timestamp_to_column_name(

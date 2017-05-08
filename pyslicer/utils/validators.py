@@ -225,8 +225,8 @@ class InsertValidator(SDBaseValidator):
         for value in self.data.values():
             # Value is a dictionary when it is an entity being inserted:
             # "my-entity": {"year": 2016}
-            # It can also be a parameter, such as "auto-create-columns":
-            # "auto-create-columns": true
+            # It can also be a parameter, such as "auto-create":
+            # "auto-create-columns": ["table", "column"]
             if not isinstance(
                     value, (dict, bool)) or value is None or len(
                         str(value)) == 0:
@@ -237,8 +237,8 @@ class InsertValidator(SDBaseValidator):
     def check_insertion_size(self):
         insertion_batch_size = len(self.data)
 
-        # auto-create-columns property should not be considered as insertion of data
-        if "auto-create-columns" in self.data:
+        # auto-create property should not be considered as insertion of data
+        if "auto-create" in self.data:
             insertion_batch_size -= 1
 
         if insertion_batch_size > MAX_INSERTION_BATCH_SIZE:
