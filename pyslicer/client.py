@@ -153,7 +153,7 @@ class SlicingDice(SlicingDiceAPI):
 
     def get_database(self):
         """Get a database associated with this client (related to keys passed on construction)"""
-        url = SlicingDice.BASE_URL + URLResources.PROJECT
+        url = SlicingDice.BASE_URL + URLResources.DATABASE
         return self._make_request(
             url=url,
             req_type="get",

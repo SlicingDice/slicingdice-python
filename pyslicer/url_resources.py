@@ -3,7 +3,7 @@
 
 
 class URLResources(object):
-    PROJECT = "/project/"
+    DATABASE = "/database/"
     column = "/column/"
     INSERT = "/insert/"
     QUERY_COUNT_ENTITY = "/query/count/entity/"
