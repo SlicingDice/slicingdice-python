@@ -9,7 +9,7 @@ from pyslicer.utils.data_utils import is_str_empty
 
 MAX_QUERY_SIZE = 10
 
-MAX_INDEXATION_SIZE = 1000
+MAX_INSERTION_BATCH_SIZE = 1000
 
 
 class SDBaseValidator(object):
@@ -235,13 +235,13 @@ class InsertValidator(SDBaseValidator):
         return False
 
     def check_insertion_size(self):
-        indexation_size = len(self.data)
+        insertion_batch_size = len(self.data)
 
         # auto-create-fields property should not be considered as insertion of data
         if "auto-create-fields" in self.data:
-            indexation_size -= 1
+            insertion_batch_size -= 1
 
-        if indexation_size > MAX_INDEXATION_SIZE:
+        if insertion_batch_size > MAX_INSERTION_BATCH_SIZE:
             raise exceptions.InvalidInsertException(
                 "Your insertion command shouldn't have more than 1000 values.")
 

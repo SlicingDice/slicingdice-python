@@ -68,7 +68,7 @@ class SlicingDice(SlicingDiceAPI):
 
         To insert data:
 
-                indexing_json = {
+                inserting_json = {
                     'foo@bar.com': {
                         'pyslicer-string-field': 'test_value_1',
                         'pyslicer-integer-field': 42,
@@ -78,7 +78,7 @@ class SlicingDice(SlicingDiceAPI):
                         'pyslicer-integer-field': 42,
                     },
                 }
-                print sd.insert(indexing_json)
+                print sd.insert(inserting_json)
     """
     def __init__(
         self, write_key=None, read_key=None, master_key=None,

@@ -75,10 +75,10 @@ class SlicingDiceTester(object):
 
             print '  Query type: {}'.format(query_type)
 
-            auto_create = test['index'].get('auto-create-fields', False)
+            auto_create = test['insert'].get('auto-create-fields', False)
             try:
                 if auto_create:
-                    self.get_fields_from_index_data(test)
+                    self.get_fields_from_insertion_data(test)
                 else:
                     self.create_fields(test)
                 self.insert_data(test)
@@ -154,7 +154,7 @@ class SlicingDiceTester(object):
         # Appending integer timestamp including second decimals
         return str(int(time.time() * 10))
 
-    def get_fields_from_index_data(self, test):
+    def get_fields_from_insertion_data(self, test):
         """Get all field names from inserted data and translate them.
 
         Parameters:
@@ -162,7 +162,7 @@ class SlicingDiceTester(object):
             inserted, query, and expected results.
         """
         print '  Auto-creating fields'
-        for entity, data in test['index'].items():
+        for entity, data in test['insert'].items():
             if entity != 'auto-create-fields':
                 for field in data.keys():
                     if field not in self.field_translation:
@@ -176,16 +176,16 @@ class SlicingDiceTester(object):
         test -- Dictionary containing test name, fields metadata, data to be
             inserted, query, and expected results.
         """
-        is_singular = len(test['index']) == 1
+        is_singular = len(test['insert']) == 1
         entity_or_entities = 'entity' if is_singular else 'entities'
-        print '  Indexing {} {}'.format(len(test['index']), entity_or_entities)
+        print '  Inserting {} {}'.format(len(test['insert']), entity_or_entities)
 
-        index_data = self._translate_field_names(test['index'])
+        insertion_data = self._translate_field_names(test['insert'])
 
         if self.verbose:
-            print '    - {}'.format(index_data)
+            print '    - {}'.format(insertion_data)
 
-        self.client.insert(index_data)
+        self.client.insert(insertion_data)
 
         # Wait a few seconds so the data can be inserted by SlicingDice
         time.sleep(self.sleep_time)

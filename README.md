@@ -9,7 +9,7 @@ Official Python client for [SlicingDice](http://www.slicingdice.com/), Data Ware
 
 If you are new to SlicingDice, check our [quickstart guide](http://panel.slicingdice.com/docs/#quickstart-guide) and learn to use it in 15 minutes.
 
-Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [indexing](http://panel.slicingdice.com/docs/#data-indexing), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
+Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [insertion](http://panel.slicingdice.com/docs/#data-insertion), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
 
 ## Tests and Examples
 
@@ -22,7 +22,7 @@ In order to install the Python client, you only need to use [`pip`](https://pack
 **IMPORTANT:** Currently we only support Python 2.7
 
 ```bash
-pip install pyslicer --extra-index-url=https://packagecloud.io/slicingdice/clients/pypi/simple
+pip install pyslicer --extra-insert-url=https://packagecloud.io/slicingdice/clients/pypi/simple
 ```
 
 ## Usage
@@ -40,14 +40,14 @@ from pyslicer import SlicingDice
 # Configure the client
 client = SlicingDice(master_key='API_KEY', uses_test_endpoint=False)
 
-# Indexing data
-index_data = {
+# insertion data
+insert_data = {
     "user1@slicingdice.com": {
         "age": 22
     },
     "auto-create-fields": True
 }
-client.index(index_data)
+client.insert(insert_data)
 
 # Querying data
 query_data = {
@@ -184,15 +184,15 @@ print client.create_field(field)
 }
 ```
 
-### `index(json_data)`
-Index data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /index](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-index).
+### `insert(json_data)`
+insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-insert).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_WRITE_API_KEY', uses_test_endpoint=False)
-index_data = {
+insert_data = {
     "user1@slicingdice.com": {
         "car-model": "Ford Ka",
         "year": 2016
@@ -227,7 +227,7 @@ index_data = {
     },
     "auto-create-fields": True
 }
-print client.index(index_data)
+print client.insert(insert_data)
 ```
 
 #### Output example
@@ -235,8 +235,8 @@ print client.index(index_data)
 ```json
 {
     "status": "success",
-    "indexed-entities": 4,
-    "indexed-fields": 12,
+    "inserted-entities": 4,
+    "inserted-fields": 12,
     "took": 0.023
 }
 ```
@@ -274,7 +274,7 @@ print client.exists_entity(ids)
 ```
 
 ### `count_entity_total()`
-Count the number of indexed entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
 
 #### Request example
 
@@ -730,7 +730,7 @@ print client.delete_saved_query('my-saved-query')
 ```
 
 ### `result(json_data)`
-Retrieve indexed values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
+Retrieve inserted values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
 
 #### Request example
 
@@ -778,7 +778,7 @@ print client.result(query)
 ```
 
 ### `score(json_data)`
-Retrieve indexed values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
+Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
 
 #### Request example
 
