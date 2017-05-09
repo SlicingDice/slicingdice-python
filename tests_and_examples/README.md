@@ -11,7 +11,7 @@ The `examples/` directory contains one file for each [SlicingDice query](http://
 Each JSON file contains a list of examples, such as the following excerpt, with the following elements:
 
 * `name`: Test name, as it will be printed on screen.
-* `columns`: [columns](http://panel.slicingdice.com/docs/#data-modeling-columns) that will be created for this test.
+* `columns`: [Columns](http://panel.slicingdice.com/docs/#data-modeling-columns) that will be created for this test.
 * `insert`: Data that will be [inserted](http://panel.slicingdice.com/docs/#data-inserting) in this test.
 * `query`: [Query](http://panel.slicingdice.com/docs/#data-querying) that will extract some information for the inserted data.
 * `expected`: Expected result message after SlicingDice executes the query. Values marked as `"ignore"` won't be taken into account to determine whether the test has passed or failed.

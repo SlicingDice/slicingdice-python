@@ -38,7 +38,7 @@ class SlicingDice(SlicingDiceAPI):
         To create a column:
 
                 column_json = {
-                    'name': 'Pyslicer String column',
+                    'name': 'Pyslicer String Column',
                     'description': 'Pyslicer example description',
                     'type': 'string',
                     'cardinality': 'low'}

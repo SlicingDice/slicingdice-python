@@ -34,7 +34,7 @@ __mapped_errors = {
     32: exceptions.AccountBannedException,
     33: exceptions.AccountDisabledException,
     39: exceptions.ColumnInvalidRangeException,
-    # column errors (40 - 59)
+    # Column errors (40 - 59)
     40: exceptions.ColumnMissingParamException,
     41: exceptions.ColumnTypeException,
     42: exceptions.ColumnIntegerValuesException,

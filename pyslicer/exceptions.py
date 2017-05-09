@@ -152,7 +152,7 @@ class AccountDisabledException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-# column errors
+# Column errors
 class ColumnMissingParamException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(ColumnMissingParamException, self).__init__(
