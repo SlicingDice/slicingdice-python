@@ -4,7 +4,7 @@
 
 class URLResources(object):
     DATABASE = "/database/"
-    column = "/column/"
+    COLUMN = "/column/"
     INSERT = "/insert/"
     QUERY_COUNT_ENTITY = "/query/count/entity/"
     QUERY_COUNT_ENTITY_TOTAL = "/query/count/entity/total/"

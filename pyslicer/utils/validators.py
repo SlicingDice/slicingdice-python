@@ -259,7 +259,7 @@ class InsertValidator(SDBaseValidator):
             return True
 
 
-class columnValidator(SDBaseValidator):
+class ColumnValidator(SDBaseValidator):
     def __init__(self, data_column):
         """
         Parameters:
@@ -268,7 +268,7 @@ class columnValidator(SDBaseValidator):
         if not isinstance(data_column, list):
             data_column = [data_column]
         for dictionary_column in data_column:
-            super(columnValidator, self).__init__(dictionary_column)
+            super(ColumnValidator, self).__init__(dictionary_column)
             self._valid_type_columns = [
                 "unique-id", "boolean", "string", "integer", "decimal",
                 "enumerated", "date", "integer-time-series",
@@ -278,59 +278,59 @@ class columnValidator(SDBaseValidator):
     def _validate_name(self):
         """Validate column name"""
         if 'name' not in self.data:
-            raise exceptions.InvalidcolumnException(
+            raise exceptions.InvalidColumnException(
                 "The column should have a name.")
         else:
             name = self.data['name']
             if is_str_empty(name):
-                raise exceptions.InvalidcolumnNameException(
+                raise exceptions.InvalidColumnNameException(
                     "The column's name can't be empty/None.")
             elif len(name) > 80:
-                raise exceptions.InvalidcolumnNameException(
+                raise exceptions.InvalidColumnNameException(
                     "The column's name have a very big name.(Max: 80 chars)")
 
     def _validate_description(self):
         """Validate column description"""
         description = self.data['description']
         if is_str_empty(description):
-            raise exceptions.InvalidcolumnDescriptionException(
+            raise exceptions.InvalidColumnDescriptionException(
                 "The column's description can't be empty/None.")
         elif len(description) > 300:
-            raise exceptions.InvalidcolumnDescriptionException(
+            raise exceptions.InvalidColumnDescriptionException(
                 "The column's description have a very big name.(Max: 300chars)")
 
     def _validate_column_type(self):
         """Validate column type"""
         if 'type' not in self.data:
-            raise exceptions.InvalidcolumnException(
+            raise exceptions.InvalidColumnException(
                 "The column should have a type.")
         type_column = self.data['type']
         if type_column not in self._valid_type_columns:
-            raise exceptions.InvalidcolumnTypeException(
+            raise exceptions.InvalidColumnTypeException(
                 "This column have a invalid type.")
 
     def _validate_column_decimal_type(self):
         """Validate column decimal type"""
         decimal_types = ["decimal", "decimal-time-series"]
         if self.data['type'] not in decimal_types:
-            raise exceptions.InvalidcolumnException(
+            raise exceptions.InvalidColumnException(
                 "This column is only accepted on type 'decimal' or"
                 "'decimal-time-series'")
 
     def _check_str_type_integrity(self):
         """Check if column string type has everything you need"""
         if 'cardinality' not in self.data:
-            raise exceptions.InvalidcolumnException(
+            raise exceptions.InvalidColumnException(
                 "The column with type string should have "
                 "'cardinality' key.")
         cardinality_types = ["high", "low"]
         if self.data['cardinality'] not in cardinality_types:
-            raise exceptions.InvalidcolumnException(
+            raise exceptions.InvalidColumnException(
                 "The column 'cardinality' has invalid value.")
 
     def _validate_enumerate_type(self):
         if 'range' not in self.data:
-            raise exceptions.InvalidcolumnException(
+            raise exceptions.InvalidColumnException(
                 "The 'enumerate' type needs of the 'range' parameter.")
 
     def validator(self):

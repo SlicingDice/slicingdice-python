@@ -168,9 +168,9 @@ class SlicingDice(SlicingDiceAPI):
             format.
         """
         base_url = self._wrapper_test()
-        sd_data = validators.columnValidator(data)
+        sd_data = validators.ColumnValidator(data)
         if sd_data.validator():
-            url = base_url + URLResources.column
+            url = base_url + URLResources.COLUMN
             return self._make_request(
                 url=url,
                 req_type="post",
@@ -180,7 +180,7 @@ class SlicingDice(SlicingDiceAPI):
     def get_columns(self):
         """Get a list of columns"""
         base_url = self._wrapper_test()
-        url = base_url + URLResources.column
+        url = base_url + URLResources.COLUMN
         return self._make_request(
             url=url,
             req_type="get",
