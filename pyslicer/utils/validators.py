@@ -259,7 +259,7 @@ class InsertValidator(SDBaseValidator):
             return True
 
 
-class columnValidator(SDBaseValidator):
+class ColumnValidator(SDBaseValidator):
     def __init__(self, data_column):
         """
         Parameters:
@@ -268,7 +268,7 @@ class columnValidator(SDBaseValidator):
         if not isinstance(data_column, list):
             data_column = [data_column]
         for dictionary_column in data_column:
-            super(columnValidator, self).__init__(dictionary_column)
+            super(ColumnValidator, self).__init__(dictionary_column)
             self._valid_type_columns = [
                 "unique-id", "boolean", "string", "integer", "decimal",
                 "enumerated", "date", "integer-time-series",

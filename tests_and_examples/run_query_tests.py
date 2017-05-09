@@ -75,7 +75,7 @@ class SlicingDiceTester(object):
 
             print '  Query type: {}'.format(query_type)
 
-            auto_create = test['insert'].get('auto-create', ["table", "column"])
+            auto_create = test['insert'].get('auto-create', [])
             try:
                 if auto_create:
                     self.get_columns_from_insertion_data(test)

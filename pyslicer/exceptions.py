@@ -425,9 +425,9 @@ class QueryIncorrectOperatorUsageException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class QuerycolumnNotActiveException(SlicingDiceException):
+class QueryColumnNotActiveException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QuerycolumnNotActiveException, self).__init__(
+        super(QueryColumnNotActiveException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -461,9 +461,9 @@ class QueryIntegerException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class QuerycolumnLimitException(SlicingDiceException):
+class QueryColumnLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(QuerycolumnLimitException, self).__init__(
+        super(QueryColumnLimitException, self).__init__(
             self, *args, **kwargs)
 
 

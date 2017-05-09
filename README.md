@@ -22,7 +22,7 @@ In order to install the Python client, you only need to use [`pip`](https://pack
 **IMPORTANT:** Currently we only support Python 2.7
 
 ```bash
-pip install pyslicer --extra-insert-url=https://packagecloud.io/slicingdice/clients/pypi/simple
+pip install pyslicer --extra-index-url=https://packagecloud.io/slicingdice/clients/pypi/simple
 ```
 
 ## Usage
@@ -40,7 +40,7 @@ from pyslicer import SlicingDice
 # Configure the client
 client = SlicingDice(master_key='API_KEY', uses_test_endpoint=False)
 
-# insertion data
+# Inserting data
 insert_data = {
     "user1@slicingdice.com": {
         "age": 22
@@ -100,22 +100,10 @@ print client.get_database()
 
 ```json
 {
-    "active": [
-        {
-            "name": "Database 1",
-            "description": "My first database",
-            "data-expiration": 30,
-            "created-at": "2016-04-05T10:20:30Z"
-        }
-    ],
-    "inactive": [
-        {
-            "name": "Database 2",
-            "description": "My second database",
-            "data-expiration": 90,
-            "created-at": "2016-04-05T10:20:30Z"
-        }
-    ]
+    "name": "Database 1",
+    "description": "My first database",
+    "data-expiration": 30,
+    "created-at": "2016-04-05T10:20:30Z"
 }
 ```
 
