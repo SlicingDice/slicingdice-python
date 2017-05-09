@@ -174,7 +174,7 @@ print client.create_column(column)
 ```
 
 ### `insert(json_data)`
-insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-insert).
+Insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-insert).
 
 #### Request example
 

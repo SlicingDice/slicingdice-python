@@ -346,9 +346,9 @@ class InsertColumnStringEmptyValueException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class InsertColumnTimeseriesInvalidParameterException(SlicingDiceException):
+class InsertColumnTimeSeriesInvalidParameterException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertColumnTimeseriesInvalidParameterException, self).__init__(
+        super(InsertColumnTimeSeriesInvalidParameterException, self).__init__(
             self, *args, **kwargs)
 
 
@@ -358,9 +358,9 @@ class InsertColumnNumericInvalidValueException(SlicingDiceException):
             self, *args, **kwargs)
 
 
-class InsertColumnTimeseriesMissingValueException(SlicingDiceException):
+class InsertColumnTimeSeriesMissingValueException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(InsertColumnTimeseriesMissingValueException, self).__init__(
+        super(InsertColumnTimeSeriesMissingValueException, self).__init__(
             self, *args, **kwargs)
 
 

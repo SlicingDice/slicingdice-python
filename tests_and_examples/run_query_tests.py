@@ -112,7 +112,7 @@ class SlicingDiceTester(object):
 
         Parameters:
         test -- Dictionary containing test name, columns metadata, data to be
-            insert, query, and expected results.
+            inserted, query, and expected results.
         """
         is_singular = len(test['columns']) == 1
         column_or_columns = 'column' if is_singular else 'columns'
