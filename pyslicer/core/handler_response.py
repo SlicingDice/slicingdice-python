@@ -14,7 +14,7 @@ class SDHandlerResponse(object):
         """Find API error."""
         code_error = int(self.result['errors'][0]['code'])
         exception = slicer_exceptions[code_error]
-        raise exception(self.result['errors'][0]['message'])
+        raise exception(**self.result['errors'][0])
 
     def request_successful(self):
         """Returns true if request was successful
