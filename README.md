@@ -263,14 +263,21 @@ print client.exists_entity(ids)
 ```
 
 ### `count_entity_total()`
-Count the number of inserted entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities. This method corresponds to a [POST request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
-print client.count_entity_total()
+
+tables = {
+    'tables': [
+        'default'
+    ]
+}
+
+print client.count_entity_total(tables)
 ```
 
 #### Output example
