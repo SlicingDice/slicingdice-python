@@ -3,9 +3,9 @@
 
 
 class URLResources(object):
-    PROJECT = "/project/"
-    FIELD = "/field/"
-    INDEX = "/index/"
+    DATABASE = "/database/"
+    COLUMN = "/column/"
+    INSERT = "/insert/"
     QUERY_COUNT_ENTITY = "/query/count/entity/"
     QUERY_COUNT_ENTITY_TOTAL = "/query/count/entity/total/"
     QUERY_COUNT_EVENT = "/query/count/event/"

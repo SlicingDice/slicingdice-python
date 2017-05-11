@@ -9,11 +9,11 @@ from pyslicer.utils.data_utils import is_str_empty
 
 MAX_QUERY_SIZE = 10
 
-MAX_INDEXATION_SIZE = 1000
+MAX_INSERTION_BATCH_SIZE = 1000
 
 
 class SDBaseValidator(object):
-    """Base field, query and index validator."""
+    """Base column, query and insertion validator."""
     __metaclass__ = abc.ABCMeta
 
     def check_dictionary_value(self, dictionary_value):
@@ -32,7 +32,10 @@ class SDBaseValidator(object):
                 "This query has invalid keys or values.")
 
         for key in dictionary:
-            dictionary_value = dictionary[key]
+            if isinstance(key, dict):
+                dictionary_value = key.get('query')
+            else:
+                dictionary_value = dictionary[key]
             self.check_dictionary_value(dictionary_value)
 
     def check_list(self, dictionary_list):
@@ -133,8 +136,8 @@ class QueryValidator(SDBaseValidator):
             return True
         return False
 
-    def exceeds_fields_limit(self):
-        """Check if query exceeds the limit of 5 fields per request
+    def exceeds_columns_limit(self):
+        """Check if query exceeds the limit of 5 columns per request
 
         Returns:
             false if don't exceeds the limit
@@ -142,7 +145,7 @@ class QueryValidator(SDBaseValidator):
         for key, value in self.data.iteritems():
             if len(value) > 6:
                 raise exceptions.MaxLimitException(
-                    "The query '{0}' exceeds the limit of fields "
+                    "The query '{0}' exceeds the limit of columns "
                     "per query in request".format(key))
             if 'contains' not in value and 'equal' not in value:
                 raise exceptions.InvalidQueryException(
@@ -166,7 +169,7 @@ class QueryValidator(SDBaseValidator):
     def validator(self):
         """Returns true if query is ok"""
         if not (self.exceeds_queries_limit() and
-                self.exceeds_fields_limit() and
+                self.exceeds_columns_limit() and
                 self.exceeds_values_contains_limit()):
             return True
         return False
@@ -186,16 +189,16 @@ class QueryDataExtractionValidator(SDBaseValidator):
         Returns:
             true if query is valid
         """
-        if "fields" in self.data:
-            value = self.data["fields"]
+        if "columns" in self.data:
+            value = self.data["columns"]
             if not isinstance(value, list):
                 raise exceptions.InvalidQueryException(
-                    "The key 'fields' in query has a invalid value.")
+                    "The key 'columns' in query has a invalid value.")
             else:
                 if len(value) > 10:
                     raise exceptions.InvalidQueryException(
-                        "The key 'fields' in data extraction result must "
-                        "have up to 10 fields.")
+                        "The key 'columns' in data extraction result must "
+                        "have up to 10 columns.")
         if "limit" in self.data:
             limit = self.data['limit']
             if not isinstance(limit, int):
@@ -209,41 +212,41 @@ class QueryDataExtractionValidator(SDBaseValidator):
         return False
 
 
-class IndexValidator(SDBaseValidator):
-    def __init__(self, dictionary_index):
+class InsertValidator(SDBaseValidator):
+    def __init__(self, dictionary_to_insert):
         """
         Parameters:
-            dictionary_index(dict) -- A dict query
+            dictionary_to_insert(dict) -- A dict query
         """
-        super(IndexValidator, self).__init__(dictionary_index)
+        super(InsertValidator, self).__init__(dictionary_to_insert)
 
-    def _has_empty_field(self):
-        """Check empty fields in dictionary
+    def _has_empty_column(self):
+        """Check empty columns in dictionary
         Returns:
-            false if dictionary don't have empty fields
+            false if dictionary don't have empty columns
         """
         for value in self.data.values():
-            # Value is a dictionary when it is an entity being indexed:
+            # Value is a dictionary when it is an entity being inserted:
             # "my-entity": {"year": 2016}
-            # It can also be a parameter, such as "auto-create-fields":
-            # "auto-create-fields": true
+            # It can also be a parameter, such as "auto-create":
+            # "auto-create": ["table", "column"]
             if not isinstance(
-                    value, (dict, bool)) or value is None or len(
+                    value, (dict, list)) or value is None or len(
                         str(value)) == 0:
                 raise exceptions.WrongTypeException(
                     "The value for an id should be a dictionary")
         return False
 
-    def check_indexation_size(self):
-        indexation_size = len(self.data)
+    def check_insertion_size(self):
+        insertion_batch_size = len(self.data)
 
-        # auto-create-fields property should not be considered as indexation
-        if "auto-create-fields" in self.data:
-            indexation_size -= 1
+        # auto-create property should not be considered as insertion of data
+        if "auto-create" in self.data:
+            insertion_batch_size -= 1
 
-        if indexation_size > MAX_INDEXATION_SIZE:
-            raise exceptions.InvalidIndexException(
-                "Your index command shouldn't have more than 1000 values.")
+        if insertion_batch_size > MAX_INSERTION_BATCH_SIZE:
+            raise exceptions.InvalidInsertException(
+                "Your insertion command shouldn't have more than 1000 values.")
 
         return True
 
@@ -252,91 +255,91 @@ class IndexValidator(SDBaseValidator):
         Returns:
             true if query is valid
         """
-        if not self._has_empty_field() and self.check_indexation_size():
+        if not self._has_empty_column() and self.check_insertion_size():
             return True
 
 
-class FieldValidator(SDBaseValidator):
-    def __init__(self, data_field):
+class ColumnValidator(SDBaseValidator):
+    def __init__(self, data_column):
         """
         Parameters:
-            data_field -- A dict or list of fields
+            data_column -- A dict or list of columns
         """
-        if not isinstance(data_field, list):
-            data_field = [data_field]
-        for dictionary_field in data_field:
-            super(FieldValidator, self).__init__(dictionary_field)
-            self._valid_type_fields = [
+        if not isinstance(data_column, list):
+            data_column = [data_column]
+        for dictionary_column in data_column:
+            super(ColumnValidator, self).__init__(dictionary_column)
+            self._valid_type_columns = [
                 "unique-id", "boolean", "string", "integer", "decimal",
                 "enumerated", "date", "integer-time-series",
                 "decimal-time-series", "string-time-series"
             ]
 
     def _validate_name(self):
-        """Validate field name"""
+        """Validate column name"""
         if 'name' not in self.data:
-            raise exceptions.InvalidFieldException(
-                "The field should have a name.")
+            raise exceptions.InvalidColumnException(
+                "The column should have a name.")
         else:
             name = self.data['name']
             if is_str_empty(name):
-                raise exceptions.InvalidFieldNameException(
-                    "The field's name can't be empty/None.")
+                raise exceptions.InvalidColumnNameException(
+                    "The column's name can't be empty/None.")
             elif len(name) > 80:
-                raise exceptions.InvalidFieldNameException(
-                    "The field's name have a very big name.(Max: 80 chars)")
+                raise exceptions.InvalidColumnNameException(
+                    "The column's name have a very big name.(Max: 80 chars)")
 
     def _validate_description(self):
-        """Validate field description"""
+        """Validate column description"""
         description = self.data['description']
         if is_str_empty(description):
-            raise exceptions.InvalidFieldDescriptionException(
-                "The field's description can't be empty/None.")
+            raise exceptions.InvalidColumnDescriptionException(
+                "The column's description can't be empty/None.")
         elif len(description) > 300:
-            raise exceptions.InvalidFieldDescriptionException(
-                "The field's description have a very big name.(Max: 300chars)")
+            raise exceptions.InvalidColumnDescriptionException(
+                "The column's description have a very big name.(Max: 300chars)")
 
-    def _validate_field_type(self):
-        """Validate field type"""
+    def _validate_column_type(self):
+        """Validate column type"""
         if 'type' not in self.data:
-            raise exceptions.InvalidFieldException(
-                "The field should have a type.")
-        type_field = self.data['type']
-        if type_field not in self._valid_type_fields:
-            raise exceptions.InvalidFieldTypeException(
-                "This field have a invalid type.")
+            raise exceptions.InvalidColumnException(
+                "The column should have a type.")
+        type_column = self.data['type']
+        if type_column not in self._valid_type_columns:
+            raise exceptions.InvalidColumnTypeException(
+                "This column have a invalid type.")
 
-    def _validate_field_decimal_type(self):
-        """Validate field decimal type"""
+    def _validate_column_decimal_type(self):
+        """Validate column decimal type"""
         decimal_types = ["decimal", "decimal-time-series"]
         if self.data['type'] not in decimal_types:
-            raise exceptions.InvalidFieldException(
-                "This field is only accepted on type 'decimal' or"
+            raise exceptions.InvalidColumnException(
+                "This column is only accepted on type 'decimal' or"
                 "'decimal-time-series'")
 
     def _check_str_type_integrity(self):
-        """Check if field string type has everything you need"""
+        """Check if column string type has everything you need"""
         if 'cardinality' not in self.data:
-            raise exceptions.InvalidFieldException(
-                "The field with type string should have "
+            raise exceptions.InvalidColumnException(
+                "The column with type string should have "
                 "'cardinality' key.")
         cardinality_types = ["high", "low"]
         if self.data['cardinality'] not in cardinality_types:
-            raise exceptions.InvalidFieldException(
-                "The field 'cardinality' has invalid value.")
+            raise exceptions.InvalidColumnException(
+                "The column 'cardinality' has invalid value.")
 
     def _validate_enumerate_type(self):
         if 'range' not in self.data:
-            raise exceptions.InvalidFieldException(
+            raise exceptions.InvalidColumnException(
                 "The 'enumerate' type needs of the 'range' parameter.")
 
     def validator(self):
         """
         Returns:
-            true if new field is valid
+            true if new column is valid
         """
         self._validate_name()
-        self._validate_field_type()
+        self._validate_column_type()
         if self.data['type'] == "string":
             self._check_str_type_integrity()
         if self.data['type'] == "enumerated":
@@ -344,5 +347,5 @@ class FieldValidator(SDBaseValidator):
         if 'description' in self.data:
             self._validate_description()
         if 'decimal-place' in self.data:
-            self._validate_field_decimal_type()
+            self._validate_column_decimal_type()
         return True

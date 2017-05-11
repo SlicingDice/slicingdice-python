@@ -35,14 +35,14 @@ class SlicingDice(SlicingDiceAPI):
             from pyslicer.api import SlicingDice
             sd = SlicingDice('my-token')
 
-        To create a field:
+        To create a column:
 
-                field_json = {
-                    'name': 'Pyslicer String Field',
+                column_json = {
+                    'name': 'Pyslicer String Column',
                     'description': 'Pyslicer example description',
                     'type': 'string',
                     'cardinality': 'low'}
-                print sd.create_field(field_json)
+                print sd.create_column(column_json)
 
         To make a query:
 
@@ -50,14 +50,14 @@ class SlicingDice(SlicingDiceAPI):
                     'type': 'count',
                     'select': [
                         {
-                            "pyslicer-string-field":
+                            "pyslicer-string-column":
                                 {
                                     "equal": "test_value_1"
                                 }
                         },
                         "or",
                         {
-                            "pyslicer-string-field":
+                            "pyslicer-string-column":
                                 {
                                     "equal": "test_value_2"
                                 }
@@ -66,19 +66,19 @@ class SlicingDice(SlicingDiceAPI):
                 }
                 print sd.query(query_json)
 
-        To make a index:
+        To insert data:
 
-                indexing_json = {
+                inserting_json = {
                     'foo@bar.com': {
-                        'pyslicer-string-field': 'test_value_1',
-                        'pyslicer-integer-field': 42,
+                        'pyslicer-string-column': 'test_value_1',
+                        'pyslicer-integer-column': 42,
                     },
                     'baz@bar.com': {
-                        'pyslicer-string-field': 'test_value_2',
-                        'pyslicer-integer-field': 42,
+                        'pyslicer-string-column': 'test_value_2',
+                        'pyslicer-integer-column': 42,
                     },
                 }
-                print sd.index(indexing_json)
+                print sd.insert(inserting_json)
     """
     def __init__(
         self, write_key=None, read_key=None, master_key=None,
@@ -151,56 +151,52 @@ class SlicingDice(SlicingDiceAPI):
             req_type=req_type,
             key_level=2)
 
-    def get_projects(self):
-        """Get a list of projects (all)"""
-        url = SlicingDice.BASE_URL + URLResources.PROJECT
+    def get_database(self):
+        """Get a database associated with this client (related to keys passed on construction)"""
+        url = SlicingDice.BASE_URL + URLResources.DATABASE
         return self._make_request(
             url=url,
             req_type="get",
             key_level=2
         )
 
-    def create_field(self, data):
-        """Create field in Slicing Dice
+    def create_column(self, data):
+        """Create column in Slicing Dice
 
         Keyword arguments:
-        data -- A dictionary or list on the Slicing Dice field
+        data -- A dictionary or list on the Slicing Dice column
             format.
         """
         base_url = self._wrapper_test()
-        sd_data = validators.FieldValidator(data)
+        sd_data = validators.ColumnValidator(data)
         if sd_data.validator():
-            url = base_url + URLResources.FIELD
+            url = base_url + URLResources.COLUMN
             return self._make_request(
                 url=url,
                 req_type="post",
                 json_data=ujson.dumps(data),
                 key_level=1)
 
-    def get_fields(self):
-        """Get a list of fields"""
+    def get_columns(self):
+        """Get a list of columns"""
         base_url = self._wrapper_test()
-        url = base_url + URLResources.FIELD
+        url = base_url + URLResources.COLUMN
         return self._make_request(
             url=url,
             req_type="get",
             key_level=2)
 
-    def index(self, data, auto_create_fields=False):
-        """Make a index in Slicing Dice API
+    def insert(self, data):
+        """Insert data into Slicing Dice API
 
         Keyword arguments:
-        data -- A dictionary in the Slicing Dice index
+        data -- A dictionary in the Slicing Dice data format
             format.
-        auto_create_fields(bool) -- if true SlicingDice API will automatically
-            create nonexistent fields (default False)
         """
-        if auto_create_fields:
-            data["auto-create-fields"] = True
         base_url = self._wrapper_test()
-        sd_data = validators.IndexValidator(data)
+        sd_data = validators.InsertValidator(data)
         if sd_data.validator():
-            url = base_url + URLResources.INDEX
+            url = base_url + URLResources.INSERT
             return self._make_request(
                 url=url,
                 json_data=ujson.dumps(data),
@@ -247,10 +243,10 @@ class SlicingDice(SlicingDiceAPI):
         if "query" not in query:
             raise exceptions.InvalidQueryException(
                 "The aggregation query must have up the key 'query'.")
-        fields = query["query"]
-        if len(fields) > 5:
+        columns = query["query"]
+        if len(columns) > 5:
             raise exceptions.MaxLimitException(
-                "The aggregation query must have up to 5 fields per request.")
+                "The aggregation query must have up to 5 columns per request.")
         return self._make_request(
             url=url,
             json_data=ujson.dumps(query),
