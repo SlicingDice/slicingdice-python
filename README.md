@@ -9,7 +9,7 @@ Official Python client for [SlicingDice](http://www.slicingdice.com/), Data Ware
 
 If you are new to SlicingDice, check our [quickstart guide](http://panel.slicingdice.com/docs/#quickstart-guide) and learn to use it in 15 minutes.
 
-Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [indexing](http://panel.slicingdice.com/docs/#data-indexing), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
+Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [insertion](http://panel.slicingdice.com/docs/#data-insertion), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
 
 ## Tests and Examples
 
@@ -40,14 +40,14 @@ from pyslicer import SlicingDice
 # Configure the client
 client = SlicingDice(master_key='API_KEY', uses_test_endpoint=False)
 
-# Indexing data
-index_data = {
+# Inserting data
+insert_data = {
     "user1@slicingdice.com": {
         "age": 22
     },
-    "auto-create-fields": True
+    "auto-create": ["table", "column"]
 }
-client.index(index_data)
+client.insert(insert_data)
 
 # Querying data
 query_data = {
@@ -85,49 +85,37 @@ print client.count_entity(query_data)
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
 * `uses_test_endpoint (bool)` - If false the client will send requests to production end-point, otherwise to tests end-point.
 
-### `get_projects()`
-Get all created projects, both active and inactive ones. This method corresponds to a [GET request at /project](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-project).
+### `get_database()`
+Get information about current database(related to api keys informed on construction). This method corresponds to a [GET request at /database](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-database).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-print client.get_projects()
+print client.get_database()
 ```
 
 #### Output example
 
 ```json
 {
-    "active": [
-        {
-            "name": "Project 1",
-            "description": "My first project",
-            "data-expiration": 30,
-            "created-at": "2016-04-05T10:20:30Z"
-        }
-    ],
-    "inactive": [
-        {
-            "name": "Project 2",
-            "description": "My second project",
-            "data-expiration": 90,
-            "created-at": "2016-04-05T10:20:30Z"
-        }
-    ]
+    "name": "Database 1",
+    "description": "My first database",
+    "data-expiration": 30,
+    "created-at": "2016-04-05T10:20:30Z"
 }
 ```
 
-### `get_fields(test=False)`
-Get all created fields, both active and inactive ones. This method corresponds to a [GET request at /field](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-field).
+### `get_columns(test=False)`
+Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-column).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-print client.get_fields()
+print client.get_columns()
 ```
 
 #### Output example
@@ -158,22 +146,22 @@ print client.get_fields()
 }
 ```
 
-### `create_field(json_data, test=False)`
-Create a new field. This method corresponds to a [POST request at /field](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-field).
+### `create_column(json_data, test=False)`
+Create a new column. This method corresponds to a [POST request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-column).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-field = {
+column = {
     "name": "Year",
     "api-name": "year",
     "type": "integer",
     "description": "Year of manufacturing",
     "storage": "latest-value"
 }
-print client.create_field(field)
+print client.create_column(column)
 ```
 
 #### Output example
@@ -185,15 +173,15 @@ print client.create_field(field)
 }
 ```
 
-### `index(json_data, auto_create_fields=False)`
-Index data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /index](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-index).
+### `insert(json_data)`
+Insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-insert).
 
 #### Request example
 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_WRITE_API_KEY', uses_test_endpoint=False)
-index_data = {
+insert_data = {
     "user1@slicingdice.com": {
         "car-model": "Ford Ka",
         "year": 2016
@@ -226,9 +214,9 @@ index_data = {
             "date": "2016-08-17T13:23:47+00:00"
         }
     },
-    "auto-create-fields": True
+    "auto-create": ["table", "column"]
 }
-print client.index(index_data)
+print client.insert(insert_data)
 ```
 
 #### Output example
@@ -236,14 +224,14 @@ print client.index(index_data)
 ```json
 {
     "status": "success",
-    "indexed-entities": 4,
-    "indexed-fields": 12,
+    "inserted-entities": 4,
+    "inserted-columns": 12,
     "took": 0.023
 }
 ```
 
 ### `exists_entity(ids)`
-Verify which entities exist in a project given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
+Verify which entities exist in a database given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
 
 #### Request example
 
@@ -275,7 +263,7 @@ print client.exists_entity(ids)
 ```
 
 ### `count_entity_total()`
-Count the number of indexed entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities. This method corresponds to a [GET request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
 
 #### Request example
 
@@ -466,7 +454,7 @@ print client.top_values(query)
 ```
 
 ### `aggregation(json_data)`
-Return the aggregation of all fields in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
+Return the aggregation of all columns in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
 
 #### Request example
 
@@ -745,7 +733,7 @@ print client.delete_saved_query('my-saved-query')
 ```
 
 ### `result(json_data)`
-Retrieve indexed values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
+Retrieve inserted values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
 
 #### Request example
 
@@ -766,7 +754,7 @@ query = {
             }
         }
     ],
-    "fields": ["car-model", "year"],
+    "columns": ["car-model", "year"],
     "limit": 2
 }
 print client.result(query)
@@ -793,7 +781,7 @@ print client.result(query)
 ```
 
 ### `score(json_data)`
-Retrieve indexed values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
+Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
 
 #### Request example
 
@@ -814,7 +802,7 @@ query = {
             }
         }
     ],
-    "fields": ["car-model", "year"],
+    "columns": ["car-model", "year"],
     "limit": 2
 }
 print client.score(query)

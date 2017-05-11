@@ -1,8 +1,8 @@
 """Tests SlicingDice endpoints.
 
 This script tests SlicingDice by running tests suites, each composed by:
-    - Creating fields
-    - Indexing data
+    - Creating columns
+    - Insertion of data
     - Querying
     - Comparing results
 
@@ -38,8 +38,8 @@ class SlicingDiceTester(object):
         self.client = SlicingDice(master_key=api_key,
                                   uses_test_endpoint=uses_test_endpoint)
 
-        # Translation table for fields with timestamp
-        self.field_translation = {}
+        # Translation table for columns with timestamp
+        self.column_translation = {}
 
         # Sleep time in seconds
         self.sleep_time = int(os.environ.get("CLIENT_SLEEP_TIME", 10))
@@ -65,7 +65,7 @@ class SlicingDiceTester(object):
         num_tests = len(test_data)
 
         for i, test in enumerate(test_data):
-            self._empty_field_translation()
+            self._empty_column_translation()
 
             print '({}/{}) Executing test "{}"'.format(i + 1, num_tests,
                                                        test['name'])
@@ -75,13 +75,13 @@ class SlicingDiceTester(object):
 
             print '  Query type: {}'.format(query_type)
 
-            auto_create = test['index'].get('auto-create-fields', False)
+            auto_create = test['insert'].get('auto-create', [])
             try:
                 if auto_create:
-                    self.get_fields_from_index_data(test)
+                    self.get_columns_from_insertion_data(test)
                 else:
-                    self.create_fields(test)
-                self.index_data(test)
+                    self.create_columns(test)
+                self.insert_data(test)
                 result = self.execute_query(query_type, test)
             except SlicingDiceException as e:
                 result = {'result': {'error': str(e)}}
@@ -89,10 +89,10 @@ class SlicingDiceTester(object):
             self.compare_result(query_type, test, result)
             print
 
-    def _empty_field_translation(self):
-        """Erase field translation table so tests don't interfere each
+    def _empty_column_translation(self):
+        """Erase column translation table so tests don't interfere each
         other."""
-        self.field_translation = {}
+        self.column_translation = {}
 
     def load_test_data(self, query_type):
         """Load all test data from JSON file for a given query type.
@@ -107,42 +107,42 @@ class SlicingDiceTester(object):
         filename = self.path + query_type + self.extension
         return json.load(open(filename))
 
-    def create_fields(self, test):
-        """Create fields for a given test.
+    def create_columns(self, test):
+        """Create columns for a given test.
 
         Parameters:
-        test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+        test -- Dictionary containing test name, columns metadata, data to be
+            inserted, query, and expected results.
         """
-        is_singular = len(test['fields']) == 1
-        field_or_fields = 'field' if is_singular else 'fields'
-        print '  Creating {} {}'.format(len(test['fields']), field_or_fields)
+        is_singular = len(test['columns']) == 1
+        column_or_columns = 'column' if is_singular else 'columns'
+        print '  Creating {} {}'.format(len(test['columns']), column_or_columns)
 
-        for field in test['fields']:
-            self._append_timestamp_to_field_name(field)
-            self.client.create_field(field)
+        for column in test['columns']:
+            self._append_timestamp_to_column_name(column)
+            self.client.create_column(column)
 
             if self.verbose:
-                print '    - {}'.format(field['api-name'])
+                print '    - {}'.format(column['api-name'])
 
-    def _append_timestamp_to_field_name(self, field):
-        """Append integer timestamp to field name.
+    def _append_timestamp_to_column_name(self, column):
+        """Append integer timestamp to column name.
 
         This technique allows the same test suite to be executed over and over
-        again, since each execution will use different field names.
+        again, since each execution will use different column names.
 
         Parameters:
-        field -- Dictionary containing field data, such as "name" and
+        column -- Dictionary containing column data, such as "name" and
             "api-name".
         """
-        old_name = '"{}"'.format(field['api-name'])
+        old_name = '"{}"'.format(column['api-name'])
 
         timestamp = self._get_timestamp()
-        field['name'] += timestamp
-        field['api-name'] += timestamp
-        new_name = '"{}"'.format(field['api-name'])
+        column['name'] += timestamp
+        column['api-name'] += timestamp
+        new_name = '"{}"'.format(column['api-name'])
 
-        self.field_translation[old_name] = new_name
+        self.column_translation[old_name] = new_name
 
     @staticmethod
     def _get_timestamp():
@@ -154,40 +154,40 @@ class SlicingDiceTester(object):
         # Appending integer timestamp including second decimals
         return str(int(time.time() * 10))
 
-    def get_fields_from_index_data(self, test):
-        """Get all field names from index data and translate them.
+    def get_columns_from_insertion_data(self, test):
+        """Get all column names from inserted data and translate them.
 
         Parameters:
-        test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+        test -- Dictionary containing test name, columns metadata, data to be
+            inserted, query, and expected results.
         """
-        print '  Auto-creating fields'
-        for entity, data in test['index'].items():
-            if entity != 'auto-create-fields':
-                for field in data.keys():
-                    if field not in self.field_translation:
-                        self._append_timestamp_to_field_name(
-                            {"api-name": field, "name": field})
+        print '  Auto-creating columns'
+        for entity, data in test['insert'].items():
+            if entity != 'auto-create':
+                for column in data.keys():
+                    if column not in self.column_translation:
+                        self._append_timestamp_to_column_name(
+                            {"api-name": column, "name": column})
 
-    def index_data(self, test):
-        """Index data to SlicingDice.
+    def insert_data(self, test):
+        """Insert data to SlicingDice.
 
         Parameters:
-        test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+        test -- Dictionary containing test name, columns metadata, data to be
+            inserted, query, and expected results.
         """
-        is_singular = len(test['index']) == 1
+        is_singular = len(test['insert']) == 1
         entity_or_entities = 'entity' if is_singular else 'entities'
-        print '  Indexing {} {}'.format(len(test['index']), entity_or_entities)
+        print '  Inserting {} {}'.format(len(test['insert']), entity_or_entities)
 
-        index_data = self._translate_field_names(test['index'])
+        insertion_data = self._translate_column_names(test['insert'])
 
         if self.verbose:
-            print '    - {}'.format(index_data)
+            print '    - {}'.format(insertion_data)
 
-        self.client.index(index_data)
+        self.client.insert(insertion_data)
 
-        # Wait a few seconds so the data can be indexed by SlicingDice
+        # Wait a few seconds so the data can be inserted by SlicingDice
         time.sleep(self.sleep_time)
 
     def execute_query(self, query_type, test):
@@ -196,10 +196,10 @@ class SlicingDiceTester(object):
         Parameters:
         query_type -- String containing the name of the query that will be
             tested. This name must match the JSON file name as well.
-        test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+        test -- Dictionary containing test name, columns metadata, data to be
+            inserted, query, and expected results.
         """
-        query_data = self._translate_field_names(test['query'])
+        query_data = self._translate_column_names(test['query'])
         print '  Querying'
 
         if self.verbose:
@@ -226,18 +226,18 @@ class SlicingDiceTester(object):
 
         return result
 
-    def _translate_field_names(self, json_data):
-        """Translate field name to match field name with timestamp.
+    def _translate_column_names(self, json_data):
+        """Translate column name to match column name with timestamp.
 
         Parameters:
-        json_data -- JSON data to have the field name translated.
+        json_data -- JSON data to have the column name translated.
 
         Return:
-        JSON data with new field name.
+        JSON data with new column name.
         """
         data_string = json.dumps(json_data)
 
-        for old_name, new_name in self.field_translation.items():
+        for old_name, new_name in self.column_translation.items():
             data_string = data_string.replace(old_name, new_name)
 
         return json.loads(data_string)
@@ -248,12 +248,12 @@ class SlicingDiceTester(object):
         Parameters:
         query_type -- String containing the name of the query that will be
             tested. This name must match the JSON file name as well.
-        test -- Dictionary containing test name, fields metadata, data to be
-            indexed, query, and expected results.
+        test -- Dictionary containing test name, columns metadata, data to be
+            inserted, query, and expected results.
         result -- Dictionary containing received result after querying
             SlicingDice.
         """
-        expected = self._translate_field_names(test['expected'])
+        expected = self._translate_column_names(test['expected'])
 
         for key, value in expected.items():
             if value == 'ignore':

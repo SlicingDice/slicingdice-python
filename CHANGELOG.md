@@ -2,6 +2,7 @@
 
 ### Updated
 - Update API errors code
+- Remove auto_create_columns parameter from insert method
 
 ## [1.0.0]
 ### Added
