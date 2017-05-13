@@ -213,13 +213,22 @@ class SlicingDice(SlicingDiceAPI):
         url = base_url + URLResources.QUERY_COUNT_ENTITY
         return self._count_query_wrapper(url, query)
 
-    def count_entity_total(self):
-        """Make a count entity total query"""
+    def count_entity_total(self, tables=[]):
+        """Make a count entity total query
+
+        Keyword arguments:
+        tables -- A dictionary containing the tables in which
+                  the total query will be performed
+        """
+        query = {
+            'tables': tables
+        }
         base_url = self._wrapper_test()
         url = base_url + URLResources.QUERY_COUNT_ENTITY_TOTAL
         return self._make_request(
             url=url,
-            req_type="get",
+            req_type="post",
+            json_data=ujson.dumps(query),
             key_level=0)
 
     def count_event(self, query):
