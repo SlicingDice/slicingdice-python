@@ -1,8 +1,10 @@
 # Change Log
 
+## [2.0.0]
 ### Updated
 - Update API errors code
 - Remove auto_create_columns parameter from insert method
+- Rename SlicingDice API endpoints
 
 ## [1.0.0]
 ### Added
