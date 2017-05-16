@@ -3,7 +3,7 @@
 
 import requests
 
-import pyslicer.exceptions as exceptions
+from .. import exceptions
 
 
 class Requester(object):

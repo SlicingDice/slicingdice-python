@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import abc
+import six
 
-import pyslicer.exceptions as exceptions
-
+from .. import exceptions
 from pyslicer.utils.data_utils import is_str_empty
 
 MAX_QUERY_SIZE = 10
@@ -142,7 +142,7 @@ class QueryValidator(SDBaseValidator):
         Returns:
             false if don't exceeds the limit
         """
-        for key, value in self.data.iteritems():
+        for key, value in six.iteritems(self.data):
             if len(value) > 6:
                 raise exceptions.MaxLimitException(
                     "The query '{0}' exceeds the limit of columns "
@@ -159,7 +159,7 @@ class QueryValidator(SDBaseValidator):
         Returns:
             false if don't exceeds the limit
         """
-        for key, value in self.data.iteritems():
+        for key, value in six.iteritems(self.data):
             if "contains" in value and len(value['contains']) > 5:
                 raise exceptions.MaxLimitException(
                     "The query '{0}' exceeds the limit of contains "

@@ -19,8 +19,6 @@ Whether you want to test the client installation or simply check more examples o
 
 In order to install the Python client, you only need to use [`pip`](https://packaging.python.org/installing/).
 
-**IMPORTANT:** Currently we only support Python 2.7
-
 ```bash
 pip install pyslicer --extra-index-url=https://packagecloud.io/slicingdice/clients/pypi/simple
 ```
@@ -63,7 +61,7 @@ query_data = {
         }
     ]
 }
-print client.count_entity(query_data)
+print(client.count_entity(query_data))
 ```
 
 ## Reference
@@ -93,7 +91,7 @@ Get information about current database(related to api keys informed on construct
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-print client.get_database()
+print(client.get_database())
 ```
 
 #### Output example
@@ -115,7 +113,7 @@ Get all created columns, both active and inactive ones. This method corresponds 
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-print client.get_columns()
+print(client.get_columns())
 ```
 
 #### Output example
@@ -161,7 +159,7 @@ column = {
     "description": "Year of manufacturing",
     "storage": "latest-value"
 }
-print client.create_column(column)
+print(client.create_column(column))
 ```
 
 #### Output example
@@ -216,7 +214,7 @@ insert_data = {
     },
     "auto-create": ["table", "column"]
 }
-print client.insert(insert_data)
+print(client.insert(insert_data))
 ```
 
 #### Output example
@@ -243,7 +241,7 @@ ids = [
     "user2@slicingdice.com",
     "user3@slicingdice.com"
 ]
-print client.exists_entity(ids)
+print(client.exists_entity(ids))
 ```
 
 #### Output example
@@ -271,7 +269,7 @@ Count the number of inserted entities in the whole database. This method corresp
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 
-print client.count_entity_total()
+print(client.count_entity_total())
 ```
 
 #### Output example
@@ -297,7 +295,7 @@ client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
 
 tables = ['default']
 
-print client.count_entity_total(tables)
+print(client.count_entity_total(tables))
 ```
 
 #### Output example
@@ -350,7 +348,7 @@ query = [
         "bypass-cache": False
     }
 ]
-print client.count_entity(query)
+print(client.count_entity(query))
 ```
 
 #### Output example
@@ -406,7 +404,7 @@ query = [
         "bypass-cache": True
     }
 ]
-print client.count_event(query)
+print(client.count_event(query))
 ```
 
 #### Output example
@@ -438,7 +436,7 @@ query = {
         "car-model": 3
     }
 }
-print client.top_values(query)
+print(client.top_values(query))
 ```
 
 #### Output example
@@ -499,7 +497,7 @@ query = {
         }
     ]
 }
-print client.aggregation(query)
+print(client.aggregation(query))
 ```
 
 #### Output example
@@ -537,7 +535,7 @@ Get all saved queries. This method corresponds to a [GET request at /query/saved
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-print client.get_saved_queries()
+print(client.get_saved_queries())
 ```
 
 #### Output example
@@ -606,7 +604,7 @@ query = {
     ],
     "cache-period": 100
 }
-print client.create_saved_query(query)
+print(client.create_saved_query(query))
 ```
 
 #### Output example
@@ -659,7 +657,7 @@ new_query = {
     ],
     "cache-period": 100
 }
-print client.update_saved_query('my-saved-query', new_query)
+print(client.update_saved_query('my-saved-query', new_query))
 ```
 
 #### Output example
@@ -695,7 +693,7 @@ Executed a saved query at SlicingDice. This method corresponds to a [GET request
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
-print client.get_saved_query('my-saved-query')
+print(client.get_saved_query('my-saved-query'))
 ```
 
 #### Output example
@@ -732,7 +730,7 @@ Delete a saved query at SlicingDice. This method corresponds to a [DELETE reques
 ```python
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
-print client.delete_saved_query('my-saved-query')
+print(client.delete_saved_query('my-saved-query'))
 ```
 
 #### Output example
@@ -784,7 +782,7 @@ query = {
     "columns": ["car-model", "year"],
     "limit": 2
 }
-print client.result(query)
+print(client.result(query))
 ```
 
 #### Output example
@@ -832,7 +830,7 @@ query = {
     "columns": ["car-model", "year"],
     "limit": 2
 }
-print client.score(query)
+print(client.score(query))
 ```
 
 #### Output example

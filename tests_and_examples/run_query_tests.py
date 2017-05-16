@@ -67,13 +67,13 @@ class SlicingDiceTester(object):
         for i, test in enumerate(test_data):
             self._empty_column_translation()
 
-            print '({}/{}) Executing test "{}"'.format(i + 1, num_tests,
-                                                       test['name'])
+            print('({}/{}) Executing test "{}"'.format(i + 1, num_tests,
+                                                       test['name']))
 
             if 'description' in test:
-                print '  Description: {}'.format(test['description'])
+                print('  Description: {}'.format(test['description']))
 
-            print '  Query type: {}'.format(query_type)
+            print('  Query type: {}'.format(query_type))
 
             auto_create = test['insert'].get('auto-create', [])
             try:
@@ -116,14 +116,15 @@ class SlicingDiceTester(object):
         """
         is_singular = len(test['columns']) == 1
         column_or_columns = 'column' if is_singular else 'columns'
-        print '  Creating {} {}'.format(len(test['columns']), column_or_columns)
+        print('  Creating {} {}'.format(len(test['columns']),
+                                        column_or_columns))
 
         for column in test['columns']:
             self._append_timestamp_to_column_name(column)
             self.client.create_column(column)
 
             if self.verbose:
-                print '    - {}'.format(column['api-name'])
+                print('    - {}'.format(column['api-name']))
 
     def _append_timestamp_to_column_name(self, column):
         """Append integer timestamp to column name.
@@ -161,7 +162,7 @@ class SlicingDiceTester(object):
         test -- Dictionary containing test name, columns metadata, data to be
             inserted, query, and expected results.
         """
-        print '  Auto-creating columns'
+        print('  Auto-creating columns')
         for entity, data in test['insert'].items():
             if entity != 'auto-create':
                 for column in data.keys():
@@ -178,12 +179,13 @@ class SlicingDiceTester(object):
         """
         is_singular = len(test['insert']) == 1
         entity_or_entities = 'entity' if is_singular else 'entities'
-        print '  Inserting {} {}'.format(len(test['insert']), entity_or_entities)
+        print('  Inserting {} {}'.format(len(test['insert']),
+                                         entity_or_entities))
 
         insertion_data = self._translate_column_names(test['insert'])
 
         if self.verbose:
-            print '    - {}'.format(insertion_data)
+            print('    - {}'.format(insertion_data))
 
         self.client.insert(insertion_data)
 
@@ -200,10 +202,10 @@ class SlicingDiceTester(object):
             inserted, query, and expected results.
         """
         query_data = self._translate_column_names(test['query'])
-        print '  Querying'
+        print('  Querying')
 
         if self.verbose:
-            print '    - {}'.format(query_data)
+            print('    - {}'.format(query_data))
 
         if query_type == 'count_entity':
             result = self.client.count_entity(
@@ -265,22 +267,22 @@ class SlicingDiceTester(object):
                 try:
                     result2 = self.execute_query(query_type, test)
                     if value == result2[key]:
-                        print "  Passed at second try"
+                        print("  Passed at second try")
                         continue
                 except SlicingDiceException as e:
-                    print str(e)
+                    print(str(e))
 
                 self.num_fails += 1
                 self.failed_tests.append(test['name'])
 
-                print '  Expected: "{}": {}'.format(key, value)
-                print '  Result:   "{}": {}'.format(key, result[key])
-                print '  Status: Failed'
+                print('  Expected: "{}": {}'.format(key, value))
+                print('  Result:   "{}": {}'.format(key, result[key]))
+                print('  Status: Failed')
                 return
 
         self.num_successes += 1
 
-        print '  Status: Passed'
+        print('  Status: Passed')
 
 
 def main():
@@ -317,22 +319,22 @@ def main():
     except KeyboardInterrupt:
         pass
 
-    print 'Results:'
-    print '  Successes:', sd_tester.num_successes
-    print '  Fails:', sd_tester.num_fails
+    print('Results:')
+    print('  Successes:', sd_tester.num_successes)
+    print('  Fails:', sd_tester.num_fails)
 
     for failed_test in sd_tester.failed_tests:
-        print '    - {}'.format(failed_test)
+        print('    - {}'.format(failed_test))
 
     print
 
     if sd_tester.num_fails > 0:
         is_singular = sd_tester.num_fails == 1
         test_or_tests = 'test has' if is_singular else 'tests have'
-        print 'FAIL: {} {} failed'.format(sd_tester.num_fails, test_or_tests)
+        print('FAIL: {} {} failed'.format(sd_tester.num_fails, test_or_tests))
         sys.exit(1)
     else:
-        print 'SUCCESS: All tests passed'
+        print('SUCCESS: All tests passed')
 
 
 if __name__ == '__main__':
