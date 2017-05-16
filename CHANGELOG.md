@@ -2,6 +2,7 @@
 
 ## [2.0.0]
 ### Updated
+- Update `exists_entity()` to receive `table` as parameter
 - Update API errors code
 - Remove auto_create_columns parameter from insert method
 - Rename SlicingDice API endpoints

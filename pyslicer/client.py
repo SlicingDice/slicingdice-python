@@ -278,11 +278,12 @@ class SlicingDice(SlicingDiceAPI):
                 req_type="post",
                 key_level=0)
 
-    def exists_entity(self, ids):
+    def exists_entity(self, ids, table=None):
         """Make a exists entity query
 
         Keyword arguments:
-        ids -- A list with entity to check if exists
+        ids -- A list with entities to check if exists
+        table -- In which table entities check be checked
         """
         base_url = self._wrapper_test()
         url = base_url + URLResources.QUERY_EXISTS_ENTITY
@@ -292,6 +293,8 @@ class SlicingDice(SlicingDiceAPI):
         query = {
             'ids': ids
         }
+        if table:
+            query['table'] = table
         return self._make_request(
             url=url,
             json_data=ujson.dumps(query),
