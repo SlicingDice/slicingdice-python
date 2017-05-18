@@ -5,10 +5,9 @@ import os
 import ujson
 import requests
 
-import pyslicer.exceptions as exceptions
-
-from pyslicer.core.handler_response import SDHandlerResponse
-from pyslicer.core.requester import Requester
+from . import exceptions
+from .core.handler_response import SDHandlerResponse
+from .core.requester import Requester
 
 
 class SlicingDiceAPI(object):

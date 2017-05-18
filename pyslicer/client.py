@@ -18,11 +18,10 @@
 """A library that provides a Python client to Slicing Dice API"""
 import ujson
 
-import pyslicer.utils.validators as validators
-import pyslicer.exceptions as exceptions
-
-from pyslicer.api import SlicingDiceAPI
-from pyslicer.url_resources import URLResources
+from . import exceptions
+from .api import SlicingDiceAPI
+from .url_resources import URLResources
+from .utils import validators
 
 
 class SlicingDice(SlicingDiceAPI):
@@ -30,7 +29,7 @@ class SlicingDice(SlicingDiceAPI):
 
     Example usage:
 
-        To create an object of the SliceDicer:
+        To create an object of the SlicingDice:
 
             from pyslicer.api import SlicingDice
             sd = SlicingDice('my-token')

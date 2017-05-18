@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pyslicer.exceptions as exceptions
-
+from .. import exceptions
 from collections import defaultdict
 
 

@@ -1,5 +1,8 @@
 # Change Log
 
+### Updated
+- Make client compatible with python 3
+
 ## [2.0.0]
 ### Updated
 - Update `exists_entity()` to receive `table` as parameter

@@ -11,7 +11,7 @@ setup(
     author="SlicingDice LLC",
     author_email="help@slicingdice.com",
     description="Official Python client for SlicingDice, Data Warehouse and Analytics Database as a Service.",
-    install_requires=["requests", "ujson"],
+    install_requires=["requests", "six", "ujson"],
     license="BSD",
     keywords="slicingdice slicing dice data analysis analytics database",
     packages=[
