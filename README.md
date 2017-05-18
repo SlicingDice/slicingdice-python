@@ -1,4 +1,4 @@
-# SlicingDice Official Python Client (v1.0)
+# SlicingDice Official Python Client (v2.0.0)
 ### Build Status: [![CircleCI](https://circleci.com/gh/SlicingDice/slicingdice-python.svg?style=svg)](https://circleci.com/gh/SlicingDice/slicingdice-python)
 
 Official Python client for [SlicingDice](http://www.slicingdice.com/), Data Warehouse and Analytics Database as a Service.  
@@ -228,8 +228,8 @@ print(client.insert(insert_data))
 }
 ```
 
-### `exists_entity(ids)`
-Verify which entities exist in a database given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
+### `exists_entity(ids, table=None)`
+Verify which entities exist in a table (uses `default` table if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
 
 #### Request example
 
