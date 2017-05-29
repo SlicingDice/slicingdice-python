@@ -7,9 +7,9 @@ Official Python client for [SlicingDice](http://www.slicingdice.com/), Data Ware
 
 ## Documentation
 
-If you are new to SlicingDice, check our [quickstart guide](http://panel.slicingdice.com/docs/#quickstart-guide) and learn to use it in 15 minutes.
+If you are new to SlicingDice, check our [quickstart guide](https://docs.slicingdice.com/docs/quickstart-guide) and learn to use it in 15 minutes.
 
-Please refer to the [SlicingDice official documentation](http://panel.slicingdice.com/docs/) for more information on [analytics databases](http://panel.slicingdice.com/docs/#analytics-concepts), [data modeling](http://panel.slicingdice.com/docs/#data-modeling), [insertion](http://panel.slicingdice.com/docs/#data-insertion), [querying](http://panel.slicingdice.com/docs/#data-querying), [limitations](http://panel.slicingdice.com/docs/#current-slicingdice-limitations) and [API details](http://panel.slicingdice.com/docs/#api-details).
+Please refer to the [SlicingDice official documentation](https://docs.slicingdice.com/) for more information on [how to create a database](https://docs.slicingdice.com/docs/how-to-create-a-database), [how to insert data](https://docs.slicingdice.com/docs/how-to-insert-data), [how to make queries](https://docs.slicingdice.com/docs/how-to-make-queries), [how to create columns](https://docs.slicingdice.com/docs/how-to-create-columns), [SlicingDice restrictions](https://docs.slicingdice.com/docs/current-restrictions) and [API details](https://docs.slicingdice.com/docs/api-details).
 
 ## Tests and Examples
 
@@ -66,25 +66,25 @@ print(client.count_entity(query_data))
 
 ## Reference
 
-`SlicingDice` encapsulates logic for sending requests to the API. Its methods are thin layers around the [API endpoints](http://panel.slicingdice.com/docs/#api-details-api-endpoints), so their parameters and return values are JSON-like `dict` objects with the same syntax as the [API endpoints](http://panel.slicingdice.com/docs/#api-details-api-endpoints)
+`SlicingDice` encapsulates logic for sending requests to the API. Its methods are thin layers around the [API endpoints](https://docs.slicingdice.com/docs/api-details), so their parameters and return values are JSON-like `dict` objects with the same syntax as the [API endpoints](https://docs.slicingdice.com/docs/api-details)
 
 ### Attributes
 
-* `keys (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API.
+* `keys (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API.
 
 ### Constructor
 
 `__init__(self, write_key=None, read_key=None, master_key=None, custom_key=None, use_ssl=True, timeout=60, uses_test_endpoint=False)`
-* `write_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API Write Key.
-* `read_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API Read Key.
-* `master_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API Master Key.
-* `custom_key (str)` - [API key](http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys) to authenticate requests with the SlicingDice API Custom Key.
+* `write_key (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API Write Key.
+* `read_key (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API Read Key.
+* `master_key (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API Master Key.
+* `custom_key (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API Custom Key.
 * `use_ssl (bool)` - Define if the requests verify SSL for HTTPS requests.
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
 * `uses_test_endpoint (bool)` - If false the client will send requests to production end-point, otherwise to tests end-point.
 
 ### `get_database()`
-Get information about current database(related to api keys informed on construction). This method corresponds to a [GET request at /database](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-database).
+Get information about current database(related to api keys informed on construction). This method corresponds to a `GET` request at `/database`.
 
 #### Request example
 
@@ -106,7 +106,7 @@ print(client.get_database())
 ```
 
 ### `get_columns(test=False)`
-Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-column).
+Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](https://docs.slicingdice.com/docs/how-to-list-edit-or-delete-columns).
 
 #### Request example
 
@@ -145,7 +145,7 @@ print(client.get_columns())
 ```
 
 ### `create_column(json_data, test=False)`
-Create a new column. This method corresponds to a [POST request at /column](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-column).
+Create a new column. This method corresponds to a [POST request at /column](https://docs.slicingdice.com/docs/how-to-create-columns#section-creating-columns-using-column-endpoint).
 
 #### Request example
 
@@ -172,7 +172,7 @@ print(client.create_column(column))
 ```
 
 ### `insert(json_data)`
-Insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-insert).
+Insert data to existing entities or create new entities, if necessary. This method corresponds to a [POST request at /insert](https://docs.slicingdice.com/docs/how-to-insert-data).
 
 #### Request example
 
@@ -229,7 +229,7 @@ print(client.insert(insert_data))
 ```
 
 ### `exists_entity(ids, table=None)`
-Verify which entities exist in a table (uses `default` table if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-exists-entity).
+Verify which entities exist in a table (uses `default` table if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](https://docs.slicingdice.com/docs/exists).
 
 #### Request example
 
@@ -261,7 +261,7 @@ print(client.exists_entity(ids))
 ```
 
 ### `count_entity_total()`
-Count the number of inserted entities in the whole database. This method corresponds to a [POST request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the number of inserted entities in the whole database. This method corresponds to a [POST request at /query/count/entity/total](https://docs.slicingdice.com/docs/total).
 
 #### Request example
 
@@ -285,7 +285,7 @@ print(client.count_entity_total())
 ```
 
 ### `count_entity_total(tables)`
-Count the total number of inserted entities in the given tables. This method corresponds to a [POST request at /query/count/entity/total](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-count-entity-total).
+Count the total number of inserted entities in the given tables. This method corresponds to a [POST request at /query/count/entity/total](https://docs.slicingdice.com/docs/total).
 
 #### Request example
 
@@ -311,7 +311,7 @@ print(client.count_entity_total(tables))
 ```
 
 ### `count_entity(json_data)`
-Count the number of entities matching the given query. This method corresponds to a [POST request at /query/count/entity](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-entity).
+Count the number of entities matching the given query. This method corresponds to a [POST request at /query/count/entity](https://docs.slicingdice.com/docs/count-entities).
 
 #### Request example
 
@@ -365,7 +365,7 @@ print(client.count_entity(query))
 ```
 
 ### `count_event(json_data)`
-Count the number of occurrences for time-series events matching the given query. This method corresponds to a [POST request at /query/count/event](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-count-event).
+Count the number of occurrences for time-series events matching the given query. This method corresponds to a [POST request at /query/count/event](https://docs.slicingdice.com/docs/count-events).
 
 #### Request example
 
@@ -421,7 +421,7 @@ print(client.count_event(query))
 ```
 
 ### `top_values(json_data)`
-Return the top values for entities matching the given query. This method corresponds to a [POST request at /query/top_values](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-top-values).
+Return the top values for entities matching the given query. This method corresponds to a [POST request at /query/top_values](https://docs.slicingdice.com/docs/top-values).
 
 #### Request example
 
@@ -479,7 +479,7 @@ print(client.top_values(query))
 ```
 
 ### `aggregation(json_data)`
-Return the aggregation of all columns in the given query. This method corresponds to a [POST request at /query/aggregation](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-aggregation).
+Return the aggregation of all columns in the given query. This method corresponds to a [POST request at /query/aggregation](https://docs.slicingdice.com/docs/aggregations).
 
 #### Request example
 
@@ -528,7 +528,7 @@ print(client.aggregation(query))
 ```
 
 ### `get_saved_queries()`
-Get all saved queries. This method corresponds to a [GET request at /query/saved](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-saved).
+Get all saved queries. This method corresponds to a [GET request at /query/saved](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -579,7 +579,7 @@ print(client.get_saved_queries())
 ```
 
 ### `create_saved_query(json_data)`
-Create a saved query at SlicingDice. This method corresponds to a [POST request at /query/saved](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-query-saved).
+Create a saved query at SlicingDice. This method corresponds to a [POST request at /query/saved](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -633,7 +633,7 @@ print(client.create_saved_query(query))
 ```
 
 ### `update_saved_query(query_name, json_data)`
-Update an existing saved query at SlicingDice. This method corresponds to a [PUT request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-put-query-saved-query-name).
+Update an existing saved query at SlicingDice. This method corresponds to a [PUT request at /query/saved/QUERY_NAME](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -686,7 +686,7 @@ print(client.update_saved_query('my-saved-query', new_query))
 ```
 
 ### `get_saved_query(query_name)`
-Executed a saved query at SlicingDice. This method corresponds to a [GET request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-get-query-saved-query-name).
+Executed a saved query at SlicingDice. This method corresponds to a [GET request at /query/saved/QUERY_NAME](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -723,7 +723,7 @@ print(client.get_saved_query('my-saved-query'))
 ```
 
 ### `delete_saved_query(query_name)`
-Delete a saved query at SlicingDice. This method corresponds to a [DELETE request at /query/saved/QUERY_NAME](http://panel.slicingdice.com/docs/#api-details-api-endpoints-delete-query-saved-query-name).
+Delete a saved query at SlicingDice. This method corresponds to a [DELETE request at /query/saved/QUERY_NAME](https://docs.slicingdice.com/docs/saved-queries).
 
 #### Request example
 
@@ -758,7 +758,7 @@ print(client.delete_saved_query('my-saved-query'))
 ```
 
 ### `result(json_data)`
-Retrieve inserted values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-result).
+Retrieve inserted values for entities matching the given query. This method corresponds to a [POST request at /data_extraction/result](https://docs.slicingdice.com/docs/result-extraction).
 
 #### Request example
 
@@ -806,7 +806,7 @@ print(client.result(query))
 ```
 
 ### `score(json_data)`
-Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](http://panel.slicingdice.com/docs/#api-details-api-endpoints-post-data-extraction-score).
+Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](https://docs.slicingdice.com/docs/score-extraction).
 
 #### Request example
 
