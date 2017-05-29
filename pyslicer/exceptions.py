@@ -16,6 +16,11 @@ class SlicingDiceException(Exception):
             self.code, self.message, self.more_info)
 
 
+class InternalException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(SlicingDiceHTTPError, self).__init__(self, *args, **kwargs)
+
+
 # Specific SlicingDice Exceptions
 
 class SlicingDiceHTTPError(SlicingDiceException):
