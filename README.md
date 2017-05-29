@@ -84,7 +84,8 @@ print(client.count_entity(query_data))
 * `uses_test_endpoint (bool)` - If false the client will send requests to production end-point, otherwise to tests end-point.
 
 ### `get_database()`
-Get information about current database(related to api keys informed on construction). This method corresponds to a `GET` request at `/database`.
+Get information about current database(related to api keys informed on construction). This method corresponds to a `GET` request at `/database`.  
+**IMPORTANT:** You can't make this request on `/test` end-point.
 
 #### Request example
 
