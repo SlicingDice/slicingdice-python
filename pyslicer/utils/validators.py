@@ -191,7 +191,7 @@ class QueryDataExtractionValidator(SDBaseValidator):
         """
         if "columns" in self.data:
             value = self.data["columns"]
-            if not isinstance(value, list):
+            if not isinstance(value, list) and value != "all":
                 raise exceptions.InvalidQueryException(
                     "The key 'columns' in query has a invalid value.")
             else:

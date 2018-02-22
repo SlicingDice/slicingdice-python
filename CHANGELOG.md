@@ -1,7 +1,9 @@
 # Change Log
 
+## [2.0.1]
 ### Updated
 - Make client compatible with python 3
+- Correct data extraction validator to accept columns: all
 
 ## [2.0.0]
 ### Updated
