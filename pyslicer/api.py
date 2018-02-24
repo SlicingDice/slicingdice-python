@@ -134,7 +134,8 @@ class SlicingDiceAPI(object):
         try:
             result = ujson.loads(req.text)
         except ValueError as e:
-            raise exceptions.InternalException("Error while trying to load Json: %s" % e.message)
+            raise exceptions.InternalException("Error while trying to load"
+                                               " Json: %s" % e.message)
 
         sd_response = SDHandlerResponse(
             result=result,

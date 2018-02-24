@@ -272,7 +272,7 @@ class ColumnValidator(SDBaseValidator):
             self._valid_type_columns = [
                 "unique-id", "boolean", "string", "integer", "decimal",
                 "enumerated", "date", "integer-time-series",
-                "decimal-time-series", "string-time-series"
+                "decimal-time-series", "string-time-series", "datetime"
             ]
 
     def _validate_name(self):
