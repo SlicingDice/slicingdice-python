@@ -79,9 +79,10 @@ class SlicingDice(SlicingDiceAPI):
                 }
                 print sd.insert(inserting_json)
     """
+
     def __init__(
-        self, write_key=None, read_key=None, master_key=None,
-            custom_key=None, use_ssl=True, timeout=60, uses_test_endpoint=False):
+            self, write_key=None, read_key=None, master_key=None,
+            custom_key=None, use_ssl=True, timeout=60):
         """Instantiate a new SlicingDice object.
 
         Keyword arguments:
@@ -89,12 +90,10 @@ class SlicingDice(SlicingDiceAPI):
         use_ssl(bool) -- Define if the request uses verification SSL for
             HTTPS requests. Defaults False.(Optional)
         timeout(int) -- Define timeout to request,
-            defaults 30 secs(default 30).
-        test(bool) -- if true will use tests end-point (default False)
+            defaults 60 secs(default 30).
         """
         super(SlicingDice, self).__init__(
             master_key, write_key, read_key, custom_key, use_ssl, timeout)
-        self.uses_test_endpoint = uses_test_endpoint
 
     def _count_query_wrapper(self, url, query):
         """Validate count query and make request.
@@ -126,12 +125,6 @@ class SlicingDice(SlicingDiceAPI):
                 req_type="post",
                 key_level=0)
 
-    def _wrapper_test(self):
-        base_url = SlicingDice.BASE_URL
-        if self.uses_test_endpoint:
-            base_url += "/test"
-        return base_url
-
     def _saved_query_wrapper(self, url, query, update=False):
         """Validate saved query and make request.
 
@@ -151,7 +144,8 @@ class SlicingDice(SlicingDiceAPI):
             key_level=2)
 
     def get_database(self):
-        """Get a database associated with this client (related to keys passed on construction)"""
+        """Get a database associated with this client (related to keys passed
+         on construction)"""
         url = SlicingDice.BASE_URL + URLResources.DATABASE
         return self._make_request(
             url=url,
@@ -166,10 +160,9 @@ class SlicingDice(SlicingDiceAPI):
         data -- A dictionary or list on the Slicing Dice column
             format.
         """
-        base_url = self._wrapper_test()
         sd_data = validators.ColumnValidator(data)
         if sd_data.validator():
-            url = base_url + URLResources.COLUMN
+            url = SlicingDice.BASE_URL + URLResources.COLUMN
             return self._make_request(
                 url=url,
                 req_type="post",
@@ -178,8 +171,7 @@ class SlicingDice(SlicingDiceAPI):
 
     def get_columns(self):
         """Get a list of columns"""
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.COLUMN
+        url = SlicingDice.BASE_URL + URLResources.COLUMN
         return self._make_request(
             url=url,
             req_type="get",
@@ -192,10 +184,9 @@ class SlicingDice(SlicingDiceAPI):
         data -- A dictionary in the Slicing Dice data format
             format.
         """
-        base_url = self._wrapper_test()
         sd_data = validators.InsertValidator(data)
         if sd_data.validator():
-            url = base_url + URLResources.INSERT
+            url = SlicingDice.BASE_URL + URLResources.INSERT
             return self._make_request(
                 url=url,
                 json_data=ujson.dumps(data),
@@ -208,22 +199,20 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query -- A dictionary in the Slicing Dice query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_COUNT_ENTITY
+        url = SlicingDice.BASE_URL + URLResources.QUERY_COUNT_ENTITY
         return self._count_query_wrapper(url, query)
 
-    def count_entity_total(self, tables=[]):
+    def count_entity_total(self, tables=None):
         """Make a count entity total query
 
         Keyword arguments:
         tables -- A dictionary containing the tables in which
                   the total query will be performed
         """
-        query = {
-            'tables': tables
-        }
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_COUNT_ENTITY_TOTAL
+        query = {}
+        if tables is not None:
+            query['tables'] = tables
+        url = SlicingDice.BASE_URL + URLResources.QUERY_COUNT_ENTITY_TOTAL
         return self._make_request(
             url=url,
             req_type="post",
@@ -236,8 +225,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         data -- A dictionary query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_COUNT_EVENT
+        url = SlicingDice.BASE_URL + URLResources.QUERY_COUNT_EVENT
         return self._count_query_wrapper(url, query)
 
     def aggregation(self, query):
@@ -246,8 +234,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query -- An aggregation query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_AGGREGATION
+        url = SlicingDice.BASE_URL + URLResources.QUERY_AGGREGATION
         if "query" not in query:
             raise exceptions.InvalidQueryException(
                 "The aggregation query must have up the key 'query'.")
@@ -267,8 +254,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query -- A dictionary query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_TOP_VALUES
+        url = SlicingDice.BASE_URL + URLResources.QUERY_TOP_VALUES
         sd_query_top_values = validators.QueryValidator(query)
         if sd_query_top_values.validator():
             return self._make_request(
@@ -284,8 +270,7 @@ class SlicingDice(SlicingDiceAPI):
         ids -- A list with entities to check if exists
         table -- In which table entities check be checked
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_EXISTS_ENTITY
+        url = SlicingDice.BASE_URL + URLResources.QUERY_EXISTS_ENTITY
         if len(ids) > 100:
             raise exceptions.MaxLimitException(
                 "The query exists entity must have up to 100 ids.")
@@ -306,8 +291,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query_name(string) -- The name of the saved query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_SAVED + query_name
+        url = SlicingDice.BASE_URL + URLResources.QUERY_SAVED + query_name
         return self._make_request(
             url=url,
             req_type="get",
@@ -319,8 +303,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query_name(string) -- The name of the saved query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_SAVED
+        url = SlicingDice.BASE_URL + URLResources.QUERY_SAVED
         return self._make_request(
             url=url,
             req_type="get",
@@ -332,8 +315,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query_name(string) -- The name of the saved query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_SAVED + query_name
+        url = SlicingDice.BASE_URL + URLResources.QUERY_SAVED + query_name
         return self._make_request(
             url=url,
             req_type="delete",
@@ -346,8 +328,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query -- A dictionary query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_SAVED
+        url = SlicingDice.BASE_URL + URLResources.QUERY_SAVED
         return self._saved_query_wrapper(url, query)
 
     def update_saved_query(self, name, query):
@@ -357,8 +338,7 @@ class SlicingDice(SlicingDiceAPI):
         name -- The name of the saved query to update
         query -- A dictionary query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_SAVED + name
+        url = SlicingDice.BASE_URL + URLResources.QUERY_SAVED + name
         return self._saved_query_wrapper(url, query, True)
 
     def result(self, query):
@@ -367,8 +347,7 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query -- A dictionary query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_DATA_EXTRACTION_RESULT
+        url = SlicingDice.BASE_URL + URLResources.QUERY_DATA_EXTRACTION_RESULT
         return self._data_extraction_wrapper(url, query)
 
     def score(self, query):
@@ -377,6 +356,19 @@ class SlicingDice(SlicingDiceAPI):
         Keyword arguments:
         query -- A dictionary query
         """
-        base_url = self._wrapper_test()
-        url = base_url + URLResources.QUERY_DATA_EXTRACTION_SCORE
+        url = SlicingDice.BASE_URL + URLResources.QUERY_DATA_EXTRACTION_SCORE
         return self._data_extraction_wrapper(url, query)
+
+    def sql(self, query):
+        """ Make a sql query to SlicingDice
+
+        :param query: the query written in SQL format
+        :return: The response from the SlicingDice
+        """
+        url = SlicingDice.BASE_URL + URLResources.QUERY_SQL
+        return self._make_request(
+            url=url,
+            string_data=query,
+            req_type="post",
+            key_level=0,
+            content_type='application/sql')

@@ -18,7 +18,7 @@ class SlicingDiceException(Exception):
 
 class InternalException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
-        super(SlicingDiceHTTPError, self).__init__(self, *args, **kwargs)
+        super(InternalException, self).__init__(self, *args, **kwargs)
 
 
 # Specific SlicingDice Exceptions
@@ -51,3 +51,15 @@ class IndexEntitiesLimitException(SlicingDiceException):
 class IndexColumnsLimitException(SlicingDiceException):
     def __init__(self, *args, **kwargs):
         super(IndexColumnsLimitException, self).__init__(self, *args, **kwargs)
+
+# Validation exceptions
+
+
+class MaxLimitException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(MaxLimitException, self).__init__(self, *args, **kwargs)
+
+
+class InvalidQueryException(SlicingDiceException):
+    def __init__(self, *args, **kwargs):
+        super(InvalidQueryException, self).__init__(self, *args, **kwargs)

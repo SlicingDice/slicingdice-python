@@ -32,11 +32,12 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 
 class SlicingDiceTester(object):
+    per_test_insertion = False
+
     """Test orchestration class."""
-    def __init__(self, api_key, verbose=False, uses_test_endpoint=True):
+    def __init__(self, api_key, verbose=False):
         # The Slicing Dice API client
-        self.client = SlicingDice(master_key=api_key,
-                                  uses_test_endpoint=uses_test_endpoint)
+        self.client = SlicingDice(master_key=api_key)
 
         # Translation table for columns with timestamp
         self.column_translation = {}
@@ -64,6 +65,13 @@ class SlicingDiceTester(object):
         test_data = self.load_test_data(query_type)
         num_tests = len(test_data)
 
+        self.per_test_insertion = "insert" in test_data[0]
+        if not self.per_test_insertion:
+            insertion_data = self.load_test_data(query_type, suffix="_insert")
+            for insertion in insertion_data:
+                self.client.insert(insertion)
+            time.sleep(self.sleep_time)
+
         for i, test in enumerate(test_data):
             self._empty_column_translation()
 
@@ -75,13 +83,15 @@ class SlicingDiceTester(object):
 
             print('  Query type: {}'.format(query_type))
 
-            auto_create = test['insert'].get('auto-create', [])
             try:
-                if auto_create:
-                    self.get_columns_from_insertion_data(test)
-                else:
-                    self.create_columns(test)
-                self.insert_data(test)
+                if self.per_test_insertion:
+                    auto_create = test['insert'].get('auto-create', [])
+                    if auto_create:
+                        self.get_columns_from_insertion_data(test)
+                    else:
+                        self.create_columns(test)
+                    self.insert_data(test)
+
                 result = self.execute_query(query_type, test)
             except SlicingDiceException as e:
                 result = {'result': {'error': str(e)}}
@@ -94,7 +104,7 @@ class SlicingDiceTester(object):
         other."""
         self.column_translation = {}
 
-    def load_test_data(self, query_type):
+    def load_test_data(self, query_type, suffix=''):
         """Load all test data from JSON file for a given query type.
 
         Parameters:
@@ -104,7 +114,7 @@ class SlicingDiceTester(object):
         Return:
         Test data as a dictionary.
         """
-        filename = self.path + query_type + self.extension
+        filename = self.path + query_type + suffix + self.extension
         return json.load(open(filename))
 
     def create_columns(self, test):
@@ -201,12 +211,16 @@ class SlicingDiceTester(object):
         test -- Dictionary containing test name, columns metadata, data to be
             inserted, query, and expected results.
         """
-        query_data = self._translate_column_names(test['query'])
+        if self.per_test_insertion:
+            query_data = self._translate_column_names(test['query'])
+        else:
+            query_data = test['query']
         print('  Querying')
 
         if self.verbose:
             print('    - {}'.format(query_data))
 
+        result = None
         if query_type == 'count_entity':
             result = self.client.count_entity(
                 query_data)
@@ -225,6 +239,8 @@ class SlicingDiceTester(object):
         elif query_type == 'result':
             result = self.client.result(
                 query_data)
+        elif query_type == 'sql':
+            result = self.client.sql(query_data)
 
         return result
 
@@ -255,18 +271,23 @@ class SlicingDiceTester(object):
         result -- Dictionary containing received result after querying
             SlicingDice.
         """
-        expected = self._translate_column_names(test['expected'])
+        if self.per_test_insertion:
+            expected = self._translate_column_names(test['expected'])
+        else:
+            expected = test['expected']
 
         for key, value in expected.items():
             if value == 'ignore':
                 continue
 
-            if value != result[key]:
+            if not self.compare_values(value, result[key]):
                 time.sleep(self.sleep_time * 3)
-                test['query'].update({"bypass-cache": True})
+                query_ = test['query']
+                if isinstance(query_, dict):
+                    query_.update({"bypass-cache": True})
                 try:
                     result2 = self.execute_query(query_type, test)
-                    if value == result2[key]:
+                    if self.compare_values(value, result2[key]):
                         print("  Passed at second try")
                         continue
                 except SlicingDiceException as e:
@@ -284,16 +305,44 @@ class SlicingDiceTester(object):
 
         print('  Status: Passed')
 
+    @staticmethod
+    def compare_values(expected, result):
+        if isinstance(expected, dict):
+            if not isinstance(result, dict):
+                return False
+            return expected == result
+        if isinstance(expected, list):
+            if not isinstance(result, list):
+                return False
+
+            if len(expected) != len(result):
+                return False
+
+            for i, value in enumerate(expected):
+                equal = False
+                for j, got in enumerate(result):
+                    if SlicingDiceTester.compare_values(value, got):
+                        equal = True
+                        break
+
+                if not equal:
+                    return False
+
+            return True
+
+        return expected == result
+
 
 def main():
     # SlicingDice queries to be tested. Must match the JSON file name.
     query_types = [
-        'count_entity',
-        'count_event',
-        'top_values',
-        'aggregation',
-        'score',
-        'result'
+        # 'count_entity',
+        # 'count_event',
+        # 'top_values',
+        # 'aggregation',
+        # 'score',
+        # 'result',
+        'sql'
     ]
 
     # Testing class with demo API key or one of your API key
@@ -301,17 +350,14 @@ def main():
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
     api_key = os.environ.get(
         "SD_API_KEY",
-        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vO'
-         'DFtIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MjQyLCJ'
-         'jbGllbnRfaWQiOjEwfQ.F-4SC7SREZAu7zo0vdM366kDigYYUBmzCc_EY_THRkg'))
+        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiIxNTE4NjA3ODQ0NDAz'
+         'IiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6NDY5NjYsImNsaWVudF9pZ'
+         'CI6OTUxfQ.S6LCWQDcLS1DEFy3lsqk2jTGIe5rJ5fsQIvWuuFBdkw'))
 
     # MODE_TEST give us if you want to use endpoint Test or Prod
-    mode_test = os.environ.get("MODE_TEST", "test")
-    uses_test_endpoint = False if mode_test.lower() == 'prod' else True
     sd_tester = SlicingDiceTester(
         api_key=api_key,
-        verbose=False,
-        uses_test_endpoint=uses_test_endpoint)
+        verbose=False)
 
     try:
         for query_type in query_types:

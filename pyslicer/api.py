@@ -27,7 +27,7 @@ class SlicingDiceAPI(object):
         use_ssl(bool) -- Define if the request uses verification SSL for
             HTTPS requests. Defaults False.(Optional)
         timeout(int) -- Define timeout to request,
-            defaults 30 secs(Optional).
+            defaults 60 secs(Optional).
         """
         self.keys = self._organize_keys(
             master_key, custom_key, read_key, write_key)
@@ -78,7 +78,8 @@ class SlicingDiceAPI(object):
                 "This key is not allowed to perform this operation.")
         return current_key_level[0]
 
-    def _make_request(self, url, req_type, key_level, json_data=None):
+    def _make_request(self, url, req_type, key_level, json_data=None,
+                      string_data=None, content_type='application/json'):
         """Returns a object request result
 
         Keyword arguments:
@@ -86,17 +87,22 @@ class SlicingDiceAPI(object):
         req_type(string) -- the request type (POST, PUT, DELETE or GET)
         key_level(int) -- Define the key level needed
         json_data(json) -- The json to use on request (default None)
+        content_type(string) -- The content_type to use in the request (default
+         'application/json')
         """
         self._check_key(key_level)
-        headers = {'Content-Type': 'application/json',
+        headers = {'Content-Type': content_type,
                    'Authorization': self._api_key}
 
+        data = json_data
+        if string_data is not None and json_data is None:
+            data = string_data
         req = None
 
         if req_type == "post":
             req = self._requester.post(
                 url,
-                data=json_data,
+                data=data,
                 headers=headers)
         elif req_type == "get":
             req = self._requester.get(
@@ -111,7 +117,7 @@ class SlicingDiceAPI(object):
         elif req_type == "put":
             req = self._requester.put(
                 url,
-                data=json_data,
+                data=data,
                 headers=headers)
 
         return self._handler_request(req)
