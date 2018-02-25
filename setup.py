@@ -5,12 +5,14 @@ from setuptools import setup
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+
 setup(
     name="pyslicer",
-    version="2.0.0",
+    version="2.0.1",
     author="SlicingDice LLC",
     author_email="help@slicingdice.com",
-    description="Official Python client for SlicingDice, Data Warehouse and Analytics Database as a Service.",
+    description="Official Python client for SlicingDice, Data Warehouse and "
+                "Analytics Database as a Service.",
     install_requires=["requests", "six", "ujson"],
     license="BSD",
     keywords="slicingdice slicing dice data analysis analytics database",

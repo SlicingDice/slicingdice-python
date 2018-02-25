@@ -36,7 +36,7 @@ If this is the first register ever entered into the system,
 from pyslicer import SlicingDice
 
 # Configure the client
-client = SlicingDice(master_key='API_KEY', uses_test_endpoint=False)
+client = SlicingDice(master_key='API_KEY')
 
 # Inserting data
 insert_data = {
@@ -90,7 +90,7 @@ Get information about current database(related to api keys informed on construct
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_API_KEY')
 print(client.get_database())
 ```
 
@@ -116,7 +116,7 @@ Get all created columns, both active and inactive ones. This method corresponds 
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_API_KEY')
 print(client.get_columns())
 ```
 
@@ -155,7 +155,7 @@ Create a new column. This method corresponds to a [POST request at /column](http
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_API_KEY')
 column = {
     "name": "Year",
     "api-name": "year",
@@ -182,7 +182,7 @@ Insert data to existing entities or create new entities, if necessary. This meth
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_WRITE_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_WRITE_API_KEY')
 insert_data = {
     "user1@slicingdice.com": {
         "car-model": "Ford Ka",
@@ -239,7 +239,7 @@ Verify which entities exist in a table (uses `default` table if not provided) gi
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 ids = [
     "user1@slicingdice.com",
     "user2@slicingdice.com",
@@ -271,7 +271,7 @@ Count the number of inserted entities in the whole database. This method corresp
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 
 print(client.count_entity_total())
 ```
@@ -295,7 +295,7 @@ Count the total number of inserted entities in the given tables. This method cor
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 
 tables = ['default']
 
@@ -321,7 +321,7 @@ Count the number of entities matching the given query. This method corresponds t
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 query = [
     {
         "query-name": "corolla-or-fit",
@@ -375,7 +375,7 @@ Count the number of occurrences for time-series events matching the given query.
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 query = [
     {
         "query-name": "test-drives-in-ny",
@@ -431,7 +431,7 @@ Return the top values for entities matching the given query. This method corresp
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 query = {
     "car-year": {
         "year": 2
@@ -489,7 +489,7 @@ Return the aggregation of all columns in the given query. This method correspond
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 query = {
     "query": [
         {
@@ -538,7 +538,7 @@ Get all saved queries. This method corresponds to a [GET request at /query/saved
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_API_KEY')
 print(client.get_saved_queries())
 ```
 
@@ -589,7 +589,7 @@ Create a saved query at SlicingDice. This method corresponds to a [POST request 
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_API_KEY')
 query = {
     "name": "my-saved-query",
     "type": "count/entity",
@@ -643,7 +643,7 @@ Update an existing saved query at SlicingDice. This method corresponds to a [PUT
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_API_KEY')
 new_query = {
     "type": "count/entity",
     "query": [
@@ -696,7 +696,7 @@ Executed a saved query at SlicingDice. This method corresponds to a [GET request
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 print(client.get_saved_query('my-saved-query'))
 ```
 
@@ -733,7 +733,7 @@ Delete a saved query at SlicingDice. This method corresponds to a [DELETE reques
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_API_KEY')
 print(client.delete_saved_query('my-saved-query'))
 ```
 
@@ -768,7 +768,7 @@ Retrieve inserted values for entities matching the given query. This method corr
 
 ```python
 from pyslicer import SlicingDice
-client = SlicingDice('MASTER_OR_READ_API_KEY', uses_test_endpoint=False)
+client = SlicingDice('MASTER_OR_READ_API_KEY')
 query = {
     "query": [
         {
@@ -854,7 +854,6 @@ print(client.score(query))
             "car-model": "honda fit"
         }
     },
-    "page": 1,
     "page": 1,
     "next-page": null,
     "took": 0.063
