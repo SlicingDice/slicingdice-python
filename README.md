@@ -1,4 +1,4 @@
-# SlicingDice Official Python Client (v2.0.0)
+# SlicingDice Official Python Client (v2.0.1)
 ### Build Status: [![CircleCI](https://circleci.com/gh/SlicingDice/slicingdice-python.svg?style=svg)](https://circleci.com/gh/SlicingDice/slicingdice-python)
 
 Official Python client for [SlicingDice](http://www.slicingdice.com/), Data Warehouse and Analytics Database as a Service.  
@@ -43,7 +43,7 @@ insert_data = {
     "user1@slicingdice.com": {
         "age": 22
     },
-    "auto-create": ["table", "column"]
+    "auto-create": ["dimension", "column"]
 }
 client.insert(insert_data)
 
@@ -74,17 +74,16 @@ print(client.count_entity(query_data))
 
 ### Constructor
 
-`__init__(self, write_key=None, read_key=None, master_key=None, custom_key=None, use_ssl=True, timeout=60, uses_test_endpoint=False)`
+`__init__(self, write_key=None, read_key=None, master_key=None, custom_key=None, use_ssl=True, timeout=60)`
 * `write_key (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API Write Key.
 * `read_key (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API Read Key.
 * `master_key (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API Master Key.
 * `custom_key (str)` - [API key](https://docs.slicingdice.com/docs/api-keys) to authenticate requests with the SlicingDice API Custom Key.
 * `use_ssl (bool)` - Define if the requests verify SSL for HTTPS requests.
 * `timeout (int)` - Amount of time, in seconds, to wait for results for each request.
-* `uses_test_endpoint (bool)` - If false the client will send requests to production end-point, otherwise to tests end-point.
 
 ### `get_database()`
-Get information about current database(related to api keys informed on construction). This method corresponds to a `GET` request at `/database`.
+Get information about current database(related to api keys informed on construction). This method corresponds to a [`GET` request at `/database`](https://docs.slicingdice.com/docs/how-to-list-edit-or-delete-databases).
 
 #### Request example
 
@@ -100,7 +99,7 @@ print(client.get_database())
 {
     "name": "Database 1",
     "description": "My first database",
-    "tables": [
+    "dimensions": [
     	"default",
         "users"
     ],
@@ -109,7 +108,7 @@ print(client.get_database())
 }
 ```
 
-### `get_columns(test=False)`
+### `get_columns()`
 Get all created columns, both active and inactive ones. This method corresponds to a [GET request at /column](https://docs.slicingdice.com/docs/how-to-list-edit-or-delete-columns).
 
 #### Request example
@@ -148,7 +147,7 @@ print(client.get_columns())
 }
 ```
 
-### `create_column(json_data, test=False)`
+### `create_column(json_data)`
 Create a new column. This method corresponds to a [POST request at /column](https://docs.slicingdice.com/docs/how-to-create-columns#section-creating-columns-using-column-endpoint).
 
 #### Request example
@@ -216,7 +215,7 @@ insert_data = {
             "date": "2016-08-17T13:23:47+00:00"
         }
     },
-    "auto-create": ["table", "column"]
+    "auto-create": ["dimension", "column"]
 }
 print(client.insert(insert_data))
 ```
@@ -232,8 +231,8 @@ print(client.insert(insert_data))
 }
 ```
 
-### `exists_entity(ids, table=None)`
-Verify which entities exist in a table (uses `default` table if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](https://docs.slicingdice.com/docs/exists).
+### `exists_entity(ids, dimension=None)`
+Verify which entities exist in a dimension (uses `default` dimension if not provided) given a list of entity IDs. This method corresponds to a [POST request at /query/exists/entity](https://docs.slicingdice.com/docs/exists).
 
 #### Request example
 
@@ -288,8 +287,8 @@ print(client.count_entity_total())
 }
 ```
 
-### `count_entity_total(tables)`
-Count the total number of inserted entities in the given tables. This method corresponds to a [POST request at /query/count/entity/total](https://docs.slicingdice.com/docs/total#section-counting-specific-tables).
+### `count_entity_total(dimensions)`
+Count the total number of inserted entities in the given dimensions. This method corresponds to a [POST request at /query/count/entity/total](https://docs.slicingdice.com/docs/total#section-counting-specific-tables).
 
 #### Request example
 
@@ -297,9 +296,9 @@ Count the total number of inserted entities in the given tables. This method cor
 from pyslicer import SlicingDice
 client = SlicingDice('MASTER_OR_READ_API_KEY')
 
-tables = ['default']
+dimensions = ['default']
 
-print(client.count_entity_total(tables))
+print(client.count_entity_total(dimensions))
 ```
 
 #### Output example
