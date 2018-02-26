@@ -202,16 +202,16 @@ class SlicingDice(SlicingDiceAPI):
         url = SlicingDice.BASE_URL + URLResources.QUERY_COUNT_ENTITY
         return self._count_query_wrapper(url, query)
 
-    def count_entity_total(self, tables=None):
+    def count_entity_total(self, dimensions=None):
         """Make a count entity total query
 
         Keyword arguments:
-        tables -- A dictionary containing the tables in which
+        dimensions -- A dictionary containing the dimensions in which
                   the total query will be performed
         """
         query = {}
-        if tables is not None:
-            query['tables'] = tables
+        if dimensions is not None:
+            query['dimensions'] = dimensions
         url = SlicingDice.BASE_URL + URLResources.QUERY_COUNT_ENTITY_TOTAL
         return self._make_request(
             url=url,
@@ -263,12 +263,12 @@ class SlicingDice(SlicingDiceAPI):
                 req_type="post",
                 key_level=0)
 
-    def exists_entity(self, ids, table=None):
+    def exists_entity(self, ids, dimension=None):
         """Make a exists entity query
 
         Keyword arguments:
         ids -- A list with entities to check if exists
-        table -- In which table entities check be checked
+        dimension -- In which dimension entities check be checked
         """
         url = SlicingDice.BASE_URL + URLResources.QUERY_EXISTS_ENTITY
         if len(ids) > 100:
@@ -277,8 +277,8 @@ class SlicingDice(SlicingDiceAPI):
         query = {
             'ids': ids
         }
-        if table:
-            query['table'] = table
+        if dimension:
+            query['dimension'] = dimension
         return self._make_request(
             url=url,
             json_data=ujson.dumps(query),

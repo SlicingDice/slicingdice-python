@@ -229,7 +229,7 @@ class InsertValidator(SDBaseValidator):
             # Value is a dictionary when it is an entity being inserted:
             # "my-entity": {"year": 2016}
             # It can also be a parameter, such as "auto-create":
-            # "auto-create": ["table", "column"]
+            # "auto-create": ["dimension", "column"]
             if not isinstance(
                     value, (dict, list)) or value is None or len(
                         str(value)) == 0:
