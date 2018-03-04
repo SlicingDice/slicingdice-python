@@ -867,6 +867,31 @@ print(client.sql(query))
 }
 ```
 
+### `sql(query)`
+Retrieve inserted values using a SQL syntax. This method corresponds to a POST request at /query/sql.
+
+#### Request example
+
+```python
+from pyslicer import SlicingDice
+client = SlicingDice('MASTER_OR_READ_API_KEY')
+query = "SELECT COUNT(*) FROM default WHERE age BETWEEN 0 AND 49"
+print(client.sql(query))
+```
+
+#### Output example
+
+```json
+{
+   "took":0.063,
+   "result":[
+       {"COUNT": 3}
+   ],
+   "count":1,
+   "status":"success"
+}
+```
+
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
