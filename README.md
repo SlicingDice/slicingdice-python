@@ -811,7 +811,7 @@ print(client.result(query))
 ### `score(json_data)`
 Retrieve inserted values as well as their relevance for entities matching the given query. This method corresponds to a [POST request at /data_extraction/score](https://docs.slicingdice.com/docs/score-extraction).
 
-#### Request example
+#### Query statement
 
 ```python
 from pyslicer import SlicingDice
@@ -834,6 +834,14 @@ query = {
     "limit": 2
 }
 print(client.score(query))
+```
+
+#### Insert statement
+```python
+from pyslicer import SlicingDice
+client = SlicingDice('MASTER_OR_READ_API_KEY')
+query = "INSERT INTO default([entity-id], name, age) VALUES(1, 'john', 10)"
+print(client.sql(query))
 ```
 
 #### Output example
