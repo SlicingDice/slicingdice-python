@@ -302,15 +302,18 @@ class SlicingDiceTester(object):
                 return
 
         self.num_successes += 1
-
         print('  Status: Passed')
+        print('Expected: ')
+        print(expected)
+        print('Result: ')
+        print(result)
 
     @staticmethod
     def compare_values(expected, result):
         if isinstance(expected, dict):
             if not isinstance(result, dict):
                 return False
-            return expected == result
+            return are_equal(expected, result)
         if isinstance(expected, list):
             if not isinstance(result, list):
                 return False
