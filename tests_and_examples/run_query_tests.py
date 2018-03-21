@@ -313,7 +313,7 @@ class SlicingDiceTester(object):
         if isinstance(expected, dict):
             if not isinstance(result, dict):
                 return False
-            return are_equal(expected, result)
+            return SlicingDiceTester.are_equal(expected, result)
         if isinstance(expected, list):
             if not isinstance(result, list):
                 return False
@@ -333,19 +333,59 @@ class SlicingDiceTester(object):
 
             return True
 
-        return expected == result
+        return SlicingDiceTester.are_equal(expected, result)
+
+
+    def are_equal(expected, result):
+        type_expected = type(expected)
+        type_result = type(result)
+
+        if type_expected != type_result:
+            return False
+
+        if isinstance(expected, dict):
+            if len(expected) != len(result):
+                return False
+            for key in expected:
+                if key not in result:
+                    return False
+                if not SlicingDiceTester.are_equal(expected[key], result[key]):
+                    return False
+            return True
+
+        elif isinstance(expected, list):
+            if len(expected) != len(result):
+                return False
+            while len(expected):
+                x = expected.pop()
+                index = SlicingDiceTester.indexof(x, result)
+                if index == -1:
+                    return False
+                del result[index]
+            return True
+
+        else:
+            return expected == result
+
+
+    def indexof(x, result):
+        for i in range(len(result)):
+            if SlicingDiceTester.are_equal(x, result[i]):
+                return i
+        return -1
+
 
 
 def main():
     # SlicingDice queries to be tested. Must match the JSON file name.
     query_types = [
         'count_entity',
-        'count_event',
-        'top_values',
-        'aggregation',
-        'score',
-        'result',
-        'sql'
+        # 'count_event',
+        #'top_values'
+        # 'aggregation',
+        # 'score',
+        # 'result',
+        # 'sql'
     ]
 
     # Testing class with demo API key or one of your API key
