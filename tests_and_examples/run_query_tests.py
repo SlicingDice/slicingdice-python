@@ -380,8 +380,8 @@ def main():
     # SlicingDice queries to be tested. Must match the JSON file name.
     query_types = [
         'count_entity',
-         'count_event',
-        'top_values'
+        'count_event',
+        'top_values',
         'aggregation',
         'score',
         'result',
