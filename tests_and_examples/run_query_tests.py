@@ -335,8 +335,8 @@ class SlicingDiceTester(object):
 
         return SlicingDiceTester.are_equal(expected, result)
 
-
-    def are_equal(self, expected, result):
+    @staticmethod
+    def are_equal(expected, result):
         type_expected = type(expected)
         type_result = type(result)
 
@@ -367,8 +367,8 @@ class SlicingDiceTester(object):
         else:
             return expected == result
 
-
-    def indexof(self, x, result):
+    @staticmethod
+    def indexof(x, result):
         for i in range(len(result)):
             if SlicingDiceTester.are_equal(x, result[i]):
                 return i
