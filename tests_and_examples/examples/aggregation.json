@@ -980,7 +980,7 @@
             "status": "ignore",
             "result": {
                 "integer-test-column": {
-                    "avg": 1500000
+                    "avg": 1500000.0
                 }
             },
             "took": "ignore"
