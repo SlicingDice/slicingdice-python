@@ -20,7 +20,7 @@ import json
 import os
 import sys
 import time
-
+import copy
 from pyslicer import SlicingDice
 from pyslicer.exceptions import SlicingDiceException
 
@@ -337,6 +337,8 @@ class SlicingDiceTester(object):
 
     @staticmethod
     def are_equal(expected, result):
+        expected = copy.deepcopy(expected)
+        result = copy.deepcopy(result)
         type_expected = type(expected)
         type_result = type(result)
 
