@@ -377,27 +377,25 @@ class SlicingDiceTester(object):
         return -1
 
 
-
 def main():
     # SlicingDice queries to be tested. Must match the JSON file name.
     query_types = [
-        'count_entity',
-        'count_event',
-        'top_values',
-        'aggregation',
-        'score',
-        'result',
-        'sql'
+        # 'count_entity',
+        # 'count_event',
+        'top_values'
+        # 'aggregation',
+        # 'score',
+        # 'result',
+        # 'sql'
     ]
 
     # Testing class with demo API key or one of your API key
     # by enviroment variable
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
     api_key = os.environ.get(
-        "SD_API_KEY",
-        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.'
-         'eyJfX3NhbHQiOiJkZW1vMjQ5N20iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMjQ5NywiY2xpZW50X2lkIjoxMH0.'
-         'oY341AzNdW9t_pfBZ-oXsdd-BOtVIEZnIs5IFWrnBlU'))
+        "SD_API_KEY",'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.'
+                     'eyJfX3NhbHQiOiIxNTIxNzQ1ODg0MjQxIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MzA1MDcsImNsaWVudF9pZCI6MjAzfQ.'
+                     'JKoaRhyjx-L2E_nMcwTbCPf37YxLcKjJZoQFZazLHw0')
 
     # MODE_TEST give us if you want to use endpoint Test or Prod
     sd_tester = SlicingDiceTester(
