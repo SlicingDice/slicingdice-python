@@ -8094,7 +8094,8 @@
               "value": 438744
             }
           ]
-        }
+        },
+        "auto-create":["column", "dimension"]
       },
       "query": {
         "query":[
