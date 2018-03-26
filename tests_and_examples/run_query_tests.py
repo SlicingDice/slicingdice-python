@@ -35,6 +35,7 @@ class SlicingDiceTester(object):
     per_test_insertion = False
 
     """Test orchestration class."""
+
     def __init__(self, api_key, verbose=False):
         # The Slicing Dice API client
         self.client = SlicingDice(master_key=api_key)
@@ -380,20 +381,23 @@ class SlicingDiceTester(object):
 def main():
     # SlicingDice queries to be tested. Must match the JSON file name.
     query_types = [
-        # 'count_entity',
-        # 'count_event',
-        'top_values'
-        # 'aggregation',
-        # 'score',
-        # 'result',
-        # 'sql'
+        'count_entity',
+        'count_event',
+        'top_values',
+        'aggregation',
+        'score',
+        'result',
+        'sql'
     ]
 
     # Testing class with demo API key or one of your API key
     # by enviroment variable
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
     api_key = os.environ.get(
-        "SD_API_KEY",'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.'
+        "SD_API_KEY",
+        # 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcm9qZWN0X2lkIjozMDQ5NCwiY2xpZW50X2lkIjo1LCJwZXJtaXNzaW9uX2xldmVsIjozLCJfX3NhbHQiOiJtYXN0ZXIifQ.d-Bo02ogrDmqI26i0BFbwKVOA92an1j198C0xCSjHb8')
+
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.'
                      'eyJfX3NhbHQiOiIxNTIxNzQ1ODg0MjQxIiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6MzA1MDcsImNsaWVudF9pZCI6MjAzfQ.'
                      'JKoaRhyjx-L2E_nMcwTbCPf37YxLcKjJZoQFZazLHw0')
 
