@@ -1553,7 +1553,7 @@
             },
             "78": {
                 "string-test-column": "value:matched_value_1"
-            }
+            }, "auto-create":["column", "dimension"]
         },
         "query": {
             "string-top-values": {

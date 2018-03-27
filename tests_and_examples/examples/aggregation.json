@@ -41037,7 +41037,7 @@
             "result": {
                 "time-series-integer-test-column": [
                     {
-                        "avg": 1500000,
+                        "avg": 1500000.0,
                         "between": [
                             "2016-01-01T00:00:00Z",
                             "2016-01-02T00:00:00Z"
@@ -57507,7 +57507,7 @@
             "result": {
                 "time-series-integer-test-column": [
                     {
-                        "avg": 1500000,
+                        "avg": 1500000.0,
                         "between": [
                             "2016-01-01T00:00:00Z",
                             "2016-01-02T00:00:00Z"
