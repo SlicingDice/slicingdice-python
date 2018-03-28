@@ -261,10 +261,11 @@ class SlicingDiceTester(object):
         for old_name, new_name in self.column_translation.items():
             data_string = data_string.replace(old_name, new_name)
             if "post-process" and "map" in data_string:
-                column_map_name = '"time-series-integer-test-column'
+                column_map_name = '"time-series-integer-test-column '
                 data_string = data_string.replace(column_map_name, new_name[:-1])
 
         return json.loads(data_string)
+
 
     def compare_result(self, query_type, test, result):
         """Compare query expected and received results, exiting if they differ.
