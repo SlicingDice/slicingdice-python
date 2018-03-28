@@ -147,12 +147,12 @@ class SlicingDiceTester(object):
         column -- Dictionary containing column data, such as "name" and
             "api-name".
         """
-        old_name = '{}'.format(column['api-name'])
+        old_name = '"{}"'.format(column['api-name'])
 
         timestamp = self._get_timestamp()
         column['name'] += timestamp
         column['api-name'] += timestamp
-        new_name = '{}'.format(column['api-name'])
+        new_name = '"{}"'.format(column['api-name'])
 
         self.column_translation[old_name] = new_name
 
@@ -254,10 +254,15 @@ class SlicingDiceTester(object):
         Return:
         JSON data with new column name.
         """
+
+    def _translate_column_names(self, json_data):
         data_string = json.dumps(json_data)
 
         for old_name, new_name in self.column_translation.items():
             data_string = data_string.replace(old_name, new_name)
+            if "post-process" and "map" in data_string:
+                column_map_name = '"time-series-integer-test-column'
+                data_string = data_string.replace(column_map_name, new_name[:-1])
 
         return json.loads(data_string)
 
