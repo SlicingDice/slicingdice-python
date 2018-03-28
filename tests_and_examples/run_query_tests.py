@@ -392,15 +392,17 @@ def main():
         # 'top_values',
         # 'aggregation',
         # 'score',
-        # 'result',
-        'sql'
+        # 'result'
+      'sql'
     ]
 
     # Testing class with demo API key or one of your API key
     # by enviroment variable
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
     api_key = os.environ.get(
-        "SD_API_KEY","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vNjY5Mm0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyNjY5MiwiY2xpZW50X2lkIjoxMH0.C2h3E7QlNX3FU2xcj4GS8r9bNtL32XKCV6P0U__8SAw")
+        "SD_API_KEY","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMjgxOW0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMjgxOSwiY2xpZW50X2lkIjoxMH0.Z1FZJu5us4UHM7iRxy15-7ZdZyZBCTw0SG2VS9sy1FY")
+        #'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwcm9qZWN0X2lkIjozMDQ5NSwiY2xpZW50X2lkIjoxOTUsInBlcm1pc3Npb25fbGV2ZWwiOjMsIl9fc2FsdCI6Il9fU0FMVF9fIn0.yLHls1Z-1PL-GExtHRKLvH1d2lXVpQXJzuoggDpLV70')        # prod key
+        # "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vNjY5Mm0iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyNjY5MiwiY2xpZW50X2lkIjoxMH0.C2h3E7QlNX3FU2xcj4GS8r9bNtL32XKCV6P0U__8SAw")
 
     # MODE_TEST give us if you want to use endpoint Test or Prod
     sd_tester = SlicingDiceTester(
