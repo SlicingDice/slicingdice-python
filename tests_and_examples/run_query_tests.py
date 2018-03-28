@@ -387,13 +387,13 @@ class SlicingDiceTester(object):
 def main():
     # SlicingDice queries to be tested. Must match the JSON file name.
     query_types = [
-        # 'count_entity',
-        # 'count_event',
-        # 'top_values',
-        # 'aggregation',
-        # 'score',
-        # 'result'
-      'sql'
+        'count_entity',
+        'count_event',
+        'top_values',
+        'aggregation',
+        'score',
+        'result',
+        'sql'
     ]
 
     # Testing class with demo API key or one of your API key
