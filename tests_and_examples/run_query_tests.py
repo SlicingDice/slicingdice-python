@@ -368,9 +368,14 @@ class SlicingDiceTester(object):
                     return False
                 del result[index]
             return True
-
+        elif isinstance(expected, float):
+            return SlicingDiceTester.float_is_close(expected, result)
         else:
             return expected == result
+
+    @staticmethod
+    def float_is_close(a, b, rel_tol=1e-09, abs_tol=0.0):
+        return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
     @staticmethod
     def indexof(x, result):
