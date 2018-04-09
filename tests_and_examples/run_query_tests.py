@@ -33,6 +33,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class SlicingDiceTester(object):
     per_test_insertion = False
+    insert_sql_data = False
 
     """Test orchestration class."""
 
@@ -67,7 +68,7 @@ class SlicingDiceTester(object):
         num_tests = len(test_data)
 
         self.per_test_insertion = "insert" in test_data[0]
-        if not self.per_test_insertion:
+        if not self.per_test_insertion and self.insert_sql_data:
             insertion_data = self.load_test_data(query_type, suffix="_insert")
             for insertion in insertion_data:
                 self.client.insert(insertion)
@@ -368,9 +369,14 @@ class SlicingDiceTester(object):
                     return False
                 del result[index]
             return True
-
+        elif isinstance(expected, float):
+            return SlicingDiceTester.float_is_close(expected, result)
         else:
             return expected == result
+
+    @staticmethod
+    def float_is_close(a, b, rel_tol=1e-09, abs_tol=0.0):
+        return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
 
     @staticmethod
     def indexof(x, result):
@@ -396,7 +402,10 @@ def main():
     # by enviroment variable
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
     api_key = os.environ.get(
-        "SD_API_KEY","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMzU2N20iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMzU2NywiY2xpZW50X2lkIjoxMH0.iv3Xf7GkhQynfus6QynGf285cWljD9KBucJxNtnJqjo")
+        "SD_API_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiI"
+                      "xNTIzMDY1ODQyNjU4IiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJ"
+                      "vamVjdF9pZCI6MzA1MDgsImNsaWVudF9pZCI6MjAzfQ.R3oKwcA9"
+                      "XoQcW_QBxcvqUNJS44AqCKjoK2Hz5uBnxmU")
 
     # MODE_TEST give us if you want to use endpoint Test or Prod
     sd_tester = SlicingDiceTester(
