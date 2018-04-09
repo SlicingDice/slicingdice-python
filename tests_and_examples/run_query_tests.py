@@ -309,6 +309,7 @@ class SlicingDiceTester(object):
                 return
 
         self.num_successes += 1
+        print('  Status: Passed')
 
     @staticmethod
     def compare_values(expected, result):
