@@ -1,4 +1,4 @@
-# SlicingDice Official Python Client (v2.0.1) 
+# SlicingDice Official Python 2 Client (v2.0.1) 
 
 Official Python client for [SlicingDice - Data Warehouse and Analytics Database as a Service](https://www.slicingdice.com/).
 
