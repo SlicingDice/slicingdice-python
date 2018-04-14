@@ -1,11 +1,12 @@
-# SlicingDice Official Python Client (v2.0.1)
+# SlicingDice Official Python Client (v2.0.1) 
+
+Official Python client for [SlicingDice - Data Warehouse and Analytics Database as a Service](http://www.slicingdice.com/).
+
+[SlicingDice](http://www.slicingdice.com/) is a serverless, SQL & API-based, easy-to-use and really cost-effective alternative to Amazon Redshift and Google BigQuery.
+
 ### Build Status: [![CircleCI](https://circleci.com/gh/SlicingDice/slicingdice-python2/tree/master.svg?style=svg)](https://circleci.com/gh/SlicingDice/slicingdice-python2/tree/master)
 
-### Code Quality: [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e94ae7983c0a40858e0b615f75865608)](https://www.codacy.com/app/SimbioseVentures/slicingdice-python2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SlicingDice/slicingdice-python2&amp;utm_campaign=Badge_Grade) 
-
-Official Python client for [SlicingDice](http://www.slicingdice.com/), Data Warehouse and Analytics Database as a Service.  
-
-[SlicingDice](http://www.slicingdice.com/) is a serverless, API-based, easy-to-use and really cost-effective alternative to Amazon Redshift and Google BigQuery.
+### Code Quality: [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e94ae7983c0a40858e0b615f75865608)](https://www.codacy.com/app/SimbioseVentures/slicingdice-python2?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SlicingDice/slicingdice-python2&amp;utm_campaign=Badge_Grade)
 
 ## Documentation
 
