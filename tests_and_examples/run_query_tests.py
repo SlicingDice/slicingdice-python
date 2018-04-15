@@ -20,7 +20,7 @@ import json
 import os
 import sys
 import time
-
+import copy
 from pyslicer import SlicingDice
 from pyslicer.exceptions import SlicingDiceException
 
@@ -33,8 +33,10 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
 class SlicingDiceTester(object):
     per_test_insertion = False
+    insert_sql_data = False
 
     """Test orchestration class."""
+
     def __init__(self, api_key, verbose=False):
         # The Slicing Dice API client
         self.client = SlicingDice(master_key=api_key)
@@ -66,7 +68,7 @@ class SlicingDiceTester(object):
         num_tests = len(test_data)
 
         self.per_test_insertion = "insert" in test_data[0]
-        if not self.per_test_insertion:
+        if not self.per_test_insertion and self.insert_sql_data:
             insertion_data = self.load_test_data(query_type, suffix="_insert")
             for insertion in insertion_data:
                 self.client.insert(insertion)
@@ -253,12 +255,18 @@ class SlicingDiceTester(object):
         Return:
         JSON data with new column name.
         """
+
+    def _translate_column_names(self, json_data):
         data_string = json.dumps(json_data)
 
         for old_name, new_name in self.column_translation.items():
             data_string = data_string.replace(old_name, new_name)
+            if "post-process" and "map" in data_string:
+                column_map_name = '"time-series-integer-test-column '
+                data_string = data_string.replace(column_map_name, new_name[:-1])
 
         return json.loads(data_string)
+
 
     def compare_result(self, query_type, test, result):
         """Compare query expected and received results, exiting if they differ.
@@ -302,7 +310,6 @@ class SlicingDiceTester(object):
                 return
 
         self.num_successes += 1
-
         print('  Status: Passed')
 
     @staticmethod
@@ -310,7 +317,7 @@ class SlicingDiceTester(object):
         if isinstance(expected, dict):
             if not isinstance(result, dict):
                 return False
-            return expected == result
+            return SlicingDiceTester.are_equal(expected, result)
         if isinstance(expected, list):
             if not isinstance(result, list):
                 return False
@@ -330,29 +337,72 @@ class SlicingDiceTester(object):
 
             return True
 
-        return expected == result
+        return SlicingDiceTester.are_equal(expected, result)
+
+    @staticmethod
+    def are_equal(expected, result):
+        expected = copy.deepcopy(expected)
+        result = copy.deepcopy(result)
+        type_expected = type(expected)
+        type_result = type(result)
+
+        if type_expected != type_result:
+            return False
+
+        if isinstance(expected, dict):
+            if len(expected) != len(result):
+                return False
+            for key in expected:
+                if key not in result:
+                    return False
+                if not SlicingDiceTester.are_equal(expected[key], result[key]):
+                    return False
+            return True
+
+        elif isinstance(expected, list):
+            if len(expected) != len(result):
+                return False
+            while len(expected):
+                x = expected.pop()
+                index = SlicingDiceTester.indexof(x, result)
+                if index == -1:
+                    return False
+                del result[index]
+            return True
+        elif isinstance(expected, float):
+            return SlicingDiceTester.float_is_close(expected, result)
+        else:
+            return expected == result
+
+    @staticmethod
+    def float_is_close(a, b, rel_tol=1e-09, abs_tol=0.0):
+        return abs(a - b) <= max(rel_tol * max(abs(a), abs(b)), abs_tol)
+
+    @staticmethod
+    def indexof(x, result):
+        for i in range(len(result)):
+            if SlicingDiceTester.are_equal(x, result[i]):
+                return i
+        return -1
 
 
 def main():
     # SlicingDice queries to be tested. Must match the JSON file name.
     query_types = [
+        'sql',
         'count_entity',
         'count_event',
         'top_values',
         'aggregation',
         'score',
-        'result',
-        'sql'
+        'result'
     ]
 
     # Testing class with demo API key or one of your API key
     # by enviroment variable
     # http://panel.slicingdice.com/docs/#api-details-api-connection-api-keys-demo-key
     api_key = os.environ.get(
-        "SD_API_KEY",
-        ('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiIxNTE4NjA3ODQ0NDAz'
-         'IiwicGVybWlzc2lvbl9sZXZlbCI6MywicHJvamVjdF9pZCI6NDY5NjYsImNsaWVudF9pZ'
-         'CI6OTUxfQ.S6LCWQDcLS1DEFy3lsqk2jTGIe5rJ5fsQIvWuuFBdkw'))
+        "SD_API_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfX3NhbHQiOiJkZW1vMzY5N20iLCJwZXJtaXNzaW9uX2xldmVsIjozLCJwcm9qZWN0X2lkIjoyMzY5NywiY2xpZW50X2lkIjoxMH0.0TBSLtVmnaqv8d7K_Jc6v9gQ78FRZqxUsmXv8vQA74o")
 
     # MODE_TEST give us if you want to use endpoint Test or Prod
     sd_tester = SlicingDiceTester(
