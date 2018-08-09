@@ -372,3 +372,30 @@ class SlicingDice(SlicingDiceAPI):
             req_type="post",
             key_level=0,
             content_type='application/sql')
+
+    def delete(self, query):
+        """Make a delete request
+
+        Keyword arguments:
+        query -- The query that represents the data to be deleted
+        """
+        url = SlicingDice.BASE_URL + URLResources.DELETE
+        return self._make_request(
+            url=url,
+            json_data=ujson.dumps(query),
+            req_type="post",
+            key_level=2)
+
+
+    def update(self, query):
+        """Make a update request
+
+        Keyword arguments:
+        query -- The query that represents the data to be updated
+        """
+        url = SlicingDice.BASE_URL + URLResources.UPDATE
+        return self._make_request(
+            url=url,
+            json_data=ujson.dumps(query),
+            req_type="post",
+            key_level=2)
